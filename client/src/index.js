@@ -1,6 +1,3 @@
-import cat from "./cat.jpg";
+import App from "./App.js";
 
-const catEle = document.createElement("img");
-catEle.src = cat;
-
-document.querySelector("#root").appendChild(catEle);
+new App(document.querySelector("#App"));
