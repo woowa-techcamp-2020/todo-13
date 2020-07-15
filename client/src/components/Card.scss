@@ -2,3 +2,11 @@
   background-color: white;
   margin-bottom: 10px;
 }
+
+.draggable {
+  cursor: move;
+}
+
+.dragging {
+  opacity: 0.5;
+}
