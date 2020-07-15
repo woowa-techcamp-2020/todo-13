@@ -17,7 +17,10 @@ export default class Dashboard {
   }
 
   render() {
-    const dashboard = makeElementWithClass("section", "dashboard");
+    const dashboard = makeElementWithClass({
+      elementType: "section",
+      className: "dashboard",
+    });
 
     this.$target.appendChild(dashboard);
     this.paintColumn(dashboard);

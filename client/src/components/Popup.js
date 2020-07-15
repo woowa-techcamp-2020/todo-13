@@ -14,12 +14,32 @@ export default class Popup {
   }
 
   render() {
-    const popup = makeElementWithClass("div", "popup");
-    const popupContents = makeElementWithClass("div", "popup-contents");
-    const message = makeElementWithClass("div", "popup-message");
-    const btns = makeElementWithClass("div", "popup-btns");
-    const confirm = makeElementWithClass("button", "popup-confirm", "확인");
-    const cancel = makeElementWithClass("button", "popup-cancel", "취소");
+    const popup = makeElementWithClass({
+      elementType: "div",
+      className: "popup",
+    });
+    const popupContents = makeElementWithClass({
+      elementType: "div",
+      className: "popup-contents",
+    });
+    const message = makeElementWithClass({
+      elementType: "div",
+      className: "popup-message",
+    });
+    const btns = makeElementWithClass({
+      elementType: "div",
+      className: "popup-btns",
+    });
+    const confirm = makeElementWithClass({
+      elementType: "button",
+      className: "popup-confirm",
+      content: "확인",
+    });
+    const cancel = makeElementWithClass({
+      elementType: "button",
+      className: "popup-cancel",
+      content: "취소",
+    });
 
     btns.appendChild(confirm);
     btns.appendChild(cancel);

@@ -8,11 +8,20 @@ export default class Header {
   }
 
   render() {
-    const header = makeElementWithClass("header", "header");
-    const title = makeElementWithClass("div", "title");
-    const menu = makeElementWithClass("div", "menu");
-    title.innerHTML = "📝 TODO";
-    menu.innerHTML = "menu";
+    const header = makeElementWithClass({
+      elementType: "header",
+      className: "header",
+      content: "📝 TODO",
+    });
+    const title = makeElementWithClass({
+      elementType: "div",
+      className: "title",
+    });
+    const menu = makeElementWithClass({
+      elementType: "div",
+      className: "menu",
+      content: "menu",
+    });
     header.appendChild(title);
     header.appendChild(menu);
 

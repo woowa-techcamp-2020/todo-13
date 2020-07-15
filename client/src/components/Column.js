@@ -1,7 +1,7 @@
 import "./Column.scss";
 import Card from "./Card";
 import { makeElementWithClass, showPopup } from "../utils/util";
-import { MSG } from "../utils/constants";
+import MESSAGE from "../utils/messages";
 
 export default class Column {
   constructor($target, props) {
@@ -20,7 +20,10 @@ export default class Column {
   }
 
   render() {
-    const column = makeElementWithClass("div", "column");
+    const column = makeElementWithClass({
+      elementType: "div",
+      className: "column",
+    });
 
     function getDragAfterElement(container, y) {
       const cards = [
@@ -56,9 +59,12 @@ export default class Column {
       }
     });
 
-    const title = makeElementWithClass("div", "column_title");
+    const title = makeElementWithClass({
+      elementType: "div",
+      className: "column_title",
+    });
     title.innerHTML = this.title;
-    title.addEventListener("dblclick", () => showPopup(MSG.DELETE));
+    title.addEventListener("dblclick", () => showPopup(MESSAGE.DELETE));
     column.appendChild(title);
 
     this.$target.appendChild(column);

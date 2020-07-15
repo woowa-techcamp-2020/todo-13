@@ -1,7 +1,7 @@
-export function makeElementWithClass(elementType, className, innerHtml = "") {
+export function makeElementWithClass({ elementType, className, content = "" }) {
   const element = document.createElement(elementType);
   element.classList.add(className);
-  element.innerHTML = innerHtml;
+  element.innerHTML = content;
   return element;
 }
 
