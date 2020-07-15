@@ -1,0 +1,11 @@
+.column {
+  background-color: grey;
+  min-width: 15vw;
+  min-height: 700px;
+  padding: 10px;
+  margin-right: 20px;
+
+  .column_title {
+    margin-bottom: 15px;
+  }
+}

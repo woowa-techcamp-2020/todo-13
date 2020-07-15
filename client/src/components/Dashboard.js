@@ -17,7 +17,6 @@ export default class Dashboard {
   render() {
     const dashboard = document.createElement("section");
     dashboard.classList.add("dashboard");
-    dashboard.innerHTML = "Dashboard";
 
     this.$target.appendChild(dashboard);
     this.paintColumn(dashboard);
