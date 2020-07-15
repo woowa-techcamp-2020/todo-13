@@ -1,6 +1,7 @@
 import "./Column.scss";
 import Card from "./Card";
-import { makeElementWithClass } from "../utils/util";
+import { makeElementWithClass, showPopup } from "../utils/util";
+import { MSG } from "../utils/constants";
 
 export default class Column {
   constructor($target, props) {
@@ -20,6 +21,7 @@ export default class Column {
     const column = makeElementWithClass("div", "column");
     const title = makeElementWithClass("div", "column_title");
     title.innerHTML = this.title;
+    title.addEventListener("dblclick", () => showPopup(MSG.DELETE));
     column.appendChild(title);
 
     this.$target.appendChild(column);

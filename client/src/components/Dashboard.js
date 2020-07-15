@@ -1,5 +1,6 @@
 import "./Dashboard.scss";
 import Column from "./Column";
+import Popup from "./Popup";
 import { makeElementWithClass } from "../utils/util";
 
 export default class Dashboard {
