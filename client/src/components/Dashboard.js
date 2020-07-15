@@ -1,11 +1,25 @@
+import "./Dashboard.scss";
+import Column from "./Column";
+
 export default class Dashboard {
   constructor($target) {
     this.$target = $target;
 
-    const dashboard = document.createElement("div");
-    dashboard.classList.add("Dashboard");
+    this.render();
+  }
+
+  paintColumn(dashboard) {
+    const titles = ["해야 할 일", "하는중", "다 했어"];
+
+    titles.forEach((title) => new Column(dashboard, { title }));
+  }
+
+  render() {
+    const dashboard = document.createElement("section");
+    dashboard.classList.add("dashboard");
     dashboard.innerHTML = "Dashboard";
 
     this.$target.appendChild(dashboard);
+    this.paintColumn(dashboard);
   }
 }
