@@ -2,7 +2,7 @@ import "./Header.scss";
 import { makeElementWithClass } from "../utils/util";
 
 export default class Header {
-  constructor($target) {
+  constructor($target, props) {
     this.$target = $target;
     this.render();
   }

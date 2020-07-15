@@ -3,7 +3,7 @@ import Column from "./Column";
 import { makeElementWithClass } from "../utils/util";
 
 export default class Dashboard {
-  constructor($target) {
+  constructor($target, props) {
     this.$target = $target;
 
     this.render();
