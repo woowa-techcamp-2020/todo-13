@@ -5,8 +5,6 @@ const port = process.env.PORT || 3000;
 
 const mysql = require("mysql");
 
-console.log(process.env.MYSQL_DATABASE);
-
 const connection = mysql.createConnection({
   host: "localhost",
   user: process.env.MYSQL_USER,
@@ -28,7 +26,6 @@ app.get("/", (req, res) => res.send("Hello World! Docker setup done~~~"));
 app.get("/card", (req, res) => {
   connection.query("SELECT * FROM todo.Cards", (err, rows, fields) => {
     if (err) throw err;
-    console.log("card info is:", rows);
     res.send(rows);
   });
 });
