@@ -1,4 +1,5 @@
 import "./Header.scss";
+import { makeElementWithClass } from "../utils/util";
 
 export default class Header {
   constructor($target) {
@@ -7,12 +8,9 @@ export default class Header {
   }
 
   render() {
-    const header = document.createElement("header");
-    header.classList.add("header");
-    const title = document.createElement("div");
-    title.classList.add("title");
-    const menu = document.createElement("div");
-    menu.classList.add("menu");
+    const header = makeElementWithClass("header", "header");
+    const title = makeElementWithClass("div", "title");
+    const menu = makeElementWithClass("div", "menu");
     title.innerHTML = "📝 TODO";
     menu.innerHTML = "menu";
     header.appendChild(title);

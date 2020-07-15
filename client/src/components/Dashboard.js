@@ -1,5 +1,6 @@
 import "./Dashboard.scss";
 import Column from "./Column";
+import { makeElementWithClass } from "../utils/util";
 
 export default class Dashboard {
   constructor($target) {
@@ -15,8 +16,7 @@ export default class Dashboard {
   }
 
   render() {
-    const dashboard = document.createElement("section");
-    dashboard.classList.add("dashboard");
+    const dashboard = makeElementWithClass("section", "dashboard");
 
     this.$target.appendChild(dashboard);
     this.paintColumn(dashboard);

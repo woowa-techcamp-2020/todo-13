@@ -1,4 +1,5 @@
 import "./Card.scss";
+import { makeElementWithClass } from "../utils/util";
 
 export default class Card {
   constructor($target, props) {
@@ -9,11 +10,8 @@ export default class Card {
   }
 
   render() {
-    const card = document.createElement("div");
-    card.classList.add("card");
+    const card = makeElementWithClass("div", "card");
     card.innerHTML = this.content;
-
-    console.log(card);
 
     this.$target.appendChild(card);
   }
