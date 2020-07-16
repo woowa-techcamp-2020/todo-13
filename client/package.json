@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start:dev": "webpack-dev-server"
   },
   "keywords": [],
@@ -14,17 +14,39 @@
     "@babel/cli": "^7.10.4",
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
     "file-loader": "^6.0.0",
+    "jest": "^26.1.0",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "style-loader": "^1.2.1",
+    "supertest": "^4.0.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "core-js": "^3.6.5"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "verbose": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "moduleFileExtensions": ["js", "json", "jsx", "ts", "tsx", "json"],
+    "transform": {
+      "^.+\\.(js|jsx)?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1"
+    },
+    "testMatch": [
+      "<rootDir>/**/*.test.(js|jsx|ts|tsx)",
+      "<rootDir>/(tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx))"
+    ],
+    "transformIgnorePatterns": ["<rootDir>/node_modules/"]
   }
 }
