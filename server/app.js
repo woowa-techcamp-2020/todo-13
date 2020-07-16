@@ -3,10 +3,23 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const cardRouter = require('./routes/cardRouter')
+const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
 
-app.get("/", (req, res) => res.send("Hello World! Docker setup done~~~"));
-app.use("/card", cardRouter);
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(morgan('combined'));
+app.use(cookieParser());
+
+const apiRouter = require("./routes/apiRouter");
+
+app.use("/api", apiRouter);
+
+app.get("/", (req, res) => res.send("TODO API server"));
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
