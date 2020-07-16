@@ -17,14 +17,12 @@ async function fetchAllCards() {
 }
 
 async function createCard(card) {
-  const query = `INSERT INTO todo.Cards (id, author, last_updated, content, category)\
-   VALUES (${parseInt(card.id)},\
-    \'${card.author}\',\
-    \'${card.last_updated}\',\
-    \'${card.content}\',\
-    \'${card.category}\')`; 
+  const query = "INSERT INTO todo.Cards\
+  (id, author, last_updated, content, category)\
+  VALUES (?, ?, ?, ?, ?)";
+  const values = Object.values(card);
   try {
-    await db.query(query);
+    await db.query(query, values);
   } catch (err) {
     throw err;
   }

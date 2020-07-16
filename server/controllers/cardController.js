@@ -23,6 +23,8 @@ async function createCard(req, res, next) {
     await cardService.createCard(card);
     res.status(201).send("succefully created new card");
   } catch (err) {
+
+    console.error(err);
     res.status(404).send("creating card failed");
   }
 }
