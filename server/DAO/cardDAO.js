@@ -1,24 +1,36 @@
-const mysql = require("mysql2/promise");
-
-const getConnection = async () => {
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    port: 3306,
-  });
-
-  return connection;
-};
+const db = require("../db");
+const mysql = require("mysql2");
+const { Card } = require("../Domain/Card");
 
 async function fetchAllCards() {
-  const connection = await getConnection();
+  const [rows] = await db.query("SELECT * FROM todo.Cards");
+  const cards = rows.map((row) => {
+    return new Card(
+      row.id,
+      row.author,
+      row.last_updated,
+      row.content,
+      row.category
+    );
+  });
+  return cards;
+}
 
-  const [rows] = await connection.query("SELECT * FROM todo.Cards");
-  return rows;
+async function createCard(card) {
+  const query = `INSERT INTO todo.Cards (id, author, last_updated, content, category)\
+   VALUES (${parseInt(card.id)},\
+    \'${card.author}\',\
+    \'${card.last_updated}\',\
+    \'${card.content}\',\
+    \'${card.category}\')`; 
+  try {
+    await db.query(query);
+  } catch (err) {
+    throw err;
+  }
 }
 
 module.exports = {
   fetchAllCards,
+  createCard,
 };
