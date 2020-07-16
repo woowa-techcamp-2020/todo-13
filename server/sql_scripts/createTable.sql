@@ -1,4 +1,4 @@
-use todo;
+USE todo;
 
 CREATE TABLE IF NOT EXISTS Cards (
 	id BIGINT NOT NULL AUTO_INCREMENT,
@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS Cards (
 	content TEXT NOT NULL,
 	category VARCHAR(255) NOT NULL,
 	PRIMARY KEY(ID)
-	);
+	) ENGINE=InnoDB;
