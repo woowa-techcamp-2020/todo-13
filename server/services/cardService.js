@@ -1,19 +1,20 @@
-const cardDAO = require("../DAO/cardDAO");
+class CardService {
+  constructor(CardRepository) {
+    this.CardRepository = CardRepository;
+  }
 
-async function fetchAllCards() {
-  const cards = await cardDAO.fetchAllCards();
-  return cards;
-}
+  async fetchAllCards() {
+    const cards = await this.CardRepository.findAllCards();
+    return cards;
+  }
 
-async function createCard(card) {
-  try {
-    await cardDAO.createCard(card);
-  } catch (err) {
-    throw err;
+  async createCard(cardDTO) {
+    try {
+      await this.CardRepository.createCard(cardDTO);
+    } catch (err) {
+      throw err;
+    }
   }
 }
 
-module.exports = {
-  fetchAllCards,
-  createCard,
-};
+module.exports = CardService;
