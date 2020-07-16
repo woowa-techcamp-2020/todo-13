@@ -1,6 +1,52 @@
+$BORDER_COLOR: #bebebe;
+
 .card {
-  background-color: white;
+  background-color: transparent;
   margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid $BORDER_COLOR;
+  display: flex;
+
+  ion-icon {
+    display: flex;
+    align-items: center;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+    .card-title {
+      display: flex;
+      align-items: center;
+
+      .card-category {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .card-contents {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 8px;
+    word-break: break-all;
+    .card-author {
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+  }
+
+  .card-delete {
+    font-size: 1.2rem;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
 }
 
 .draggable {
