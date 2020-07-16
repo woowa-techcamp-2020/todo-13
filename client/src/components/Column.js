@@ -1,6 +1,6 @@
 import "./Column.scss";
 import Card from "./Card";
-import { makeElementWithClass, showPopup } from "../utils/util";
+import { makeElementWithClass, showModal } from "../utils/util";
 import MESSAGE from "../utils/messages";
 
 export default class Column {
@@ -64,7 +64,9 @@ export default class Column {
       className: "column_title",
     });
     title.innerHTML = this.title;
-    title.addEventListener("dblclick", () => showPopup(MESSAGE.DELETE));
+    title.addEventListener("dblclick", () =>
+      showModal(this.title, MESSAGE.COLUMN_NAME, this.title)
+    );
     column.appendChild(title);
 
     this.$target.appendChild(column);

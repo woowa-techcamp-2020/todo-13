@@ -18,9 +18,9 @@ export default class Popup {
       elementType: "div",
       className: "popup",
     });
-    const popupContents = makeElementWithClass({
+    const popupBox = makeElementWithClass({
       elementType: "div",
-      className: "popup-contents",
+      className: "popup-box",
     });
     const message = makeElementWithClass({
       elementType: "div",
@@ -43,9 +43,9 @@ export default class Popup {
 
     btns.appendChild(confirm);
     btns.appendChild(cancel);
-    popupContents.appendChild(message);
-    popupContents.appendChild(btns);
-    popup.appendChild(popupContents);
+    popupBox.appendChild(message);
+    popupBox.appendChild(btns);
+    popup.appendChild(popupBox);
     this.$target.appendChild(popup);
 
     popup.addEventListener("click", (e) => {
