@@ -10,7 +10,7 @@ export function showPopup(msg) {
   popup.style.display = "block";
   const message = document.querySelector(".popup-message");
   message.innerHTML = msg;
-  // 버튼 click action 추가
+  // TODO: 버튼 click action 추가
 }
 
 export function hidePopup() {
@@ -18,4 +18,30 @@ export function hidePopup() {
   popup.style.display = "none";
   const message = document.querySelector(".popup-message");
   message.innerHTML = "";
+}
+
+export function showModal(title, label, editContent = "") {
+  const modalTitle = document.querySelector(".modal-title");
+  modalTitle.innerHTML = `Edit ${title}`;
+  const modalNoteLabel = document.querySelector(".modal-note-label");
+  modalNoteLabel.innerHTML = label;
+  const modalNote = document.querySelector(".modal-note");
+  modalNote.value = editContent;
+  const modalConfirm = document.querySelector(".modal-confirm");
+  modalConfirm.disabled = editContent ? false : true;
+  // TODO: 버튼 click action 추가
+  modalConfirm.addEventListener("click", () => console.log("edit save"));
+  const popup = document.querySelector(".modal");
+  popup.style.display = "block";
+}
+
+export function hideModal() {
+  const title = document.querySelector(".modal-title");
+  title.innerHTML = "Edit title";
+  const modalNoteLabel = document.querySelector(".modal-note-label");
+  modalNoteLabel.innerHTML = "Note";
+  const modalNote = document.querySelector(".modal-note");
+  modalNote.value = "";
+  const popup = document.querySelector(".modal");
+  popup.style.display = "none";
 }
