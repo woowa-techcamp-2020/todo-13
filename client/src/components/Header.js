@@ -22,6 +22,12 @@ export default class Header {
       className: "menu",
       content: "menu",
     });
+
+    menu.addEventListener("click", () => {
+      const sidebar = document.querySelector(".sidebar");
+      sidebar.classList.remove("out");
+      sidebar.classList.add("active");
+    });
     header.appendChild(title);
     header.appendChild(menu);
 
