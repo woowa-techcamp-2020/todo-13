@@ -6,7 +6,7 @@ router.get("/", cardController.getAllCards);
 router.post("/", cardController.createCard);
 
 
-// TODO: 나머지 api 구현하기
+// TODO: PUT, PATCH, DELETE 메소드 api 구현하기
 // router.put("/");
 // router.patch("/");
 // router.delete("/");
