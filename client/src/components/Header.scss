@@ -1,8 +1,6 @@
 $BACKGROUND_COLOR: #3e3e3e;
 
 .header {
-  // background-image: linear-gradient(#c8f3fc, #8286fa);
-  // background-color: liner-g;
   color: black;
   display: flex;
   justify-content: space-between;
@@ -10,10 +8,4 @@ $BACKGROUND_COLOR: #3e3e3e;
   font-weight: 900;
   font-size: 2rem;
   border-bottom: 1px solid #bebebe;
-
-  .title {
-  }
-
-  .menu {
-  }
 }

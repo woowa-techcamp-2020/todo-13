@@ -18,9 +18,7 @@ export default class Column {
     const contents = ["설정파일 분리 리팩토링 작업", "데모 환경 구성"];
     const cardLeng = document.querySelector(".column-card-leng");
     this.cardLeng = contents.length;
-    // cardLeng.innerHTML = this.cardLeng;
     this.updateCardLength(this.cardLeng);
-    console.log(this.cardLeng);
     contents.forEach(
       (content) => new Card(column, { category: this.title, content })
     );
@@ -134,6 +132,7 @@ export default class Column {
     });
 
     addBtn.addEventListener("click", () => {
+      // TODO: 카드 생성 액션 추가하기
       console.log(cardContent.value);
     });
 
