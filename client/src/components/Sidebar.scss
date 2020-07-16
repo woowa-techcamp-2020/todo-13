@@ -1,0 +1,66 @@
+@keyframes scale-display {
+  0% {
+    opacity: 0;
+    right: -30em;
+  }
+
+  100% {
+    opacity: 1;
+    right: 0;
+  }
+}
+
+@keyframes scale-display--reversed {
+  0% {
+    display: inline-flex;
+    opacity: 1;
+    right: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+    right: -30em;
+  }
+}
+
+$BACKGROUND_COLOR: #f5f8fa;
+
+.sidebar {
+  width: 30em;
+  height: 100vh;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: none;
+
+  &.active {
+    animation: scale-display 0.3s;
+    display: inline-flex;
+  }
+
+  &.out {
+    animation: scale-display--reversed 0.3s;
+    animation-fill-mode: forwards;
+    display: inline-flex;
+  }
+
+  .sidebar-header {
+    width: 100%;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background-color: $BACKGROUND_COLOR;
+
+    .sidebar-header-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

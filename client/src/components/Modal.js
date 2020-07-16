@@ -8,11 +8,6 @@ export default class Modal {
     this.render();
   }
 
-  setState(data) {
-    this.data = data;
-    this.render();
-  }
-
   render() {
     const modal = makeElementWithClass({
       elementType: "div",
