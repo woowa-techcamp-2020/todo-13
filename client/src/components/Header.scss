@@ -1,11 +1,15 @@
+$BACKGROUND_COLOR: #3e3e3e;
+
 .header {
-  background-color: black;
-  color: white;
+  // background-image: linear-gradient(#c8f3fc, #8286fa);
+  // background-color: liner-g;
+  color: black;
   display: flex;
   justify-content: space-between;
   padding: 20px;
   font-weight: 900;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  border-bottom: 1px solid #bebebe;
 
   .title {
   }
