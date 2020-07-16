@@ -1,5 +1,5 @@
 const cardService = require("../services/cardService");
-const { Card } = require("../Domain/Card");
+const Card = require("../Domain/Card");
 
 async function getAllCards(req, res, next) {
   try {
@@ -18,12 +18,11 @@ async function createCard(req, res, next) {
       req.body.author,
       req.body.last_updated,
       req.body.content,
-      req.body.category,
+      req.body.category
     );
     await cardService.createCard(card);
     res.status(201).send("succefully created new card");
   } catch (err) {
-
     console.error(err);
     res.status(404).send("creating card failed");
   }

@@ -1,6 +1,5 @@
 const db = require("../db");
-const mysql = require("mysql2");
-const { Card } = require("../Domain/Card");
+const Card = require("../Domain/Card");
 
 async function fetchAllCards() {
   const [rows] = await db.query("SELECT * FROM todo.Cards");
@@ -17,7 +16,8 @@ async function fetchAllCards() {
 }
 
 async function createCard(card) {
-  const query = "INSERT INTO todo.Cards\
+  const query =
+    "INSERT INTO todo.Cards\
   (id, author, last_updated, content, category)\
   VALUES (?, ?, ?, ?, ?)";
   const values = Object.values(card);
