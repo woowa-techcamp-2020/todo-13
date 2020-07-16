@@ -13,7 +13,22 @@ module.exports = (api) => {
     ],
   ];
 
+  const env = {
+    test: {
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            modules: "auto",
+          },
+          "jest",
+        ],
+      ],
+    },
+  };
+
   return {
     presets,
+    env,
   };
 };
