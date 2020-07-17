@@ -20,6 +20,14 @@ class CardService {
       throw err;
     }
   }
+
+  async removeCard(id) {
+    try {
+      await this.CardRepository.removeCardById(id);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = CardService;

@@ -47,7 +47,17 @@ class CardRepository {
     }
   }
 
-  // TODO: findCardById, updateCardById, removeCard 구현
+  async removeCardById(id) {
+    const query = "DELETE FROM todo.Cards WHERE id=? ";
+
+    try {
+      await this.db.query(query, [id]);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  // TODO: updateCardById, removeCard 구현
 }
 
 module.exports = CardRepository;

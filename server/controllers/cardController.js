@@ -53,8 +53,23 @@ async function createCard(req, res, next) {
   }
 }
 
+async function deleteOneCard(req, res, next) {
+  try {
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+
+    await cardServiceInstance.removeCard(req.params.id);
+
+    res.status(201).send("succefully delete card");
+  } catch (err) {
+    console.error(err);
+    res.status(404).end();
+  }
+}
+
 module.exports = {
   getAllCards,
   createCard,
   getOneCard,
+  deleteOneCard,
 };
