@@ -37,7 +37,9 @@ $BACKGROUND_COLOR: #f5f8fa;
 
   &.active {
     animation: scale-display 0.3s;
-    display: inline-flex;
+    // display: inline-flex;
+    display: flex;
+    flex-direction: column;
   }
 
   &.out {
