@@ -17,6 +17,20 @@ async function getAllCards(req, res, next) {
   }
 }
 
+async function getOneCard(req, res, next) {
+  try {
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+
+    const fetchedCard = await cardServiceInstance.fetchOneCard(req.params.id);
+
+    res.status(200).send(fetchedCard);
+  } catch (err) {
+    console.log(err);
+    res.status(404).end();
+  }
+}
+
 async function createCard(req, res, next) {
   try {
     const card = new Card(
@@ -31,7 +45,7 @@ async function createCard(req, res, next) {
     const cardServiceInstance = new CardService(cardRepositoryInstance);
 
     await cardServiceInstance.createCard(card);
-    
+
     res.status(201).send("succefully created new card");
   } catch (err) {
     console.error(err);
@@ -42,4 +56,5 @@ async function createCard(req, res, next) {
 module.exports = {
   getAllCards,
   createCard,
+  getOneCard,
 };
