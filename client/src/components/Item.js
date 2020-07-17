@@ -4,11 +4,35 @@ import {
 } from "../utils/util";
 import ThumbnailImg from "../cat.jpg";
 
-export default class Item {
-  constructor($target, props) {
-    this.$target = $target;
+export default function Item(props) {
+  const state = {
+    data: props.item
+  };
 
-    this.data = props.item;
+  function render() {
+
+  }
+
+  return `
+    <div class="item" data-testid"item">
+      <img src=${ThumbnailImg} class="item-thumbnail"/>
+      <div class="item-wrapper">
+        <p class="item-text">
+          ${state.data.username} ${state.data.action}
+        </p>
+        <p class="item-timestamp">
+          ${state.data.last_updated}
+        </p>
+      </div>
+    </div>  
+    `
+}
+
+// export default class Item {
+//   constructor($target, props) {
+//     this.$target = $target;
+
+//     this.data = props.item;
 
     // this.$item = makeElementWithClass({
     //   elementType: "div",
@@ -28,13 +52,13 @@ export default class Item {
     // this.createText();
     // this.createTimestamp();
 
-    this.render();
-  }
+  //   this.render();
+  // }
 
-  setState(data) {
-    this.data = data;
-    this.render();
-  }
+  // setState(data) {
+  //   this.data = data;
+  //   this.render();
+  // }
 
   // createThumbnail() {
   //   const $thumbnail = makeElementWithClass({
@@ -77,19 +101,19 @@ export default class Item {
   //   this.$text.innerHTML = `${this.data.username}  ${this.data.action}`;
   //   this.$timestamp.innerHTML = this.data.last_updated;
   // }
-  render() {
-    return `
-    <div class="item" data-testid"item">
-      <img src=${ThumbnailImg} class="item-thumbnail"/>
-      <div class="item-wrapper">
-        <p class="item-text">
-          ${this.data.username} ${this.data.action}
-        </p>
-        <p class="item-timestamp">
-          ${this.data.last_updated}
-        </p>
-      </div>
-    </div>  
-    `;
-  }
-}
+//   render() {
+//     return `
+//     <div class="item" data-testid"item">
+//       <img src=${ThumbnailImg} class="item-thumbnail"/>
+//       <div class="item-wrapper">
+//         <p class="item-text">
+//           ${this.data.username} ${this.data.action}
+//         </p>
+//         <p class="item-timestamp">
+//           ${this.data.last_updated}
+//         </p>
+//       </div>
+//     </div>  
+//     `;
+//   }
+// }
