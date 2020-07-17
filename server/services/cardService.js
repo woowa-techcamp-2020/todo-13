@@ -21,6 +21,14 @@ class CardService {
     }
   }
 
+  async updateCard(id, cardDTO) {
+    try {
+      await this.CardRepository.updateCardById(id, cardDTO);} 
+    catch (err) {
+      throw err;
+    }
+  }
+  
   async removeCard(id) {
     try {
       await this.CardRepository.removeCardById(id);
