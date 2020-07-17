@@ -7,8 +7,8 @@ import * as Data from '../Data';
 export default class Dashboard {
   constructor($target, props) {
     this.$target = $target;
-    console.log(Data.fetchCards());
-    console.log(Data.fetchActivities());
+    // console.log(Data.fetchCards());
+    // console.log(Data.fetchActivities());
     this.render();
   }
 

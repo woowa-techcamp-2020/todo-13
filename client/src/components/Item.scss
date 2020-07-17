@@ -1,0 +1,21 @@
+.item {
+  display: flex;
+  padding: 0.5rem 0;
+  border: 1px solid gray;
+
+  .item-thumbnail {
+    width: 5vw;
+    border-radius: 20%;
+    margin: 0 1vw;
+    padding: 1vw;
+  }
+
+  .item-wrapper {
+      display: flex;
+      flex-direction: column;
+
+      .item-timestamp {
+          font-weight: 200;
+      }
+  }
+}
