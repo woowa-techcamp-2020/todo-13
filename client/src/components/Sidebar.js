@@ -6,12 +6,18 @@ import * as Data from "../Data";
 export default class Sidebar {
   constructor($target, props) {
     this.$target = $target;
-
-    this.render();
+    this.getItems();
+    // this.render();
+    console.log(this.state.items)
+    this.rende();
   }
 
+  state={
+    items:[]
+  };
+
   getItems() {
-    return Data.fetchActivities();
+    this.state.items = Data.fetchActivities();
   }
 
   paintItem(sidebar) {
@@ -58,5 +64,21 @@ export default class Sidebar {
 
     this.$target.appendChild(sidebar);
     this.paintItem(sidebar);
+  }
+
+  rende() {
+    return `
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-header-title"></div>
+        <div class="sidebar-header-close"></div>
+      </div>
+      <div class="sidebar-contents">
+        ${this.state.items.map(item => {
+          new Item(document.querySelector(".sidebar-contents"), {item} );
+        })}
+      </div>
+    </div>
+    `
   }
 }
