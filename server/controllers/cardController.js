@@ -1,9 +1,15 @@
-const cardService = require("../services/cardService");
+const CardService = require("../services/cardService");
 const Card = require("../Domain/Card");
+const CardRepository = require("../Repository/CardRepository");
+const db = require("../db");
 
 async function getAllCards(req, res, next) {
   try {
-    const fetchedCards = await cardService.fetchAllCards();
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+
+    const fetchedCards = await cardServiceInstance.fetchAllCards();
+
     res.status(200).send(fetchedCards);
   } catch (err) {
     console.log(err);
@@ -20,7 +26,12 @@ async function createCard(req, res, next) {
       req.body.content,
       req.body.category
     );
-    await cardService.createCard(card);
+
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+
+    await cardServiceInstance.createCard(card);
+    
     res.status(201).send("succefully created new card");
   } catch (err) {
     console.error(err);
