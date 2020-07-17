@@ -20,6 +20,14 @@ class CardService {
       throw err;
     }
   }
+
+  async updateCard(id, cardDTO) {
+    try {
+      await this.CardRepository.updateCardById(id, cardDTO);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = CardService;
