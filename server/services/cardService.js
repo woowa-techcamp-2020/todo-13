@@ -8,6 +8,11 @@ class CardService {
     return cards;
   }
 
+  async fetchOneCard(id) {
+    const card = await this.CardRepository.findCardById(id);
+    return card;
+  }
+
   async createCard(cardDTO) {
     try {
       await this.CardRepository.createCard(cardDTO);

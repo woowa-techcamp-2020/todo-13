@@ -18,6 +18,23 @@ class CardRepository {
     return cards;
   }
 
+  async findCardById(id) {
+    const [rows] = await this.db.query(
+      `SELECT * FROM todo.Cards WHERE id=${id}`
+    );
+    const row = rows[0];
+
+    const card = new this.cardDTO(
+      row.id,
+      row.author,
+      row.last_updated,
+      row.content,
+      row.category
+    );
+
+    return card;
+  }
+
   async createCard(cardDTO) {
     const query =
       "INSERT INTO todo.Cards\
