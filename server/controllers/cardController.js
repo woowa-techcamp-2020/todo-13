@@ -54,26 +54,39 @@ async function createCard(req, res, next) {
 }
 
 async function updateCard(req, res, next) {
+    try {
+      const cardRepositoryInstance = new CardRepository(Card, db);
+      const cardServiceInstance = new CardService(cardRepositoryInstance);
+      if (!req.body.content) res.status(204).send("No content");
+
+      const card = new Card(
+        req.body.id,
+        req.body.author,
+        req.body.last_updated,
+        req.body.content,
+        req.body.category
+      );
+
+      await cardServiceInstance.updateCard(req.params.id, card);
+
+      res.status(200).send("succefully update card");
+    } catch (err) {
+      console.error(err);
+      res.status(404).send("update card failed");
+    }
+}
+  
+async function deleteOneCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
     const cardServiceInstance = new CardService(cardRepositoryInstance);
+    await cardServiceInstance.removeCard(req.params.id);
 
-    if (!req.body.content) res.status(204).send("No content");
-
-    const card = new Card(
-      req.body.id,
-      req.body.author,
-      req.body.last_updated,
-      req.body.content,
-      req.body.category
-    );
-
-    await cardServiceInstance.updateCard(req.params.id, card);
-
-    res.status(200).send("succefully update card");
+    res.status(201).send("succefully delete card");
   } catch (err) {
     console.error(err);
-    res.status(404).send("update card failed");
+    res.status(404).end();
+
   }
 }
 
@@ -82,4 +95,5 @@ module.exports = {
   createCard,
   getOneCard,
   updateCard,
+  deleteOneCard,
 };

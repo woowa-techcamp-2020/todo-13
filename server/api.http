@@ -23,3 +23,6 @@ Content-Type: application/json
     "content": "페이지네이션 UI 리서치, 다른 일... 추가",
     "category": "해야할 일"
 }
+
+### DELETE card api
+DELETE http://localhost:3000/api/card/4

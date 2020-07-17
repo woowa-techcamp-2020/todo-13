@@ -64,6 +64,16 @@ class CardRepository {
       throw err;
     }
   }
+
+  async removeCardById(id) {
+    const query = "DELETE FROM todo.Cards WHERE id=? ";
+
+    try {
+      await this.db.query(query, [id]);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = CardRepository;
