@@ -19,9 +19,8 @@ class CardRepository {
   }
 
   async findCardById(id) {
-    const [rows] = await this.db.query(
-      `SELECT * FROM todo.Cards WHERE id=${id}`
-    );
+    const query = "SELECT * FROM todo.Cards WHERE id=? ";
+    const [rows] = await this.db.query(query, [id]);
     const row = rows[0];
 
     const card = new this.cardDTO(
