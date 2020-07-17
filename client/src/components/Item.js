@@ -12,6 +12,7 @@ export default class Item {
       elementType: "div",
       className: "item",
     });
+    this.$item.setAttribute("data-testid", "item");
 
     this.$target.appendChild(this.$item);
 
