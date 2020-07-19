@@ -13,7 +13,6 @@ export function App() {
 }
 
 // TODO: refactor other component classes to function
-// ${Dashboard()}
 // ${Modal()}
 // ${Popup()}
 

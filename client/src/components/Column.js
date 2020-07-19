@@ -16,16 +16,16 @@ export default function Column(props, index) {
 
     const html = `
       <div class="column-header">
-        <div class="column-card-length>${len}</div>
+        <div class="column-card-length">${len}</div>
         <div class="column-title">${props.category}</div>
         <div class="column-header-btns">
           <button class="column-edit">
             <ion-icon name='pencil-outline'></ion-icon>
           </button>
-          <button class="column-add-card>
+          <button class="column-add-card">
             <ion-icon name='add-circle-outline'></ion-icon>
           </button>
-          <button class="column-delete>
+          <button class="column-delete">
             <ion-icon name='close-outline'></ion-icon>
           </button>
         </div>
@@ -37,14 +37,13 @@ export default function Column(props, index) {
           <button class-"column-cancel-btn">Cancel</button>
         </div>
       </div>
-      <div class="column-contents>
+      <div class="column-contents">
+        ${cards.filter(card => card.category === props.category)
+          .map((card, index) => {
+          return Card({ card }, index);
+        }).join('')}
       </div>
     `;
-
-    
-    // ${cards.map((card, index) => {
-    //   return Card({ card }, index);
-    // })}
 
     const $column = document.querySelector(`#${componentName}`);
     $column.innerHTML = html;

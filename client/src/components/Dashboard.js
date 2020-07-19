@@ -12,7 +12,7 @@ export default function Dashboard() {
     const html = `
       ${categories.map((category, index) => {
         return Column({ category }, index);
-      })}
+      }).join('')}
     `;
 
     const $dashboard = document.querySelector(`.${componentName}`);
