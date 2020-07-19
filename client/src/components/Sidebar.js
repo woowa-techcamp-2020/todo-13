@@ -1,42 +1,52 @@
 import "./Sidebar.scss";
 import Item from "./Item";
 import {
-  getIsSidebarVisible,
   getItems,
-  fetchItems,
-  subscribe
+  subscribe,
+  getIsSidebarVisible,
+  toggleSidebar
 } from "../store"
+import {
+  bindEvent
+} from "../utils/util";
 
 export default function Sidebar() {
-  const name = "sidebar";
+  const componentName = "sidebar";
 
   function render() {
+    const isSidebarVisible = getIsSidebarVisible();
     const items = getItems();
-    const className = ".sidebar-contents";
 
-    const html = items.map(item => {
-      return Item({
-        item
-      });
-    }).join('');
-    
-    const $sidebarContents = document.querySelector(className);
-    $sidebarContents.innerHTML = html;
-  }
+    function onCloseClick(e) {
+      toggleSidebar();
+    }
 
-  subscribe(name, 'items', render);
-  setTimeout(render, 0);
-
-  return `
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-header-title">Menu</div>
-      <div class="sidebar-header-close">
-        <ion-icon name='close-outline'></ion-icon>
+    const html = `
+    <div class="sidebar ${isSidebarVisible? "active": "inactive"}">
+      <div class="sidebar-header">
+        <div class="sidebar-header-title">Menu</div>
+        <div class="sidebar-header-close">
+          <ion-icon name='close-outline'></ion-icon>
+        </div>
+      </div>
+      <div class="sidebar-contents">
+        ${items.map((item, index) => {
+            return Item({ item }, index);
+          }).join('')}
       </div>
     </div>
-    <div class="sidebar-contents">
-    </div>
-  </div>
-  `
+    `;
+
+    const $sidebar = document.querySelector('.sidebar-wrapper');
+    $sidebar.innerHTML = html;
+
+    bindEvent("sidebar-header-close", 'click', onCloseClick);
+  }
+
+  subscribe(componentName, 'items', render);
+  subscribe(componentName, 'isSidebarVisible', render);
+
+  setTimeout(render, 0);
+
+  return `<div class="sidebar-wrapper"></div>`
 }

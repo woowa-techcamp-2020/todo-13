@@ -2,16 +2,14 @@ import "./Header.scss";
 import {
   bindEvent
 } from "../utils/util"
-import { subscribe, fetchItems } from "../store";
+import { subscribe, fetchItems, toggleSidebar } from "../store";
 
 export default function Header(props) {
-  const className = "header";
+  const componentName = "header";
 
   function onMenuClick(e) {
     fetchItems();
-    const sidebar = document.querySelector(".sidebar");
-    sidebar.classList.remove("inactive");
-    sidebar.classList.add("active");
+    toggleSidebar();
   }
 
   function render() {
@@ -21,7 +19,7 @@ export default function Header(props) {
   setTimeout(render, 0);
 
   return `
-    <header class=${className}>
+    <header class=${componentName}>
       <div class="header-title">📝 TODO</div>
       <div class="header-menu">menu</div>
     </header>

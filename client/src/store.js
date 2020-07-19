@@ -11,13 +11,13 @@ export const state = {
     }
 };
 
-export const subscribe = (component, name, action) => {
-    state[name].listeners[component] = action;
+export const subscribe = (component, key, eventHandler) => {
+    state[key].listeners[component] = eventHandler;
 }
 
 const publish = (data) =>
     Object.values(data.listeners)
-    .forEach(action => action(data.data));
+    .forEach(eventHandler => eventHandler(data.data));
 
 export function getIsSidebarVisible() {
     return state.isSidebarVisible.data;
@@ -30,4 +30,9 @@ export function getItems() {
 export async function fetchItems() {
     state.items.data = await Data.fetchActivities();
     publish(state.items);
+}
+
+export function toggleSidebar() {
+    state.isSidebarVisible.data = !state.isSidebarVisible.data;
+    publish(state.isSidebarVisible);
 }
