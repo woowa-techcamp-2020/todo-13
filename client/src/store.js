@@ -28,7 +28,7 @@ export const state = {
     isPopupVisible: {
         data: false,
         listeners: {},
-    }
+    },
 };
 
 export const subscribe = (component, key, eventHandler) => {

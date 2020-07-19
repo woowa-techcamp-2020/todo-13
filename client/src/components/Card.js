@@ -5,7 +5,6 @@ import { togglePopup, setPopupMessage, setModal, toggleModal } from "../store";
 
 export default function Card(props, index) {
   const componentName = `card-${props.card.id}`;
-  const hasBoundEvent = false;
 
   function onCloseBtnClick(e) {
     setPopupMessage(MESSAGE.COLUMN_NAME);
@@ -15,7 +14,6 @@ export default function Card(props, index) {
   function onDoubleClick(e) {
     const $cardDelete = document.querySelector(".card-delete");
     if (e.target !== $cardDelete) {
-      console.log("not delte btn");
       setModal({
         title: "note",
         label: "Note",

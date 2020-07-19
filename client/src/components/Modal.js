@@ -40,10 +40,16 @@ export default function Modal() {
         </div>
         <div class="modal-contents">
           <div class="modal-note-label">${modalData.label}</div>
-          <textarea class="modal-note" maxlength=500 autofocus="autofocus" placeholer="입력해주세요">
+          <textarea class="modal-note"
+            maxlength=500
+            autofocus="autofocus"
+            placeholer="입력해주세요">
             ${modalData.content}
           </textarea>
-          <button class="modal-confirm" ${hasTextInput? "": "disabled"}>Save</button>
+          <button class="modal-confirm" 
+            ${hasTextInput? "": "disabled"}>
+            Save
+          </button>
         </div>
       </div>
     </div>

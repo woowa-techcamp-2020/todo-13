@@ -1,8 +1,6 @@
 import "./Column.scss";
 import Card from "./Card";
 import {
-  makeElementWithClass,
-  showModal,
   bindEvent
 } from "../utils/util";
 import MESSAGE from "../utils/messages";
@@ -10,12 +8,13 @@ import {
   getCards,
   subscribe,
   setModal,
-  toggleModal
+  toggleModal,
 } from "../store";
 
 export default function Column(props, index) {
   const componentName = `column-${index}`;
   let len;
+  let isAddCardFormVisible = false;
 
   function onEditClick(e) {
     setModal({
@@ -24,6 +23,11 @@ export default function Column(props, index) {
       content: props.category,
     });
     toggleModal();
+  }
+
+  function onAddCardBtnClick(e) {
+    isAddCardFormVisible = !isAddCardFormVisible;
+    render();
   }
 
   function render() {
@@ -39,14 +43,16 @@ export default function Column(props, index) {
             <ion-icon name='pencil-outline'></ion-icon>
           </button>
           <button class="column-add-card">
-            <ion-icon name='add-circle-outline'></ion-icon>
+            ${isAddCardFormVisible? 
+              "<ion-icon name='remove-circle-outline'></ion-icon>"
+              :"<ion-icon name='add-circle-outline'></ion-icon>"}
           </button>
           <button class="column-delete">
             <ion-icon name='close-outline'></ion-icon>
           </button>
         </div>
       </div>
-      <div class="column-add-card-form">
+      <div class="column-add-card-form ${isAddCardFormVisible? '': 'hidden'}">
         <textarea class="column-card-content" placeholder="Write notes..."></textarea>
         <div class="column-card-btn">
           <button class="column-add-btn">Add</button>
@@ -64,6 +70,7 @@ export default function Column(props, index) {
     $column.innerHTML = html;
 
     bindEvent(`div#${componentName} button.column-edit`, "click", onEditClick);
+    bindEvent(`div#${componentName} button.column-add-card`, "click", onAddCardBtnClick);
   }
 
   subscribe(componentName, 'cards', render);
