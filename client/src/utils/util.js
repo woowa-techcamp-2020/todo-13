@@ -1,11 +1,14 @@
-export function bindEvent(className, event, action) {
-  const element = document.querySelector(`.${className}`);
+export function bindEvent(query, event, handler) {
+  const element = document.querySelector(query);
   if (!element) return;
-  element.addEventListener(event, action);
+  element.addEventListener(event, handler);
 };
 
-
-export function makeElementWithClass({ elementType, className, content = "" }) {
+export function makeElementWithClass({
+  elementType,
+  className,
+  content = ""
+}) {
   const element = document.createElement(elementType);
   element.classList.add(className);
   element.innerHTML = content;

@@ -40,7 +40,7 @@ export default function Sidebar() {
     const $sidebar = document.querySelector('.sidebar-wrapper');
     $sidebar.innerHTML = html;
 
-    bindEvent("sidebar-header-close", 'click', onCloseClick);
+    bindEvent(".sidebar-header-close", 'click', onCloseClick);
   }
 
   subscribe(componentName, 'items', render);

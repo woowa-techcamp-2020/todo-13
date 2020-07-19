@@ -9,11 +9,11 @@ export function App() {
   ${Header()}
   ${Dashboard()}
   ${Sidebar()}
+  ${Popup()}
 `;
 }
 
 // TODO: refactor other component classes to function
-// ${Modal()}
-// ${Popup()}
+// ${Modal()}}
 
 export default App;

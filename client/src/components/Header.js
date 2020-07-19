@@ -13,7 +13,7 @@ export default function Header(props) {
   }
 
   function render() {
-    bindEvent("header-menu", "click", onMenuClick);
+    bindEvent(".header-menu", "click", onMenuClick);
   }
 
   setTimeout(render, 0);

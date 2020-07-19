@@ -19,7 +19,6 @@ export default function Dashboard() {
     $dashboard.innerHTML = html;
   }
 
-  // subscribe();
   setTimeout(render, 0);
 
   return `<section class=${componentName}></section>`;

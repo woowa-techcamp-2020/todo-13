@@ -1,16 +1,24 @@
 import * as Data from "./Data";
 
 export const state = {
+    cards: {
+        data: [],
+        listeners: {},
+    },
     items: {
         data: [],
+        listeners: {},
+    },
+    popupMessage: {
+        data: '',
         listeners: {},
     },
     isSidebarVisible: {
         data: false,
         listeners: {},
     },
-    cards: {
-        data: [],
+    isPopupVisible: {
+        data: false,
         listeners: {},
     }
 };
@@ -43,10 +51,27 @@ export function toggleSidebar() {
 
 export async function fetchCards() {
     state.cards.data = await Data.fetchCards();
-    console.log(state.cards.data);
     publish(state.cards);
 }
 
 export function getCards() {
     return state.cards.data;
+}
+
+export function getPopupMessage() {
+    return state.popupMessage.data;
+}
+
+export function setPopupMessage(value) {
+    state.popupMessage.data = value;
+    publish(state.popupMessage);
+}
+
+export function getIsPopupVisible() {
+    return state.isPopupVisible.data;
+}
+
+export function togglePopup() {
+    state.isPopupVisible.data = !state.isPopupVisible.data;
+    publish(state.isPopupVisible);
 }

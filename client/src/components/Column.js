@@ -9,10 +9,11 @@ import { getCards, subscribe } from "../store";
 
 export default function Column(props, index) {
   const componentName = `column-${index}`;
-  const len = 2;
+  let len;
 
   function render() {
     const cards = getCards();
+    len = cards.filter(card => card.category === props.category).length;
 
     const html = `
       <div class="column-header">

@@ -1,18 +1,24 @@
 import "./Card.scss";
-import { makeElementWithClass, showModal, showPopup } from "../utils/util";
+import { makeElementWithClass, showModal, showPopup, bindEvent} from "../utils/util";
 import MESSAGE from "../utils/messages";
+import { togglePopup, setPopupMessage } from "../store";
 
 export default function Card(props, index) {
   const componentName = `card-${props.card.id}`;
+
+  function onCloseBtnClick(e) {
+    setPopupMessage(MESSAGE.COLUMN_NAME);
+    togglePopup();
+  }
 
   function render() {
     const html = `
       <div class="card-icon">
         <ion-icon name='receipt-outline'></ion-icon>
       </div>
-      <div class"card-content">
+      <div class="card-content">
         <div class="card-text">${props.card.content}</div>
-        <div class-"card-author">${props.card.author}</div>
+        <div class="card-author">${props.card.author}</div>
       </div>
       <div class="card-delete">
         <ion-icon name='close-outline'></ion-icon>
@@ -21,6 +27,8 @@ export default function Card(props, index) {
 
     const $card = document.querySelector(`#${componentName}`);
     $card.innerHTML = html;
+
+    bindEvent(`div#${componentName} div.card-delete`, "click", onCloseBtnClick);
   }
 
   setTimeout(render, 0);
