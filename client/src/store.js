@@ -8,6 +8,10 @@ export const state = {
     isSidebarVisible: {
         data: false,
         listeners: {},
+    },
+    cards: {
+        data: [],
+        listeners: {},
     }
 };
 
@@ -35,4 +39,9 @@ export async function fetchItems() {
 export function toggleSidebar() {
     state.isSidebarVisible.data = !state.isSidebarVisible.data;
     publish(state.isSidebarVisible);
+}
+
+export async function fetchCards() {
+    state.cards.data = await Data.fetchCards();
+    publish(state.cards);
 }
