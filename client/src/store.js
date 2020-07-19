@@ -43,5 +43,10 @@ export function toggleSidebar() {
 
 export async function fetchCards() {
     state.cards.data = await Data.fetchCards();
+    console.log(state.cards.data);
     publish(state.cards);
+}
+
+export function getCards() {
+    return state.cards.data;
 }
