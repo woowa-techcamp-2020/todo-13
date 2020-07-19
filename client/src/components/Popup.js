@@ -9,9 +9,7 @@ export default function Popup() {
     togglePopup();
   }
 
-  function onOutsideClick(e) {
-    const $popup = document.querySelector(`.${componentName}`);
-    if (e.target === $popup) togglePopup();
+  function onConfirmBtnClick(e) {
   }
 
   function render() {
@@ -36,7 +34,7 @@ export default function Popup() {
     $popupWrapper.innerHTML = html;
 
     bindEvent(".popup-cancel", "click", onCancelBtnClick);
-    bindEvent(".popup", "click", onOutsideClick);
+    bindEvent(".popup-confirm", "click", onConfirmBtnClick);
   }
 
   subscribe(componentName, 'popupMessage', render);

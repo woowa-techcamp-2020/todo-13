@@ -9,6 +9,7 @@ export function App() {
   ${Header()}
   ${Dashboard()}
   ${Sidebar()}
+  ${Modal()}
   ${Popup()}
 `;
 }

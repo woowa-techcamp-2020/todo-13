@@ -1,6 +1,7 @@
 export function bindEvent(query, event, handler) {
   const element = document.querySelector(query);
   if (!element) return;
+  // console.log(element, event)
   element.addEventListener(event, handler);
 };
 

@@ -1,14 +1,14 @@
 import "./Dashboard.scss";
 import Column from "./Column";
-import Popup from "./Popup";
-import { subscribe, fetchCards } from "../store";
+import { subscribe, fetchCards, setCards } from "../store";
 
 export default function Dashboard() {
   const componentName = 'dashboard';
   const categories =  ["해야할 일", "하는 중", "다 했어"];
 
   function render() {
-    fetchCards();
+    setCards();
+
     const html = `
       ${categories.map((category, index) => {
         return Column({ category }, index);

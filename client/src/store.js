@@ -13,7 +13,15 @@ export const state = {
         data: '',
         listeners: {},
     },
+    modal: {
+        data: {}, // title, label, editContent
+        listeners: {},
+    },
     isSidebarVisible: {
+        data: false,
+        listeners: {},
+    },
+    isModalVisible: {
         data: false,
         listeners: {},
     },
@@ -49,6 +57,10 @@ export function toggleSidebar() {
     publish(state.isSidebarVisible);
 }
 
+export async function setCards() {
+    state.cards.data = await Data.fetchCards();
+}
+
 export async function fetchCards() {
     state.cards.data = await Data.fetchCards();
     publish(state.cards);
@@ -74,4 +86,22 @@ export function getIsPopupVisible() {
 export function togglePopup() {
     state.isPopupVisible.data = !state.isPopupVisible.data;
     publish(state.isPopupVisible);
+}
+
+export function getIsModalVisibie() {
+    return state.isModalVisible.data;
+}
+
+export function toggleModal() {
+    state.isModalVisible.data = !state.isModalVisible.data;
+    publish(state.isModalVisible);
+}
+
+export function setModal(data) {
+    state.modal.data = data;
+    publish(state.modal);
+}
+
+export function getModalData() {
+    return state.modal.data;
 }

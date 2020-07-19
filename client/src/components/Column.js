@@ -2,18 +2,33 @@ import "./Column.scss";
 import Card from "./Card";
 import {
   makeElementWithClass,
-  showModal
+  showModal,
+  bindEvent
 } from "../utils/util";
 import MESSAGE from "../utils/messages";
-import { getCards, subscribe } from "../store";
+import {
+  getCards,
+  subscribe,
+  setModal,
+  toggleModal
+} from "../store";
 
 export default function Column(props, index) {
   const componentName = `column-${index}`;
   let len;
 
+  function onEditClick(e) {
+    setModal({
+      title: props.category,
+      label: MESSAGE.COLUMN_NAME,
+      content: props.category,
+    });
+    toggleModal();
+  }
+
   function render() {
-    const cards = getCards();
-    len = cards.filter(card => card.category === props.category).length;
+    const cards = getCards().filter(card => card.category === props.category);
+    len = cards.length;
 
     const html = `
       <div class="column-header">
@@ -39,8 +54,7 @@ export default function Column(props, index) {
         </div>
       </div>
       <div class="column-contents">
-        ${cards.filter(card => card.category === props.category)
-          .map((card, index) => {
+        ${cards.map((card, index) => {
           return Card({ card }, index);
         }).join('')}
       </div>
@@ -48,6 +62,8 @@ export default function Column(props, index) {
 
     const $column = document.querySelector(`#${componentName}`);
     $column.innerHTML = html;
+
+    bindEvent(`div#${componentName} button.column-edit`, "click", onEditClick);
   }
 
   subscribe(componentName, 'cards', render);
