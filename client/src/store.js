@@ -1,3 +1,5 @@
+import * as Data from "./Data";
+
 export const state = {
     items: {
         data: [],
@@ -19,4 +21,13 @@ const publish = (data) =>
 
 export function getIsSidebarVisible() {
     return state.isSidebarVisible.data;
+}
+
+export function getItems() {
+    return state.items.data;
+}
+
+export async function fetchItems() {
+    state.items.data = await Data.fetchActivities();
+    publish(state.items);
 }

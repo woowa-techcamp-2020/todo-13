@@ -1,35 +1,30 @@
 import "./Sidebar.scss";
 import Item from "./Item";
-import * as Data from "../Data";
 import {
-  getIsSidebarVisible
+  getIsSidebarVisible,
+  getItems,
+  fetchItems,
+  subscribe
 } from "../store"
 
 export default function Sidebar() {
-  const state = {
-    items: []
-  };
-
-  function getItems() {
-    state.items = Data.fetchActivities();
-  }
+  const name = "sidebar";
 
   function render() {
-    // const isVisible = getIsSidebarVisible();
-    // const className = ".sidebar-contents";
-    // this.getItems();
+    const items = getItems();
+    const className = ".sidebar-contents";
 
-    // const html = this.state.map(item => {
-    //   return Item({
-    //     item
-    //   });
-    // }).join('');
-
-    // const $sidebarContents = document.querySelector(className);
-    // $sidebarContents.innerHTML = html;
+    const html = items.map(item => {
+      return Item({
+        item
+      });
+    }).join('');
+    
+    const $sidebarContents = document.querySelector(className);
+    $sidebarContents.innerHTML = html;
   }
 
-  getItems();
+  subscribe(name, 'items', render);
   setTimeout(render, 0);
 
   return `
@@ -41,9 +36,6 @@ export default function Sidebar() {
       </div>
     </div>
     <div class="sidebar-contents">
-      ${state.items.map(item => {
-        return Item({item});
-      })}
     </div>
   </div>
   `
