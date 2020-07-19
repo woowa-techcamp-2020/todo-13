@@ -37,12 +37,11 @@ $BACKGROUND_COLOR: #f5f8fa;
 
   &.active {
     animation: scale-display 0.3s;
-    // display: inline-flex;
     display: flex;
     flex-direction: column;
   }
 
-  &.out {
+  &.inactive {
     animation: scale-display--reversed 0.3s;
     animation-fill-mode: forwards;
     display: inline-flex;

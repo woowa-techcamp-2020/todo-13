@@ -1,3 +1,11 @@
+export function bindEvent(className, event, action) {
+  const element = document.querySelector(`.${className}`);
+  if (!element) return;
+  element.addEventListener(event, action);
+  console.log(element);
+};
+
+
 export function makeElementWithClass({ elementType, className, content = "" }) {
   const element = document.createElement(elementType);
   element.classList.add(className);

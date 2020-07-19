@@ -5,27 +5,14 @@ import Popup from "./components/Popup";
 import Sidebar from "./components/Sidebar";
 
 const App = () => `
+  ${Header()}
   ${Sidebar()}
 `;
 
+// TODO: refactor other component classes to function
+// ${Header()}
+// ${Dashboard()}
+// ${Modal()}
+// ${Popup()}
+
 export default App;
-
-// export default class App {
-//   constructor($target) {
-//     this.$target = $target;
-
-//     this.$header = new Header($target);
-//     this.$dashboard = new Dashboard($target);
-//     this.$modal = new Modal($target);
-//     this.$popup = new Popup($target);
-//     // this.$sidebar = new Sidebar($target);
-
-//     this.render();
-//   }
-
-//   render() {
-//     return `
-//       ${new Sidebar(this.$target)}
-//     `;
-//   }
-// }
