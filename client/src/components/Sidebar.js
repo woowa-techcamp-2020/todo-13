@@ -43,7 +43,6 @@ export default function Sidebar() {
     bindEvent(".sidebar-header-close", 'click', onCloseClick);
   }
 
-  subscribe(componentName, 'items', render);
   subscribe(componentName, 'isSidebarVisible', render);
 
   setTimeout(render, 0);

@@ -7,7 +7,10 @@ import {
   getIsPopupVisible,
   subscribe,
   getPopupMessage,
-  togglePopup
+  togglePopup,
+  getTargetCardId,
+  deleteCard,
+  clearTargetCardId
 } from "../store";
 
 export default function Popup() {
@@ -19,6 +22,10 @@ export default function Popup() {
 
   function onConfirmBtnClick(e) {
     // delete Card
+    const targetCardId = getTargetCardId();
+    deleteCard(targetCardId);
+    togglePopup();
+    clearTargetCardId();
   }
 
   function render() {

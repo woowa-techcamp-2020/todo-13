@@ -40,6 +40,10 @@ export const state = {
     isAddCardFormVisible: {
         data: [false, false, false],
         listeners: {},
+    },
+    targetCardId: {
+        data: Number.NEGATIVE_INFINITY,
+        listeners: {},
     }
 };
 
@@ -92,7 +96,6 @@ export function updateCard(id, content) {
     state.cards.data.forEach(card => {
         if (card.id === id) {
             card.content = content;
-            console.dir(state.items.data);
             state.items.data.unshift({
                 username: card.author,
                 action: "update",
@@ -102,14 +105,41 @@ export function updateCard(id, content) {
     })
     publish(state.cards);
     publish(state.items);
-    console.dir(state.cards.data);
-    console.dir(state.items)
 }
 
-// TODO
-// export function deleteCard() {
+export function deleteCard(id) {
+    let deletedCard;
+    state.cards.data = state.cards.data.map(card => {
+        if (card.id === id) {
+            deletedCard = card
+            return null;
+        }
+        return card;
+    }).filter(card => card !== null);
 
-// }
+    state.items.data.unshift({
+        username: deletedCard.author,
+        action: "delete",
+        last_updated:  new Date().toISOString().slice(0, 19).replace('T', ' '),
+    });
+
+    
+    publish(state.cards);
+    publish(state.items);
+}
+
+export function getTargetCardId() {
+    return state.targetCardId.data;
+}
+
+export function setTargetCardId(value) {
+    state.targetCardId.data = value;
+    publish(state.targetCardId);
+}
+
+export function clearTargetCardId() {
+    state.targetCardId.data = Number.NEGATIVE_INFINITY;
+}
 
 export function getPopupMessage() {
     return state.popupMessage.data;

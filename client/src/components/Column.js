@@ -12,6 +12,7 @@ import {
   getIsAddCardFormVisible,
   setPopupMessage,
   togglePopup,
+  setTargetCardId,
 } from "../store";
 import AddCardForm from "./AddCardForm";
 
@@ -23,6 +24,8 @@ export default function Column(props, index) {
   function onCardCloseBtnClick(e) {
     const cardCloseBtns = [...document.querySelectorAll(`div.card ion-icon.md.hydrated[name=\"close-outline\"]`)];
     if (cardCloseBtns.includes(e.target)) {
+      const cardId = e.target.closest(".card").id.split('-')[1];
+      setTargetCardId(parseInt(cardId));
       setPopupMessage(MESSAGE.DELETE);
       togglePopup();
     }
@@ -36,12 +39,12 @@ export default function Column(props, index) {
     if (e.target !== $cardDelete && e.target !== $column && e.target !== $columnHeader) {
       const $card = e.target.closest(".card");
       const cardContent = $card.childNodes[3].firstElementChild.innerText;
-
+      const cardId = $card.id.split('-')[1];
+      setTargetCardId(cardId);
       setModal({
         title: "note",
         label: "Note",
         content: cardContent,
-        cardId: $card.id
       });
       toggleModal();
     }
