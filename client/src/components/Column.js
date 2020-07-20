@@ -10,7 +10,8 @@ import {
   setModal,
   toggleModal,
   getIsAddCardFormVisible,
-  toggleIsAddCardFormVisible,
+  setPopupMessage,
+  togglePopup,
 } from "../store";
 import AddCardForm from "./AddCardForm";
 
@@ -18,29 +19,40 @@ import AddCardForm from "./AddCardForm";
 
 export default function Column(props, index) {
   const componentName = `column-${index}`;
-  let len;
 
-  function onEditClick(e) {
-    setModal({
-      title: props.category,
-      label: MESSAGE.COLUMN_NAME,
-      content: props.category,
-    });
-    toggleModal();
+  function onCardCloseBtnClick(e) {
+    const cardCloseBtns = [...document.querySelectorAll(`.card-delete`)];
+    if (cardCloseBtns.includes(e.target)) {
+      setPopupMessage(MESSAGE.DELETE);
+      togglePopup();
+    }
   }
 
-  function onAddCardBtnClick(e) {
-    toggleIsAddCardFormVisible(index);
+  function onAddCardDoubleClick(e) {
+    const $cardDelete = document.querySelector(`div#${componentName} .card-delete`);
+    const $column = document.querySelector(`div#${componentName}`);
+    const $columnHeader = document.querySelector(`div#${componentName} .column-header`);
+
+    if (e.target !== $cardDelete && e.target !== $column && e.target !== $columnHeader) {
+      const $card = e.target.closest(".card");
+      const cardContent = $card.childNodes[3].firstElementChild.innerText;
+
+      setModal({
+        title: "note",
+        label: "Note",
+        content: cardContent,
+      });
+      toggleModal();
+    }
   }
 
   function render() {
     const cards = getCards().filter(card => card.category === props.category);
-    len = cards.length;
     const isAddCardFormVisible = getIsAddCardFormVisible(index);
 
     const html = `
       <div class="column-header">
-        <div class="column-card-length">${len}</div>
+        <div class="column-card-length">${cards.length}</div>
         <div class="column-title">${props.category}</div>
         <div class="column-header-btns">
           <button class="column-edit">
@@ -67,8 +79,8 @@ export default function Column(props, index) {
     const $column = document.querySelector(`#${componentName}`);
     $column.innerHTML = html;
 
-    bindEvent(`div#${componentName} button.column-edit`, "click", onEditClick);
-    bindEvent(`div#${componentName} button.column-add-card`, "click", onAddCardBtnClick);
+    bindEvent(`div#${componentName}`, "dblclick", onAddCardDoubleClick);
+    bindEvent(`div#${componentName}`, "click", onCardCloseBtnClick);
   }
 
   subscribe(componentName, 'cards', render);

@@ -14,24 +14,7 @@ import {
 
 export default function Card(props, index) {
   const componentName = `card-${props.card.id}`;
-
-  function onCloseBtnClick(e) {
-    setPopupMessage(MESSAGE.COLUMN_NAME);
-    togglePopup();
-  }
-
-  function onDoubleClick(e) {
-    const $cardDelete = document.querySelector(".card-delete");
-    if (e.target !== $cardDelete) {
-      setModal({
-        title: "note",
-        label: "Note",
-        content: props.card.content,
-      })
-      toggleModal();
-    }
-  }
-
+  
   function render() {
     const html = `
       <div class="card-icon">
@@ -48,9 +31,6 @@ export default function Card(props, index) {
 
     const $card = document.querySelector(`#${componentName}`);
     $card.innerHTML = html;
-
-    bindEvent(`div#${componentName} div.card-delete`, "click", onCloseBtnClick);
-    bindEvent(`div#${componentName}`, "dblclick", onDoubleClick);
   }
 
   setTimeout(render, 0);

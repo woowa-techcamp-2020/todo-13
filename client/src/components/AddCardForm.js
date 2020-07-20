@@ -52,7 +52,6 @@ export default function AddCardForm(index) {
     }
     
     subscribe(componentName, "cardFormText", render);
-    subscribe(componentName, "isAddCardFormVisible", render);
     setTimeout(render, 0);
 
     return `<div class=${componentName}-wrapper id="${componentName+"-wrapper-"+index}"></div>`;

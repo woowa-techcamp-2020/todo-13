@@ -1,6 +1,10 @@
 import * as Data from "./Data";
 
 export const state = {
+    categories: {
+        data: ["해야할 일", "하는 중", "다 했어"],
+        listeners: {},
+    },
     cards: {
         data: [],
         listeners: {},
@@ -46,6 +50,10 @@ export const subscribe = (component, key, eventHandler) => {
 const publish = (key) =>
     Object.values(key.listeners)
     .forEach(eventHandler => eventHandler(key.data));
+
+export function getCategories() {
+    return state.categories.data;
+}
 
 export function getIsSidebarVisible() {
     return state.isSidebarVisible.data;
