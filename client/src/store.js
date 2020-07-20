@@ -82,6 +82,35 @@ export function getCards() {
     return state.cards.data;
 }
 
+
+// TODO
+// export function createCard() {
+
+// }
+
+export function updateCard(id, content) {
+    state.cards.data.forEach(card => {
+        if (card.id === id) {
+            card.content = content;
+            console.dir(state.items.data);
+            state.items.data.unshift({
+                username: card.author,
+                action: "update",
+                last_updated: new Date().toISOString().slice(0, 19).replace('T', ' '),
+            })
+        }
+    })
+    publish(state.cards);
+    publish(state.items);
+    console.dir(state.cards.data);
+    console.dir(state.items)
+}
+
+// TODO
+// export function deleteCard() {
+
+// }
+
 export function getPopupMessage() {
     return state.popupMessage.data;
 }

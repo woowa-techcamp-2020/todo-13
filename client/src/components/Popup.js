@@ -17,7 +17,9 @@ export default function Popup() {
     togglePopup();
   }
 
-  function onConfirmBtnClick(e) {}
+  function onConfirmBtnClick(e) {
+    // delete Card
+  }
 
   function render() {
     const isPopupVisible = getIsPopupVisible();

@@ -12,7 +12,7 @@ import {
 
 // TODO: Add drag and drop feature 
 
-export default function Card(props, index) {
+export default function Card(props) {
   const componentName = `card-${props.card.id}`;
   
   function render() {

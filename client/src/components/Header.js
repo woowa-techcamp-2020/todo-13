@@ -8,14 +8,14 @@ export default function Header(props) {
   const componentName = "header";
 
   function onMenuClick(e) {
-    fetchItems();
     toggleSidebar();
   }
 
   function render() {
     bindEvent(".header-menu", "click", onMenuClick);
   }
-
+  
+  fetchItems();
   setTimeout(render, 0);
 
   return `

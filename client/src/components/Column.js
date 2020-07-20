@@ -21,7 +21,7 @@ export default function Column(props, index) {
   const componentName = `column-${index}`;
 
   function onCardCloseBtnClick(e) {
-    const cardCloseBtns = [...document.querySelectorAll(`.card-delete`)];
+    const cardCloseBtns = [...document.querySelectorAll(`div.card ion-icon.md.hydrated[name=\"close-outline\"]`)];
     if (cardCloseBtns.includes(e.target)) {
       setPopupMessage(MESSAGE.DELETE);
       togglePopup();
@@ -41,6 +41,7 @@ export default function Column(props, index) {
         title: "note",
         label: "Note",
         content: cardContent,
+        cardId: $card.id
       });
       toggleModal();
     }
@@ -70,8 +71,8 @@ export default function Column(props, index) {
       </div>
       ${AddCardForm(index)}
       <div class="column-contents">
-        ${cards.map((card, index) => {
-          return Card({ card }, index);
+        ${cards.map((card) => {
+          return Card({ card });
         }).join('')}
       </div>
     `;

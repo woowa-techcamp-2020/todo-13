@@ -6,11 +6,24 @@ import {
   subscribe,
   getIsModalVisibie,
   getModalData,
-  toggleModal
+  toggleModal,
+  onCardEditTextChange,
+  updateCard
 } from "../store";
 
 export default function Modal() {
   const componentName = "modal";
+
+  function onSaveBtnClick(e) {
+    // update card content
+    const $modalContents = e.target.closest("div.modal-contents");
+    const cardId = $modalContents.id.split("-")[1];
+    const $modalNote = $modalContents.childNodes[3];
+    const editContent = $modalNote.value;
+
+    updateCard(parseInt(cardId), editContent);
+    toggleModal();
+  }
 
   function onCloseBtnClick(e) {
     toggleModal();
@@ -36,14 +49,16 @@ export default function Modal() {
       <div class="modal-box">
         <div class="modal-header">
           <p class="modal-title">Edit ${modalData.title}</p>
-          <button class="modal-cancel">X</button>
+          <button class="modal-cancel">
+            <ion-icon name='close-outline'></ion-icon>
+          </button>
         </div>
-        <div class="modal-contents">
+        <div class="modal-contents"  id="${modalData.cardId}">
           <div class="modal-note-label">${modalData.label}</div>
           <textarea class="modal-note"
             maxlength=500
-            autofocus="autofocus"
-            placeholer="입력해주세요">
+            autofocus=true
+            placeholer="입력해주세요" value=>
             ${modalData.content}
           </textarea>
           <button class="modal-confirm" 
@@ -58,6 +73,7 @@ export default function Modal() {
     const $modal = document.querySelector(".modal-wrapper");
     $modal.innerHTML = html;
 
+    bindEvent(".modal-confirm", "click", onSaveBtnClick);
     bindEvent(".modal-cancel", "click", onCloseBtnClick);
     bindEvent(".modal", "click", onOutsideClick);
     bindEvent(".modal", "keyup", handleNullContent);
