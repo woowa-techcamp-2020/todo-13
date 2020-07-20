@@ -33,6 +33,10 @@ export const state = {
         data: false,
         listeners: {},
     },
+    isAddCardFormVisible: {
+        data: [false, false, false],
+        listeners: {},
+    }
 };
 
 export const subscribe = (component, key, eventHandler) => {
@@ -117,4 +121,13 @@ export function onCardFormTextChange(value) {
 export function clearCardFormText() {
     state.cardFormText.data = '';
     publish(state.cardFormText);
+}
+
+export function getIsAddCardFormVisible(idx) {
+    return state.isAddCardFormVisible.data[idx];
+}
+
+export function toggleIsAddCardFormVisible(idx) {
+    state.isAddCardFormVisible.data[idx] = !state.isAddCardFormVisible.data[idx];
+    publish(state.isAddCardFormVisible);
 }
