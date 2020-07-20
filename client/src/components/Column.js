@@ -9,7 +9,14 @@ import {
   subscribe,
   setModal,
   toggleModal,
+  onCardFormTextChange,
+  getCardFormText,
 } from "../store";
+
+// TODO: Separate Column component and AddCardForm component
+//       , since Column component is too big
+
+// TODO: Add drag and drop feature
 
 export default function Column(props, index) {
   const componentName = `column-${index}`;
@@ -25,9 +32,31 @@ export default function Column(props, index) {
     toggleModal();
   }
 
-  function onAddCardBtnClick(e) {
+  function toggleAddCardForm() {
     isAddCardFormVisible = !isAddCardFormVisible;
     render();
+  }
+
+  function onAddCardBtnClick(e) {
+    toggleAddCardForm();
+  }
+
+  function onAddCardFormAddBtnClick(e) {
+    const $textarea = document.querySelector(`div#${componentName} textarea.column-card-content`);
+    const value = $textarea.value;
+    console.log(value);
+
+    // TODO: add new Card component with value at the top of stack
+
+    toggleAddCardForm();
+  }
+
+  function onAddCardFormCancelBtnClick(e) {
+    toggleAddCardForm();
+  }
+
+  function changeCardFormText(e) {
+    return onCardFormTextChange(e.target.value);
   }
 
   function render() {
@@ -53,10 +82,10 @@ export default function Column(props, index) {
         </div>
       </div>
       <div class="column-add-card-form ${isAddCardFormVisible? '': 'hidden'}">
-        <textarea class="column-card-content" placeholder="Write notes..."></textarea>
+        <textarea class="column-card-content" placeholder="Write notes..." value="${getCardFormText()}"></textarea>
         <div class="column-card-btn">
           <button class="column-add-btn">Add</button>
-          <button class-"column-cancel-btn">Cancel</button>
+          <button class="column-cancel-btn">Cancel</button>
         </div>
       </div>
       <div class="column-contents">
@@ -71,9 +100,14 @@ export default function Column(props, index) {
 
     bindEvent(`div#${componentName} button.column-edit`, "click", onEditClick);
     bindEvent(`div#${componentName} button.column-add-card`, "click", onAddCardBtnClick);
+    bindEvent(`div#${componentName} textarea.column-card-content`, "input", changeCardFormText);
+    bindEvent(`div#${componentName} button.column-add-btn`, "click", onAddCardFormAddBtnClick);
+    bindEvent(`div#${componentName} button.column-cancel-btn`, "click", onAddCardFormCancelBtnClick);
   }
 
   subscribe(componentName, 'cards', render);
+  subscribe(componentName, "cardFormText", render);
+
   setTimeout(render, 0);
 
   return `<div class="column" id=${componentName}></div>`;

@@ -14,7 +14,4 @@ export function App() {
 `;
 }
 
-// TODO: refactor other component classes to function
-// ${Modal()}}
-
 export default App;

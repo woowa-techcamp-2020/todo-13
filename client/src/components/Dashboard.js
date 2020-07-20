@@ -1,14 +1,14 @@
 import "./Dashboard.scss";
 import Column from "./Column";
-import { subscribe, fetchCards, setCards } from "../store";
+import {
+  fetchCards
+} from "../store";
 
 export default function Dashboard() {
   const componentName = 'dashboard';
-  const categories =  ["해야할 일", "하는 중", "다 했어"];
+  const categories = ["해야할 일", "하는 중", "다 했어"];
 
   function render() {
-    setCards();
-
     const html = `
       ${categories.map((category, index) => {
         return Column({ category }, index);
@@ -18,6 +18,8 @@ export default function Dashboard() {
     const $dashboard = document.querySelector(`.${componentName}`);
     $dashboard.innerHTML = html;
   }
+
+  fetchCards();
 
   setTimeout(render, 0);
 

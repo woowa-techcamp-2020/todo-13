@@ -1,6 +1,14 @@
-import { makeElementWithClass, bindEvent } from "../utils/util";
+import {
+  makeElementWithClass,
+  bindEvent
+} from "../utils/util";
 import "./Popup.scss";
-import { getIsPopupVisible, subscribe, getPopupMessage, togglePopup, toggleSidebar } from "../store";
+import {
+  getIsPopupVisible,
+  subscribe,
+  getPopupMessage,
+  togglePopup
+} from "../store";
 
 export default function Popup() {
   const componentName = 'popup'
@@ -9,8 +17,7 @@ export default function Popup() {
     togglePopup();
   }
 
-  function onConfirmBtnClick(e) {
-  }
+  function onConfirmBtnClick(e) {}
 
   function render() {
     const isPopupVisible = getIsPopupVisible();

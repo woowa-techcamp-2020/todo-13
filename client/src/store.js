@@ -17,6 +17,10 @@ export const state = {
         data: {}, // title, label, editContent
         listeners: {},
     },
+    cardFormText: {
+        data: '',
+        listeners: {}
+    },
     isSidebarVisible: {
         data: false,
         listeners: {},
@@ -35,9 +39,9 @@ export const subscribe = (component, key, eventHandler) => {
     state[key].listeners[component] = eventHandler;
 }
 
-const publish = (data) =>
-    Object.values(data.listeners)
-    .forEach(eventHandler => eventHandler(data.data));
+const publish = (key) =>
+    Object.values(key.listeners)
+    .forEach(eventHandler => eventHandler(key.data));
 
 export function getIsSidebarVisible() {
     return state.isSidebarVisible.data;
@@ -55,10 +59,6 @@ export async function fetchItems() {
 export function toggleSidebar() {
     state.isSidebarVisible.data = !state.isSidebarVisible.data;
     publish(state.isSidebarVisible);
-}
-
-export async function setCards() {
-    state.cards.data = await Data.fetchCards();
 }
 
 export async function fetchCards() {
@@ -104,4 +104,17 @@ export function setModal(data) {
 
 export function getModalData() {
     return state.modal.data;
+}
+
+export function getCardFormText() {
+    return state.cardFormText.data;
+}
+
+export function onCardFormTextChange(value) {
+    state.cardFormText.data = value;
+}
+
+export function clearCardFormText() {
+    state.cardFormText.data = '';
+    publish(state.cardFormText);
 }
