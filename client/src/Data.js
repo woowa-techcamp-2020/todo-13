@@ -45,8 +45,8 @@ export function fetchCards() {
         { 
             "id": 7, 
             "author": "user1", 
-            "last_updated": "2020-07-15T13:41:20.000Z", 
-            "content": "2020-07-15 10:05:20",
+            "last_updated": "2020-07-15 10:05:20", 
+            "content": "데모 환경 설정",
             "category": "다 했어"
         }
     ];
