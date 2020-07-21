@@ -16,7 +16,6 @@ export default function Modal() {
   const componentName = "modal";
 
   function onSaveBtnClick(e) {
-    // update card content
     const $modalContents = e.target.closest("div.modal-contents");
     const cardId = getTargetCardId();
     const $modalNote = $modalContents.childNodes[3];
