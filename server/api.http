@@ -26,3 +26,15 @@ Content-Type: application/json
 
 ### DELETE card api
 DELETE http://localhost:3000/api/card/4
+
+### GET all activity api
+GET http://localhost:3000/api/activity
+
+### POST activity api
+POST http://localhost:3000/api/activity HTTP/2.0
+Content-Type: application/json
+
+{
+    "userid": "1",
+    "content": "updated 데모 환경 설정"
+}
