@@ -1,6 +1,6 @@
-const CardService = require("../services/cardService");
-const Card = require("../Domain/Card");
-const CardRepository = require("../Repository/CardRepository");
+const CardService = require("../services/card-service");
+const Card = require("../domain/card");
+const CardRepository = require("../repository/card-repository");
 const db = require("../db");
 
 async function getAllCards(req, res, next) {
