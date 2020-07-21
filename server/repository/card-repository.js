@@ -5,31 +5,38 @@ class CardRepository {
   }
 
   async findAllCards() {
-    const [rows] = await this.db.query("SELECT * FROM todo.Cards");
+    // TODO edit query
+    const [rows] = await this.db.query(
+      "SELECT Cards.id, Users.username AS author,\
+       Cards.last_updated, Cards.content, column_name AS category\
+      FROM Cards \
+      JOIN Users ON Cards.user_id = Users.id\
+      JOIN Columns ON Cards.column_id = Columns.id");
+      
     const cards = rows.map((row) => {
-      return new this.cardDTO(
-        row.id,
-        row.author,
-        row.last_updated,
-        row.content,
-        row.category
-      );
+      return new this.cardDTO(row)
+
+      // return new this.cardDTO({
+      //   id: row.id,
+      //   author: row.author,
+      //   last_updated: row.last_updated,
+      //   content: row.content,
+      //   category: row.category
+      // });
     });
     return cards;
   }
 
   async findCardById(id) {
-    const query = "SELECT * FROM todo.Cards WHERE id=? ";
+    const query = "SELECT Cards.id, Users.username AS author,\
+      Cards.last_updated, Cards.content, column_name AS category\
+      FROM Cards \
+      JOIN Users ON Cards.user_id = Users.id\
+      JOIN Columns ON Cards.column_id = Columns.id WHERE Cards.id=? ";
+      
     const [rows] = await this.db.query(query, [id]);
     const row = rows[0];
-
-    const card = new this.cardDTO(
-      row.id,
-      row.author,
-      row.last_updated,
-      row.content,
-      row.category
-    );
+    const card = new this.cardDTO(row);
 
     return card;
   }
