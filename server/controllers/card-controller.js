@@ -33,14 +33,14 @@ async function getOneCard(req, res, next) {
 
 async function createCard(req, res, next) {
   try {
-    const card = new Card(
-      req.body.id,
-      req.body.author,
-      req.body.last_updated,
-      req.body.content,
-      req.body.category
-    );
-
+    // const card = new Card(
+    //   req.body.id,
+    //   req.body.author,
+    //   req.body.last_updated,
+    //   req.body.content,
+    //   req.body.category
+    // );
+    const card = new Card(req.body);
     const cardRepositoryInstance = new CardRepository(Card, db);
     const cardServiceInstance = new CardService(cardRepositoryInstance);
 

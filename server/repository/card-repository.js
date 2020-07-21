@@ -15,14 +15,6 @@ class CardRepository {
       
     const cards = rows.map((row) => {
       return new this.cardDTO(row)
-
-      // return new this.cardDTO({
-      //   id: row.id,
-      //   author: row.author,
-      //   last_updated: row.last_updated,
-      //   content: row.content,
-      //   category: row.category
-      // });
     });
     return cards;
   }
@@ -33,7 +25,7 @@ class CardRepository {
       FROM Cards \
       JOIN Users ON Cards.user_id = Users.id\
       JOIN Columns ON Cards.column_id = Columns.id WHERE Cards.id=? ";
-      
+
     const [rows] = await this.db.query(query, [id]);
     const row = rows[0];
     const card = new this.cardDTO(row);
@@ -43,12 +35,13 @@ class CardRepository {
 
   async createCard(cardDTO) {
     const query =
-      "INSERT INTO todo.Cards\
-    (id, author, last_updated, content, category)\
-    VALUES (?, ?, ?, ?, ?)";
-    const values = Object.values(cardDTO);
+    `INSERT INTO todo.Cards (user_id, content, column_id)\
+    VALUES (\
+      (SELECT id FROM Users WHERE username="${cardDTO.author}")\
+      , ?, (SELECT id FROM Columns WHERE column_name="${cardDTO.category}"))`;
+      
     try {
-      await this.db.query(query, values);
+      await this.db.query(query, [cardDTO.content]);
     } catch (err) {
       throw err;
     }
