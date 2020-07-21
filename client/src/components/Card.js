@@ -1,20 +1,13 @@
 import "./Card.scss";
-import {
-  bindEvent
-} from "../utils/util";
+import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
-import {
-  togglePopup,
-  setPopupMessage,
-  setModal,
-  toggleModal
-} from "../store";
+import { togglePopup, setPopupMessage, setModal, toggleModal } from "../store";
 
-// TODO: Add drag and drop feature 
+// TODO: Add drag and drop feature
 
 export default function Card(props) {
   const componentName = `card-${props.card.id}`;
-  
+
   function render() {
     const html = `
       <div class="card-icon">
@@ -31,6 +24,7 @@ export default function Card(props) {
 
     const $card = document.querySelector(`#${componentName}`);
     $card.innerHTML = html;
+    // $card.addEventListener("mousedown", (e) => console.log(e));
   }
 
   setTimeout(render, 0);

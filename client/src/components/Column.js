@@ -1,8 +1,6 @@
 import "./Column.scss";
 import Card from "./Card";
-import {
-  bindEvent
-} from "../utils/util";
+import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
 import {
   getCards,
@@ -22,9 +20,13 @@ export default function Column(props, index) {
   const componentName = `column-${index}`;
 
   function onCardCloseBtnClick(e) {
-    const cardCloseBtns = [...document.querySelectorAll(`div.card ion-icon.md.hydrated[name=\"close-outline\"]`)];
+    const cardCloseBtns = [
+      ...document.querySelectorAll(
+        `div.card ion-icon.md.hydrated[name=\"close-outline\"]`
+      ),
+    ];
     if (cardCloseBtns.includes(e.target)) {
-      const cardId = e.target.closest(".card").id.split('-')[1];
+      const cardId = e.target.closest(".card").id.split("-")[1];
       setTargetCardId(parseInt(cardId));
       setPopupMessage(MESSAGE.DELETE);
       togglePopup();
@@ -32,14 +34,22 @@ export default function Column(props, index) {
   }
 
   function onAddCardDoubleClick(e) {
-    const $cardDelete = document.querySelector(`div#${componentName} .card-delete`);
+    const $cardDelete = document.querySelector(
+      `div#${componentName} .card-delete`
+    );
     const $column = document.querySelector(`div#${componentName}`);
-    const $columnHeader = document.querySelector(`div#${componentName} .column-header`);
+    const $columnHeader = document.querySelector(
+      `div#${componentName} .column-header`
+    );
 
-    if (e.target !== $cardDelete && e.target !== $column && e.target !== $columnHeader) {
+    if (
+      e.target !== $cardDelete &&
+      e.target !== $column &&
+      e.target !== $columnHeader
+    ) {
       const $card = e.target.closest(".card");
       const cardContent = $card.childNodes[3].firstElementChild.innerHTML;
-      const cardId = $card.id.split('-')[1];
+      const cardId = $card.id.split("-")[1];
       setTargetCardId(cardId);
       setModal({
         title: "note",
@@ -51,7 +61,7 @@ export default function Column(props, index) {
   }
 
   function render() {
-    const cards = getCards().filter(card => card.category === props.category);
+    const cards = getCards().filter((card) => card.category === props.category);
     const isAddCardFormVisible = getIsAddCardFormVisible(index);
 
     const html = `
@@ -63,9 +73,11 @@ export default function Column(props, index) {
             <ion-icon name='pencil-outline'></ion-icon>
           </button>
           <button class="column-add-card">
-            ${isAddCardFormVisible? 
-              "<ion-icon name='remove-circle-outline'></ion-icon>"
-              :"<ion-icon name='add-circle-outline'></ion-icon>"}
+            ${
+              isAddCardFormVisible
+                ? "<ion-icon name='remove-circle-outline'></ion-icon>"
+                : "<ion-icon name='add-circle-outline'></ion-icon>"
+            }
           </button>
           <button class="column-delete">
             <ion-icon name='close-outline'></ion-icon>
@@ -74,9 +86,11 @@ export default function Column(props, index) {
       </div>
       ${AddCardForm(index)}
       <div class="column-contents">
-        ${cards.map((card) => {
-          return Card({ card });
-        }).join('')}
+        ${cards
+          .map((card) => {
+            return Card({ card });
+          })
+          .join("")}
       </div>
     `;
 
@@ -87,7 +101,7 @@ export default function Column(props, index) {
     bindEvent(`div#${componentName}`, "click", onCardCloseBtnClick);
   }
 
-  subscribe(componentName, 'cards', render);
+  subscribe(componentName, "cards", render);
   subscribe(componentName, "isAddCardFormVisible", render);
 
   setTimeout(render, 0);

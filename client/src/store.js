@@ -26,7 +26,7 @@ export const state = {
     listeners: {},
   },
   isSidebarVisible: {
-    data: false,
+    data: "",
     listeners: {},
   },
   isModalVisible: {
@@ -43,6 +43,10 @@ export const state = {
   },
   targetCardId: {
     data: Number.NEGATIVE_INFINITY,
+    listeners: {},
+  },
+  targetCardXY: {
+    data: {},
     listeners: {},
   },
 };
@@ -73,8 +77,8 @@ export async function fetchItems() {
   publish(state.items);
 }
 
-export function toggleSidebar() {
-  state.isSidebarVisible.data = !state.isSidebarVisible.data;
+export function toggleSidebar(val) {
+  state.isSidebarVisible.data = val;
   publish(state.isSidebarVisible);
 }
 
@@ -160,6 +164,22 @@ export function getTargetCardId() {
 export function setTargetCardId(value) {
   state.targetCardId.data = value;
   publish(state.targetCardId);
+}
+
+export function getTargetCardXY() {
+  return state.targetCardXY.data;
+}
+
+export function setTargetCardXY(xy) {
+  state.targetCardXY.data = xy;
+  publish(state.targetCardXY);
+}
+
+export function getTargetCardData(id) {
+  const cardsData = getCards();
+  const cardData = cardsData.filter((item) => item.id === parseInt(id));
+
+  return cardData[0];
 }
 
 export function clearTargetCardId() {
