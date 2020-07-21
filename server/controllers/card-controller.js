@@ -33,13 +33,6 @@ async function getOneCard(req, res, next) {
 
 async function createCard(req, res, next) {
   try {
-    // const card = new Card(
-    //   req.body.id,
-    //   req.body.author,
-    //   req.body.last_updated,
-    //   req.body.content,
-    //   req.body.category
-    // );
     const card = new Card(req.body);
     const cardRepositoryInstance = new CardRepository(Card, db);
     const cardServiceInstance = new CardService(cardRepositoryInstance);
@@ -59,16 +52,9 @@ async function updateCard(req, res, next) {
       const cardServiceInstance = new CardService(cardRepositoryInstance);
       if (!req.body.content) res.status(204).send("No content");
 
-      const card = new Card(
-        req.body.id,
-        req.body.author,
-        req.body.last_updated,
-        req.body.content,
-        req.body.category
-      );
-
+      const card = new Card(req.body);
+      
       await cardServiceInstance.updateCard(req.params.id, card);
-
       res.status(200).send("succefully update card");
     } catch (err) {
       console.error(err);

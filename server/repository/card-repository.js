@@ -39,7 +39,7 @@ class CardRepository {
     VALUES (\
       (SELECT id FROM Users WHERE username="${cardDTO.author}")\
       , ?, (SELECT id FROM Columns WHERE column_name="${cardDTO.category}"))`;
-      
+
     try {
       await this.db.query(query, [cardDTO.content]);
     } catch (err) {
@@ -48,6 +48,7 @@ class CardRepository {
   }
 
   async updateCardById(id, cardDTO) {
+    // TODO: query update needed since db design is renewed
     const query =
       "UPDATE todo.Cards\
       SET\
@@ -66,6 +67,7 @@ class CardRepository {
   }
 
   async removeCardById(id) {
+    // TODO: query update needed since db design is renewed
     const query = "DELETE FROM todo.Cards WHERE id=? ";
 
     try {
