@@ -17,8 +17,6 @@ export default function AddCardForm(index) {
       `div#${componentName}-wrapper-${index} textarea.column-card-content`
     );
     const value = $textarea.value;
-    console.log(value)
-    // TODO: add new Card component with value at the top of stack
     createCard({ content: value, index });
     toggleIsAddCardFormVisible(index);
   }

@@ -45,6 +45,10 @@ export const state = {
     data: Number.NEGATIVE_INFINITY,
     listeners: {},
   },
+  targetColumnId: {
+    data: Number.NEGATIVE_INFINITY,
+    listeners: {},
+  },
 };
 
 export const subscribe = (component, key, eventHandler) => {
@@ -58,6 +62,18 @@ const publish = (key) =>
 
 export function getCategories() {
   return state.categories.data;
+}
+
+export function updateCategories(idx, value) {
+  state.cards.data.map((card) => {
+    if (card.category === state.categories.data[idx]) {
+      card.category = value;
+    }
+  });
+  state.categories.data[idx] = value;
+
+  publish(state.cards);
+  publish(state.categories);
 }
 
 export function getIsSidebarVisible() {
@@ -164,6 +180,19 @@ export function setTargetCardId(value) {
 
 export function clearTargetCardId() {
   state.targetCardId.data = Number.NEGATIVE_INFINITY;
+}
+
+export function getTargetColumnId() {
+  return state.targetColumnId.data;
+}
+
+export function setTargetColumnId(value) {
+  state.targetColumnId.data = value;
+  publish(state.targetColumnId);
+}
+
+export function clearTargetColumnId() {
+  state.targetColumnId.data = Number.NEGATIVE_INFINITY;
 }
 
 export function getPopupMessage() {
