@@ -32,7 +32,7 @@ export function fetchCards() {
             "id": 5, 
             "author": "user1", 
             "last_updated": "2020-07-15 10:10:20", 
-            "content": "MV* 패턴 스켈레톤 구현\n\t간단한 프로토타입",
+            "content": "MV* 패턴 스켈레톤 구현\n- 간단한 프로토타입",
             "category": "하는 중"
         },
         { 

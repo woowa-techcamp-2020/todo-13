@@ -6,7 +6,8 @@ import {
   subscribe,
   setModal,
   toggleIsAddCardFormVisible,
-  toggleModal
+  toggleModal,
+  deleteCard
 } from "../store";
 import {
   bindEvent
@@ -44,6 +45,20 @@ export default function Dashboard() {
     }
   }
 
+  function onCloseBtnMouseEnter(e) {
+    const closeBtns = [...document.querySelectorAll("ion-icon.md.hydrated[name=\"close-outline\"]")];
+    if (closeBtns.includes(e.target)) {
+      e.target.style.background = "lightgray";
+    }
+  }
+
+  function onCloseBtnMouseOut(e) {
+    const closeBtns = [...document.querySelectorAll("ion-icon.md.hydrated[name=\"close-outline\"]")];
+    if (closeBtns.includes(e.target)) {
+      e.target.style.background = "white";
+    }
+  }
+
   function render() {
     const categories = getCategories();
     const html = `
@@ -57,6 +72,8 @@ export default function Dashboard() {
 
     bindEvent(`section.${componentName}`, "click", onColumnTitleEditClick);
     bindEvent(`section.${componentName}`, "click", onColumnAddCardClick);
+    bindEvent(`section.${componentName}`, "mouseenter", onCloseBtnMouseEnter, true);
+    bindEvent(`section.${componentName}`, "mouseout", onCloseBtnMouseOut, true);
   }
 
   fetchCards();

@@ -40,6 +40,21 @@ export default function Modal() {
     $modalConfirm.disabled = (!e.target.value) ? true : false;
   }
 
+
+  function onCloseBtnMouseEnter(e) {
+    const closeBtns = [...document.querySelectorAll("ion-icon.md.hydrated[name=\"close-outline\"]")];
+    if (closeBtns.includes(e.target)) {
+      e.target.style.background = "lightgray";
+    }
+  }
+
+  function onCloseBtnMouseOut(e) {
+    const closeBtns = [...document.querySelectorAll("ion-icon.md.hydrated[name=\"close-outline\"]")];
+    if (closeBtns.includes(e.target)) {
+      e.target.style.background = "white";
+    }
+  }
+
   function render() {
     const isModalVisible = getIsModalVisibie();
     const modalData = getModalData();
@@ -59,9 +74,7 @@ export default function Modal() {
           <textarea class="modal-note"
             maxlength=500
             autofocus=true
-            placeholer="입력해주세요" value=>
-            ${modalData.content}
-          </textarea>
+            placeholer="입력해주세요">${modalData.content}</textarea>
           <button class="modal-confirm" 
             ${hasTextInput? "": "disabled"}>
             Save
@@ -76,6 +89,8 @@ export default function Modal() {
 
     bindEvent(".modal-confirm", "click", onSaveBtnClick);
     bindEvent(".modal-cancel", "click", onCloseBtnClick);
+    bindEvent(`div.${componentName}`, "mouseenter", onCloseBtnMouseEnter, true);
+    bindEvent(`div.${componentName}`, "mouseout", onCloseBtnMouseOut, true);
     bindEvent(".modal", "click", onOutsideClick);
     bindEvent(".modal", "keyup", handleNullContent);
   }

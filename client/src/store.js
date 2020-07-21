@@ -88,7 +88,6 @@ export function getCards() {
 }
 
 export function createCard(cardData) {
-  // TODO: get id of new Card
   const lastId = state.cards.data.reduce(
     (acc, cur) => Math.max(acc, cur.id),
     0

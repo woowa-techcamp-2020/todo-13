@@ -1,8 +1,8 @@
-export function bindEvent(query, event, handler) {
+export function bindEvent(query, event, handler, capturing=false) {
   const element = document.querySelector(query);
   if (!element) return;
   // console.log(element, event)
-  element.addEventListener(event, handler);
+  element.addEventListener(event, handler, capturing);
 };
 
 export function makeElementWithClass({

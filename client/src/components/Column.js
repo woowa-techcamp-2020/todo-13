@@ -38,7 +38,7 @@ export default function Column(props, index) {
 
     if (e.target !== $cardDelete && e.target !== $column && e.target !== $columnHeader) {
       const $card = e.target.closest(".card");
-      const cardContent = $card.childNodes[3].firstElementChild.innerText;
+      const cardContent = $card.childNodes[3].firstElementChild.innerHTML;
       const cardId = $card.id.split('-')[1];
       setTargetCardId(cardId);
       setModal({
