@@ -88,14 +88,29 @@ export function getCards() {
 }
 
 export function createCard(cardData) {
+  // TODO: get id of new Card
+  const lastId = state.cards.data.reduce(
+    (acc, cur) => Math.max(acc, cur.id),
+    0
+  );
   state.cards.data.unshift({
-    id: "",
-    author: "user2",
+    id: lastId + 1,
+    author: "user1",
     last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
     content: cardData.content,
     category: state.categories.data[cardData.index],
   });
+
+  state.items.data.unshift({
+    username: "user1",
+    action: `added ${cardData.content}`,
+    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+  });
+
   publish(state.cards);
+  publish(state.items);
+
+  // TODO: call [BE] POST 'card/' API
 }
 
 export function updateCard(id, content) {
