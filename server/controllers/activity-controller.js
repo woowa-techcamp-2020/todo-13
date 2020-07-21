@@ -1,6 +1,6 @@
 const Activity = require("../Domain/Activity");
 const ActivityRepository = require("../Repository/ActivityRepository");
-const ActivityService = require("../services/acitivity-service");
+const ActivityService = require("../services/activity-service");
 const db = require("../db");
 
 async function getAllActivities(req, res, next) {
@@ -10,7 +10,7 @@ async function getAllActivities(req, res, next) {
 
       const fetchedActivities = await activityServiceInstance.fetchAllActivities();
 
-      res.status(200).send(fetchAllActivities);
+      res.status(200).send(fetchedActivities);
   } catch (error) {
     console.error(error);
     res.status(404).end();
@@ -29,7 +29,7 @@ async function createActivity(req, res, next) {
         const activityRepositoryInstance = new ActivityRepository(Activity, db);
         const activityServiceInstance = new ActivityService(activityRepositoryInstance);
 
-        await activityServiceInstance.createActivity();
+        await activityServiceInstance.createActivity(activity);
 
         res.status(201).send("creating activity successed");
     } catch (error) {

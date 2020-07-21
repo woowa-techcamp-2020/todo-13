@@ -5,6 +5,6 @@ const cardRouter = require('./cardRouter');
 const activityRouter = require("./activity-router");
 
 router.use("/card", cardRouter);
-router.use("/acitivity", activityRouter);
+router.use("/activity", activityRouter);
 
 module.exports = router;

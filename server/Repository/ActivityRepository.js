@@ -1,3 +1,5 @@
+const ActivityService = require("../services/activity-service");
+
 class ActivityRepository {
   constructor(activityDTO, db) {
     this.activityDTO = activityDTO;
@@ -35,15 +37,16 @@ class ActivityRepository {
   async createActivity(activityDTO) {
     const query =
       "INSERT INTO todo.Activities\
-        (userid, content, created_at)\
-        VALUES (?, ?, ?)";
-    const values = Object.values(activityDTO);
-    values.shift();
+        (userid, content)\
+        VALUES (?, ?)";
+    const [ , userid, content, ] = Object.values(activityDTO);
 
     try {
-      await this.db.query(query.values);
+      await this.db.query(query, [userid, content]);
     } catch (err) {
       throw err;
     }
   }
 }
+
+module.exports = ActivityRepository;
