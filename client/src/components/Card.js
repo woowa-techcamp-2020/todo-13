@@ -1,14 +1,5 @@
 import "./Card.scss";
-import {
-  bindEvent
-} from "../utils/util";
-import MESSAGE from "../utils/messages";
-import {
-  togglePopup,
-  setPopupMessage,
-  setModal,
-  toggleModal
-} from "../store";
+import { subscribe } from "../store";
 
 // TODO: Add drag and drop feature 
 
@@ -32,7 +23,7 @@ export default function Card(props) {
     const $card = document.querySelector(`#${componentName}`);
     $card.innerHTML = html;
   }
-
+  
   setTimeout(render, 0);
 
   return `<div class="card" id=${componentName}></div>`;
