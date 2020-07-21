@@ -1,36 +1,27 @@
 import "./Header.scss";
-import { makeElementWithClass } from "../utils/util";
+import {
+  bindEvent
+} from "../utils/util"
+import { subscribe, fetchItems, toggleSidebar } from "../store";
 
-export default class Header {
-  constructor($target, props) {
-    this.$target = $target;
-    this.render();
+export default function Header(props) {
+  const componentName = "header";
+
+  function onMenuClick(e) {
+    toggleSidebar();
   }
 
-  render() {
-    const header = makeElementWithClass({
-      elementType: "header",
-      className: "header",
-      content: "📝 TODO",
-    });
-    const title = makeElementWithClass({
-      elementType: "div",
-      className: "title",
-    });
-    const menu = makeElementWithClass({
-      elementType: "div",
-      className: "menu",
-      content: "menu",
-    });
-
-    menu.addEventListener("click", () => {
-      const sidebar = document.querySelector(".sidebar");
-      sidebar.classList.remove("out");
-      sidebar.classList.add("active");
-    });
-    header.appendChild(title);
-    header.appendChild(menu);
-
-    this.$target.appendChild(header);
+  function render() {
+    bindEvent(".header-menu", "click", onMenuClick);
   }
+  
+  fetchItems();
+  setTimeout(render, 0);
+
+  return `
+    <header class=${componentName}>
+      <div class="header-title">📝 TODO</div>
+      <div class="header-menu">menu</div>
+    </header>
+  `;
 }

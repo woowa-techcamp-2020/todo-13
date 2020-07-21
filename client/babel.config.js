@@ -13,6 +13,12 @@ module.exports = (api) => {
     ],
   ];
 
+  const plugins = [
+    ["transform-class-properties", {
+      "spec": true
+    }]
+  ];
+
   const env = {
     test: {
       presets: [
@@ -29,6 +35,7 @@ module.exports = (api) => {
 
   return {
     presets,
+    plugins,
     env,
   };
 };

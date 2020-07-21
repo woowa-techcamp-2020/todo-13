@@ -1,4 +1,15 @@
-export function makeElementWithClass({ elementType, className, content = "" }) {
+export function bindEvent(query, event, handler, capturing=false) {
+  const element = document.querySelector(query);
+  if (!element) return;
+  // console.log(element, event)
+  element.addEventListener(event, handler, capturing);
+};
+
+export function makeElementWithClass({
+  elementType,
+  className,
+  content = ""
+}) {
   const element = document.createElement(elementType);
   element.classList.add(className);
   element.innerHTML = content;

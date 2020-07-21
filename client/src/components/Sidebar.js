@@ -1,62 +1,51 @@
 import "./Sidebar.scss";
-import { makeElementWithClass } from "../utils/util";
 import Item from "./Item";
-import * as Data from "../Data";
+import {
+  getItems,
+  subscribe,
+  getIsSidebarVisible,
+  toggleSidebar
+} from "../store"
+import {
+  bindEvent
+} from "../utils/util";
 
-export default class Sidebar {
-  constructor($target, props) {
-    this.$target = $target;
+export default function Sidebar() {
+  const componentName = "sidebar";
 
-    this.render();
+  function render() {
+    const isSidebarVisible = getIsSidebarVisible();
+    const items = getItems();
+
+    function onCloseClick(e) {
+      toggleSidebar();
+    }
+
+    const html = `
+    <div class="sidebar ${isSidebarVisible? "active": "inactive"}">
+      <div class="sidebar-header">
+        <div class="sidebar-header-title">Menu</div>
+        <div class="sidebar-header-close">
+          <ion-icon name='close-outline'></ion-icon>
+        </div>
+      </div>
+      <div class="sidebar-contents">
+        ${items.map((item, index) => {
+            return Item({ item }, index);
+          }).join('')}
+      </div>
+    </div>
+    `;
+
+    const $sidebar = document.querySelector('.sidebar-wrapper');
+    $sidebar.innerHTML = html;
+
+    bindEvent(".sidebar-header-close", 'click', onCloseClick);
   }
 
-  getItems() {
-    return Data.fetchActivities();
-  }
+  subscribe(componentName, 'isSidebarVisible', render);
 
-  paintItem(sidebar) {
-    const items = this.getItems();
-    items.forEach((item) => {
-      new Item(sidebar, { item });
-    });
-  }
+  setTimeout(render, 0);
 
-  render() {
-    const sidebar = makeElementWithClass({
-      elementType: "div",
-      className: "sidebar",
-    });
-    const sidebarHeader = makeElementWithClass({
-      elementType: "div",
-      className: "sidebar-header",
-    });
-    const title = makeElementWithClass({
-      elementType: "div",
-      className: "sidebar-header-title",
-      content: "Menu",
-    });
-    const close = makeElementWithClass({
-      elementType: "div",
-      className: "sidebar-header-close",
-      content: "<ion-icon name='close-outline'></ion-icon>",
-    });
-    const sidebarContents = makeElementWithClass({
-      elementType: "div",
-      className: "sidebar-contents",
-    });
-
-    close.addEventListener("click", () => {
-      sidebar.classList.remove("active");
-      sidebar.classList.add("out");
-    });
-
-    sidebarHeader.appendChild(title);
-    sidebarHeader.appendChild(close);
-
-    sidebar.appendChild(sidebarHeader);
-    sidebar.appendChild(sidebarContents);
-
-    this.$target.appendChild(sidebar);
-    this.paintItem(sidebar);
-  }
+  return `<div class="sidebar-wrapper"></div>`
 }

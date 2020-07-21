@@ -1,72 +1,27 @@
 import "./Item.scss";
-import { makeElementWithClass } from "../utils/util";
 import ThumbnailImg from "../cat.jpg";
 
-export default class Item {
-  constructor($target, props) {
-    this.$target = $target;
+export default function Item(props, index) {
+  const componenetName = `item-${index}`;
 
-    this.data = props.item;
+  function render() {
+    const html = `
+      <img src=${ThumbnailImg} class="item-thumbnail"/>
+        <div class="item-wrapper">
+          <p class="item-text">
+            ${props.item.username} ${props.item.action}
+          </p>
+          <p class="item-timestamp">
+            ${props.item.last_updated}
+          </p>
+        </div>
+      `;
 
-    this.$item = makeElementWithClass({
-      elementType: "div",
-      className: "item",
-    });
-
-    this.$target.appendChild(this.$item);
-
-    this.createThumbnail.bind(this);
-    this.createWrapper.bind(this);
-    this.createText.bind(this);
-    this.createTimestamp.bind(this);
-
-    this.createThumbnail();
-    this.createWrapper();
-    this.createText();
-    this.createTimestamp();
-
-    this.render();
+    const $item = document.querySelector(`#${componenetName}`);
+    $item.innerHTML = html;
   }
 
-  createThumbnail() {
-    const $thumbnail = makeElementWithClass({
-      elementType: "img",
-      className: "item-thumbnail",
-    });
-    this.$thumbnail = $thumbnail;
-    this.$item.appendChild($thumbnail);
-  }
+  setTimeout(render, 0);
 
-  createWrapper() {
-    const $wrapper = makeElementWithClass({
-      elementType: "div",
-      className: "item-wrapper",
-    });
-    this.$wrapper = $wrapper;
-    this.$item.appendChild($wrapper);
-  }
-
-  createText() {
-    const $text = makeElementWithClass({
-      elementType: "p",
-      className: "item-text",
-    });
-    this.$text = $text;
-    this.$wrapper.appendChild($text);
-  }
-
-  createTimestamp() {
-    const $timestamp = makeElementWithClass({
-      elementType: "p",
-      className: "item-timestamp",
-    });
-    this.$timestamp = $timestamp;
-    this.$wrapper.appendChild($timestamp);
-  }
-
-  render() {
-    this.$thumbnail.src = ThumbnailImg;
-    this.$text.innerHTML = `${this.data.username}  ${this.data.action}`;
-    this.$timestamp.innerHTML = this.data.last_updated;
-  }
+  return `<div class=item id=${componenetName}></div>`;
 }

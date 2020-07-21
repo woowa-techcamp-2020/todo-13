@@ -1,5 +1,5 @@
 .modal {
-  display: none;
+  // display: none;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -67,6 +67,7 @@
         padding: 1em;
         font-size: 1.1rem;
         margin: 10px 0 25px;
+        border: 1px solid black;
       }
 
       .modal-confirm {
@@ -87,4 +88,8 @@
       }
     }
   }
+}
+
+.hidden {
+  display: none;
 }

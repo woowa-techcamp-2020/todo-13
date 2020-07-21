@@ -1,58 +1,61 @@
-import { makeElementWithClass } from "../utils/util";
+import {
+  bindEvent
+} from "../utils/util";
 import "./Popup.scss";
+import {
+  getIsPopupVisible,
+  subscribe,
+  getPopupMessage,
+  togglePopup,
+  getTargetCardId,
+  deleteCard,
+  clearTargetCardId
+} from "../store";
 
-export default class Popup {
-  constructor($target, props) {
-    this.$target = $target;
+export default function Popup() {
+  const componentName = 'popup'
 
-    this.render();
+  function onCancelBtnClick(e) {
+    togglePopup();
   }
 
-  setState(data) {
-    this.data = data;
-    this.render();
+  function onConfirmBtnClick(e) {
+    // delete Card
+    const targetCardId = getTargetCardId();
+    deleteCard(targetCardId);
+    togglePopup();
+    clearTargetCardId();
   }
 
-  render() {
-    const popup = makeElementWithClass({
-      elementType: "div",
-      className: "popup",
-    });
-    const popupBox = makeElementWithClass({
-      elementType: "div",
-      className: "popup-box",
-    });
-    const message = makeElementWithClass({
-      elementType: "div",
-      className: "popup-message",
-    });
-    const btns = makeElementWithClass({
-      elementType: "div",
-      className: "popup-btns",
-    });
-    const confirm = makeElementWithClass({
-      elementType: "button",
-      className: "popup-confirm",
-      content: "확인",
-    });
-    const cancel = makeElementWithClass({
-      elementType: "button",
-      className: "popup-cancel",
-      content: "취소",
-    });
+  function render() {
+    const isPopupVisible = getIsPopupVisible();
+    const popupMessage = getPopupMessage();
 
-    btns.appendChild(confirm);
-    btns.appendChild(cancel);
-    popupBox.appendChild(message);
-    popupBox.appendChild(btns);
-    popup.appendChild(popupBox);
-    this.$target.appendChild(popup);
+    const html = `
+    <div class="popup ${isPopupVisible ? '': 'hidden'}">
+      <div class="popup-box">
+        <div class="popup-message">
+          ${popupMessage}
+        </div>
+        <div class="popup-btns">
+          <button class="popup-confirm">확인</button>
+          <button class="popup-cancel">취소</button>
+        </div>
+      </div>
+    </div>
+    `;
 
-    popup.addEventListener("click", (e) => {
-      if (e.target === popup) {
-        popup.style.display = "none";
-        message.innerHTML = "";
-      }
-    });
+    const $popupWrapper = document.querySelector(`.popup-wrapper`);
+    $popupWrapper.innerHTML = html;
+
+    bindEvent(".popup-cancel", "click", onCancelBtnClick);
+    bindEvent(".popup-confirm", "click", onConfirmBtnClick);
   }
+
+  // subscribe(componentName, 'popupMessage', render);
+  subscribe(componentName, 'isPopupVisible', render);
+
+  setTimeout(render, 0);
+
+  return `<div class=popup-wrapper></div>`;
 }
