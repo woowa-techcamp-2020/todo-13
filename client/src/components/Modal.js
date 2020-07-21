@@ -73,7 +73,6 @@ export default function Modal() {
   function render() {
     const isModalVisible = getIsModalVisibie();
     const modalData = getModalData();
-    const hasTextInput = true;
 
     const html = `
     <div class="${componentName} ${isModalVisible ? "" : "hidden"}">
@@ -90,8 +89,7 @@ export default function Modal() {
             maxlength=500
             autofocus=true
             placeholer="입력해주세요">${modalData.content}</textarea>
-          <button class="modal-confirm" 
-            ${hasTextInput ? "" : "disabled"}>
+          <button class="modal-confirm">
             Save
           </button>
         </div>

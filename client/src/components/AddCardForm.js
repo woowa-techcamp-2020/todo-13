@@ -28,6 +28,11 @@ export default function AddCardForm(index) {
   function changeCardFormText(e) {
     return onCardFormTextChange(e.target.value);
   }
+  
+  function handleNullContent(e) {
+    const $addBtn = document.querySelector(`div#${componentName}-wrapper-${index} .column-add-btn`);
+    $addBtn.disabled = !e.target.value ? true : false;
+  }
 
   function render() {
     const isAddCardFormVisible = getIsAddCardFormVisible(index);
@@ -35,7 +40,7 @@ export default function AddCardForm(index) {
         <div class="${componentName} ${isAddCardFormVisible ? "" : "hidden"}">
             <textarea class="column-card-content" placeholder="Write notes..." value="${getCardFormText()}"></textarea>
             <div class="column-card-btn">
-                <button class="column-add-btn">Add</button>
+                <button class="column-add-btn" disabled>Add</button>
                 <button class="column-cancel-btn">Cancel</button>
             </div>
         </div>
@@ -61,6 +66,7 @@ export default function AddCardForm(index) {
       "click",
       onAddCardFormCancelBtnClick
     );
+    bindEvent(`div#${componentName}-wrapper-${index} .column-card-content`, "keyup", handleNullContent);
   }
 
   subscribe(componentName, "cardFormText", render);
