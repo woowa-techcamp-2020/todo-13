@@ -123,8 +123,8 @@ export async function createCard(cardData) {
   state.cards.data.unshift(newCard);
   state.items.data.unshift({
     username: "user1",
-    action: `added ${cardData.content}`,
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    content: `added ${cardData.content}`,
+    created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
   publish(state.cards);
@@ -137,8 +137,8 @@ export function updateCard(id, content) {
       card.content = content;
       state.items.data.unshift({
         username: card.author,
-        action: `updated ${content}`,
-        last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+        content: `updated ${content}`,
+        created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       });
     }
   });

@@ -54,6 +54,21 @@ export function updateMovedCardInfo(data) {
   });
 }
 
+export function updateCardContentInDB(id, content) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "PUT",
+      headers: header,
+      body: JSON.stringify(content)
+    };
+
+    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    .then(res => res.json())
+    .then(resolve())
+    .catch(error => reject(error));
+  });
+}
+
 export function deleteCardInDB(id) {
   return new Promise((resolve, reject) => {
     const options = {
