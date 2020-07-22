@@ -1,5 +1,5 @@
-const Activity = require("../Domain/Activity");
-const ActivityRepository = require("../Repository/ActivityRepository");
+const Activity = require("../domain/activity");
+const ActivityRepository = require("../repository/activity-repository");
 const ActivityService = require("../services/activity-service");
 const db = require("../db");
 

@@ -1,6 +1,7 @@
 class CardService {
   constructor(CardRepository) {
     this.CardRepository = CardRepository;
+    // TODO: Activity Repository 추가
   }
 
   async fetchAllCards() {
@@ -14,6 +15,7 @@ class CardService {
   }
 
   async createCard(cardDTO) {
+    // TODO: 사용자가 card를 생성했을 때 필요한 logic 추가
     try {
       await this.CardRepository.createCard(cardDTO);
     } catch (err) {
@@ -22,6 +24,7 @@ class CardService {
   }
 
   async updateCard(id, cardDTO) {
+    // TODO: 사용자가 card를 수정했을 때 필요한 logic 추가
     try {
       await this.CardRepository.updateCardById(id, cardDTO);} 
     catch (err) {
@@ -30,11 +33,16 @@ class CardService {
   }
   
   async removeCard(id) {
+    // TODO: 사용자가 card를 삭제했을 때 필요한 logic 추가
     try {
       await this.CardRepository.removeCardById(id);
     } catch (err) {
       throw err;
     }
+  }
+
+  async moveCard(id) {
+    // TODO: 사용자가 card를 이동했을 때 필요한 logic 추가
   }
 }
 

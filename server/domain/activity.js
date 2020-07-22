@@ -1,5 +1,10 @@
 class Activity {
-    constructor({id, userid, content, created_at}) {
+    constructor({
+        id,
+        userid,
+        content,
+        created_at
+    }) {
         this.id = id;
         this.userid = userid;
         this.content = content;
