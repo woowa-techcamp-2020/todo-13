@@ -7,37 +7,46 @@ class CardRepository {
   async findAllCards() {
     // TODO edit query
     const conn = await this.db.getConnection();
-    const [rows] = await conn.query(
-      "SELECT Cards.id, Users.username AS author,\
-       Cards.last_updated, Cards.content, column_name AS category,\
-       Cards.order_in_column\
-      FROM Cards \
-      JOIN Users ON Cards.user_id = Users.id\
-      JOIN Columns ON Cards.column_id = Columns.id");
-      
-    const cards = rows.map((row) => {
-      return new this.cardDTO(row)
-    });
-    await conn.release();
-
-    return cards;
+    try {
+      const [rows] = await conn.query(
+        "SELECT Cards.id, Users.username AS author,\
+         Cards.last_updated, Cards.content, column_name AS category,\
+         Cards.order_in_column\
+        FROM Cards \
+        JOIN Users ON Cards.user_id = Users.id\
+        JOIN Columns ON Cards.column_id = Columns.id");
+        
+      const cards = rows.map((row) => {
+        return new this.cardDTO(row)
+      });
+      return cards;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await conn.release();
+    }
   }
 
   async findCardById(id) {
     const conn = await this.db.getConnection();
-    const query = "SELECT Cards.id, Users.username AS author,\
+    try {
+      const query = "SELECT Cards.id, Users.username AS author,\
       Cards.last_updated, Cards.content, column_name AS category,\
       Cards.order_in_column\
       FROM Cards \
       JOIN Users ON Cards.user_id = Users.id\
       JOIN Columns ON Cards.column_id = Columns.id WHERE Cards.id=? ";
 
-    const [rows] = await conn.query(query, [id]);
-    const row = rows[0];
-    const card = new this.cardDTO(row);
-    await conn.release();
+      const [rows] = await conn.query(query, [id]);
+      const row = rows[0];
+      const card = new this.cardDTO(row);
 
-    return card;
+      return card;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await conn.release();
+    }
   }
 
   // TODO: use transaction
@@ -48,12 +57,12 @@ class CardRepository {
 
       // userid 가져오기
       const getUserIdQuery = "SELECT id FROM Users WHERE username=?";
-      [rows] = await conn.query(getUserIdQuery, [cardDTO.author]);
+      let [rows] = await conn.query(getUserIdQuery, [cardDTO.author]);
       const userId = rows[0].id;
 
       // column_id 가져오기
       const getColumnIdQuery = "SELECT id FROM Columns WHERE column_name=?";
-      let [rows] = await conn.query(getColumnIdQuery, [cardDTO.category]);
+      [rows] = await conn.query(getColumnIdQuery, [cardDTO.category]);
       const columnId = rows[0].id;
 
       // column의 마지막 order 가져오기
@@ -65,11 +74,11 @@ class CardRepository {
       const insertCardQuery = "INSERT INTO todo.Cards (user_id, content, column_id, order_in_column)\
       VALUES (?, ?, ?, ?);"
       await conn.query(insertCardQuery, [userId, cardDTO.content ,columnId, lastOrderNumber+1]);
+
       await conn.commit();
     } catch (error) {
       console.error(error);
       conn.rollback();
-      throw error;
     } finally {
       conn.release();
     }

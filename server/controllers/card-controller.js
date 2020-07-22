@@ -12,7 +12,6 @@ async function getAllCards(req, res, next) {
 
     res.status(200).send(fetchedCards);
   } catch (err) {
-    console.log(err);
     res.status(404).end();
   }
 }
@@ -26,7 +25,6 @@ async function getOneCard(req, res, next) {
 
     res.status(200).send(fetchedCard);
   } catch (err) {
-    console.log(err);
     res.status(404).end();
   }
 }
@@ -41,7 +39,6 @@ async function createCard(req, res, next) {
 
     res.status(201).send("succefully created new card");
   } catch (err) {
-    console.error(err);
     res.status(404).send("creating card failed");
   }
 }
