@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/card
 
 ### GET get one card api
-GET http://localhost:3000/api/card/2
+GET http://localhost:3000/api/card/5
 
 ### POST card api
 POST http://localhost:3000/api/card HTTP/1.1
