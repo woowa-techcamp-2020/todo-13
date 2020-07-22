@@ -3,16 +3,15 @@ const header = new Headers({
   "Content-Type": "application/json",
 });
 
-export function fetchCardsFromDB() {
+export function fetchActivitiesFromDB() {
   return new Promise((resolve, reject) => {
     const options = {
       method: "GET",
       headers: header,
     };
-
-    fetch(`${API_SERVER_URL}/card`, options)
+    fetch(`${API_SERVER_URL}/activity`, options)
       .then((response) => response.json())
       .then((data) => resolve(data))
-      .catch((error) => reject(error));
+      .then((error) => reject(error));
   });
 }

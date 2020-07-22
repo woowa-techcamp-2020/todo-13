@@ -4,6 +4,7 @@ const header = new Headers({
   "Content-Type": "application/json",
 });
 import { fetchCardsFromDB } from "./services/cardService";
+import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
   categories: {
@@ -90,7 +91,10 @@ export function getItems() {
 }
 
 export async function fetchItems() {
-  state.items.data = await Data.fetchActivities();
+  // TODO: call GET /activity api
+  state.items.data = await fetchActivitiesFromDB();
+  console.log(state.items.data)
+  // state.items.data = await Data.fetchActivities();
   publish(state.items);
 }
 

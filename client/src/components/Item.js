@@ -9,7 +9,7 @@ export default function Item(props, index) {
       <img src=${ThumbnailImg} class="item-thumbnail"/>
         <div class="item-wrapper">
           <p class="item-text">
-            ${props.item.username} ${props.item.action}
+            ${props.item.username} ${props.item.content}
           </p>
           <p class="item-timestamp">
             ${props.item.last_updated}
