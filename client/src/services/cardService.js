@@ -59,12 +59,15 @@ export function updateCardContentInDB(id, content) {
     const options = {
       method: "PUT",
       headers: header,
-      body: JSON.stringify(content)
+      body: JSON.stringify({content})
     };
 
     fetch(`${API_SERVER_URL}/card/${id}`, options)
     .then(res => res.json())
-    .then(resolve())
+    .then(data => {
+      console.log(data)
+      resolve();
+    })
     .catch(error => reject(error));
   });
 }

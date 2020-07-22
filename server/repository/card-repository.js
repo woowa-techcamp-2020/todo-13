@@ -97,22 +97,15 @@ class CardRepository {
     }
   }
 
-  async updateCardById(id, cardDTO) {
-    // TODO: query update needed since db design is renewed
-    const query =
-      "UPDATE todo.Cards\
-      SET\
-        author= ?,\
-        content= ?,\
-        category= ?\
-      WHERE id=? ;";
-
-    const { author, content, category } = cardDTO;
-
+  async updateCardContentById(id, cardDTO) {
+    const conn = await this.db.getConnection();
     try {
-      await this.db.query(query, [author, content, category, id]);
+      const query = "UPDATE Cards SET content= ? WHERE id=?";
+      await conn.query(query, [cardDTO.content, id]);
     } catch (err) {
-      throw err;
+      console.error(err)
+    } finally {
+      conn.release();
     }
   }
 

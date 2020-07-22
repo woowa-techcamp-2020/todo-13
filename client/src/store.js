@@ -1,5 +1,5 @@
 import * as Data from "./Data";
-import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB, deleteCardInDB } from "./services/cardService";
+import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB, deleteCardInDB, updateCardContentInDB } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
@@ -131,7 +131,7 @@ export async function createCard(cardData) {
   publish(state.items);
 }
 
-export function updateCard(id, content) {
+export async function updateCard(id, content) {
   state.cards.data.forEach((card) => {
     if (card.id === id) {
       card.content = content;
@@ -146,6 +146,7 @@ export function updateCard(id, content) {
   publish(state.items);
 
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
+  await updateCardContentInDB(id, content);
 }
 
 export function moveCard(data) {
