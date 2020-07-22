@@ -10,7 +10,7 @@ async function getAllActivities(req, res, next) {
 
       const fetchedActivities = await activityServiceInstance.fetchAllActivities();
 
-      res.status(200).send(fetchedActivities);
+      res.status(200).json(fetchedActivities);
   } catch (error) {
     console.error(error);
     res.status(404).end();

@@ -3,7 +3,7 @@ const API_SERVER_URL = "http://localhost:3000/api";
 const header = new Headers({
   "Content-Type": "application/json",
 });
-import { fetchCardsFromDB } from "./services/cardService";
+import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
@@ -91,10 +91,7 @@ export function getItems() {
 }
 
 export async function fetchItems() {
-  // TODO: call GET /activity api
   state.items.data = await fetchActivitiesFromDB();
-  console.log(state.items.data)
-  // state.items.data = await Data.fetchActivities();
   publish(state.items);
 }
 
@@ -112,45 +109,26 @@ export function getCards() {
   return state.cards.data;
 }
 
-export function createCard(cardData) {
-  const lastId = state.cards.data.reduce(
-    (acc, cur) => Math.max(acc, cur.id), 0);
+export async function createCard(cardData) {
   const newCard = {
-    author: "Jason",
-    // last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    author: "Jason", // TODO: get loggined User data
     content: cardData.content,
     category: state.categories.data[cardData.index],
   };
+  await insertCreatedCardIntoDB(newCard);
 
-  const options = {
-    method: "POST",
-    headers: header,
-    body: JSON.stringify(newCard)
-  }
+  const latestId = await getLatestCardIdFromDB();
+  newCard.id = latestId+1;
 
-  fetch(`${API_SERVER_URL}/card`, options)
-  .then(res => res.json())
-  .then(console.log("Create Success"))
-  .catch(error => console.error("Create Failed: ", error));
+  state.cards.data.unshift(newCard);
+  state.items.data.unshift({
+    username: "user1",
+    action: `added ${cardData.content}`,
+    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+  });
 
-  fetch(`${API_SERVER_URL}/card/latest_id`, {
-    method: "GET",
-    headers: header,
-  })
-  .then(res => res.json())
-  .then(data => {
-    newCard.id = data.latestId;
-    state.cards.data.unshift(newCard);
-    state.items.data.unshift({
-      username: "user1",
-      action: `added ${cardData.content}`,
-      last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
-    });
-
-    publish(state.cards);
-    publish(state.items);
-  })
-  .catch(error => console.error(error));
+  publish(state.cards);
+  publish(state.items);
 }
 
 export function updateCard(id, content) {

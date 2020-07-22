@@ -12,7 +12,7 @@ export default function Item(props, index) {
             ${props.item.username} ${props.item.content}
           </p>
           <p class="item-timestamp">
-            ${props.item.last_updated}
+            ${props.item.created_at}
           </p>
         </div>
       `;

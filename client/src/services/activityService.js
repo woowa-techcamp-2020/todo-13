@@ -11,7 +11,15 @@ export function fetchActivitiesFromDB() {
     };
     fetch(`${API_SERVER_URL}/activity`, options)
       .then((response) => response.json())
-      .then((data) => resolve(data))
+      .then((data) => {
+        data.forEach(
+          (activity) =>
+            (activity.created_at = activity.created_at
+              .slice(0, 19)
+              .replace("T", " "))
+        );
+        resolve(data);
+      })
       .then((error) => reject(error));
   });
 }
