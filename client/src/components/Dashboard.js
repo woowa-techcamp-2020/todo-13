@@ -14,6 +14,7 @@ import {
   getTargetCardData,
   getTargetCardXY,
   setTargetCardXY,
+  moveCard,
 } from "../store";
 import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
@@ -48,7 +49,47 @@ export default function Dashboard() {
 
   function onCardMouseUp(e) {
     if (e.target.closest(".card-copy")) {
-      const card = document.querySelector(`#card-${getTargetCardId()}`);
+      const cardId = getTargetCardId();
+      const card = document.querySelector(`#card-${cardId}`);
+      // 1. card가 옮겨진 컬럼과 위치를 찾는다.
+      // (현재 컬럼 정보, 이전 순서, 옮겨진 컬럼 정보, 이전 순서)
+      const prevCardData = getTargetCardData(cardId);
+      const moveCardPrevNode = card.previousElementSibling;
+      const moveCardNextNode = card.nextElementSibling;
+
+      let nextCardData;
+      let nextCategory = "";
+      let nextOrder = 0;
+
+      if (moveCardPrevNode) {
+        const nextCardId = moveCardPrevNode.id.split("-")[1];
+        nextCardData = getTargetCardData(nextCardId);
+        nextOrder = nextCardData.order + 1;
+        nextCategory = nextCardData.category;
+      } else {
+        if (moveCardNextNode) {
+          const nextCardId = moveCardNextNode.id.split("-")[1];
+          nextCardData = getTargetCardData(nextCardId);
+          nextCategory = nextCardData.category;
+        } else {
+          const column = card.parentElement.parentElement;
+          console.log(column);
+          nextCategory = column.querySelector(".column-title").innerText;
+        }
+        nextOrder = 1;
+      }
+      // 2. 데이터를 취합하여 moveCard를 호출한다.
+      // console.log();
+      const data = {
+        cardId,
+        prevCategory: prevCardData.category,
+        prevOrder: prevCardData.order,
+        nextCategory,
+        nextOrder,
+      };
+
+      moveCard(data);
+
       card.classList.remove("card-click");
       e.target.closest(".card-copy").style.display = "none";
     }
@@ -92,8 +133,6 @@ export default function Dashboard() {
 
         // 위로 올라갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 감소됐을 때
         if (copyCard.offsetTop < card.offsetTop - card.offsetHeight - 10) {
-          // -2 153/261
-          console.log("위로", copyCard.offsetTop, card.offsetTop);
           if (!prevNode) {
             // card.parentNode.insertBefore(card, card.parentNode.firstChild);
           } else {
@@ -103,7 +142,6 @@ export default function Dashboard() {
 
         // 아래로 내려갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 더해졌을 때
         if (copyCard.offsetTop > card.offsetTop + card.offsetHeight + 10) {
-          console.log("아래로", copyCard.offsetTop, card.offsetTop);
           if (!nextNode) {
             card.parentNode.appendChild(card);
           } else {
