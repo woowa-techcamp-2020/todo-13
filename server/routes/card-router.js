@@ -8,8 +8,6 @@ router.get("/:id", cardController.getOneCard);
 router.delete("/:id", cardController.deleteOneCard);
 router.post("/", cardController.createCard);
 router.put("/:id", cardController.updateCard);
-
-
-// TODO: 사용자의 action에 맞는 controller routing
+router.patch("/:id", cardController.moveCard);
 
 module.exports = router;

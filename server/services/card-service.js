@@ -42,8 +42,28 @@ class CardService {
     }
   }
 
-  async moveCard(id) {
+  async moveCard(id, data) {
     // TODO: 사용자가 card를 이동했을 때 필요한 logic 추가
+    if (data.prevColumn === data.nextColumn) {
+      await this.CardRepository.updateCardOrderInSameColumn(id, data);
+    } else {
+      await this.CardRepository.updateCardOrderInOtherColumn(id, data);
+    }
+    //뭐하지?
+    // TODO
+    // UPDATE query 1.
+    //   이동한 카드의 카테고리(column_id) 수정
+    //       id of prevCol => id of nextCol
+    //   이동한 카드의 order 수정
+    //       orderInPrev => orderInNext
+    // Update query 2.
+    // 이동한 카드가 있던 column에 속한 모든 카드들 order 수정
+    //     column_id가 [id of prevCol]과 같은 카드들에 대해
+    //     order가 orderInPrev 보다 큰 애 (greater than)
+    // Update query 3.
+    // 카드가 새로 들어 간 column에 속한 모든 카드들 order 수정
+    //     column_id가 [id of nextCol]과 같은 카드들에 대해
+    //     order가 orderInNext 이상인 애 (equal or greater than)
   }
 }
 

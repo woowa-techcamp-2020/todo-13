@@ -44,4 +44,17 @@ export function getLatestCardIdFromDB(newCard) {
         .then(data => resolve(data.latestId))
         .catch(error => reject(error));
     })
+};
+
+export function updateMovedCardInfo(data) {
+  return new Promise((resolve, reject) => {
+      const options = {
+
+      }
+
+      fetch()
+      .then()
+      .then(resolve())
+      .catch(reject());
+  })
 }
