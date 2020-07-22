@@ -55,22 +55,23 @@ export default function Dashboard() {
       // 1. card가 옮겨진 컬럼과 위치를 찾는다.
       // (현재 컬럼 정보, 이전 순서, 옮겨진 컬럼 정보, 이전 순서)
       const prevCardData = getTargetCardData(cardId);
+      console.log(prevCardData);
       const moveCardPrevNode = card.previousElementSibling;
       const moveCardNextNode = card.nextElementSibling;
 
-      let nextCardData;
+      const nextCardId = moveCardPrevNode.id.split("-")[1];
+      let nextCardData = getTargetCardData(nextCardId);
       let nextCategory = "";
       let nextOrder = 0;
+      console.log(nextCardData);
 
+      // 같은 컬럼인지 확인하여 위의 노드에는 +1
+      // 바뀐 order와 이전 order 사이에는 -1
       if (moveCardPrevNode) {
-        const nextCardId = moveCardPrevNode.id.split("-")[1];
-        nextCardData = getTargetCardData(nextCardId);
-        nextOrder = nextCardData.order + 1;
+        nextOrder = nextCardData.order_in_column;
         nextCategory = nextCardData.category;
       } else {
         if (moveCardNextNode) {
-          const nextCardId = moveCardNextNode.id.split("-")[1];
-          nextCardData = getTargetCardData(nextCardId);
           nextCategory = nextCardData.category;
         } else {
           const column = card.parentElement.parentElement;
@@ -84,7 +85,7 @@ export default function Dashboard() {
       const data = {
         cardId,
         prevCategory: prevCardData.category,
-        prevOrder: prevCardData.order,
+        prevOrder: prevCardData.order_in_column,
         nextCategory,
         nextOrder,
       };
@@ -97,6 +98,7 @@ export default function Dashboard() {
   }
 
   function offCopyCard() {
+    // TODO : 꺼졌을 때도 move card update 해주어야한다.
     const copyCard = document.querySelector(".card-copy");
     if (copyCard.style.display === "block") {
       copyCard.style.display = "none";

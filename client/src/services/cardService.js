@@ -27,9 +27,12 @@ export function insertCreatedCardIntoDB(newCard) {
     };
 
     fetch(`${API_SERVER_URL}/card`, options)
-    .then(res => res.json())
-    .then(resolve(newCard))
-    .catch(error => reject(error));
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        return resolve(newCard);
+      })
+      .catch((error) => reject(error));
   });
 }
 

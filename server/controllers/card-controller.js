@@ -35,9 +35,9 @@ async function getLatestCardId(req, res, next) {
     const cardServiceInstance = new CardService(cardRepositoryInstance);
 
     const latestId = await cardServiceInstance.getLatestId();
-    res.status(200).json({"latestId": latestId});
+    res.status(200).json({ latestId: latestId });
   } catch (error) {
-    res.status(404).json({"message": "retrieving latest cardId failed"});
+    res.status(404).json({ message: "retrieving latest cardId failed" });
   }
 }
 
@@ -47,30 +47,31 @@ async function createCard(req, res, next) {
     const cardRepositoryInstance = new CardRepository(Card, db);
     const cardServiceInstance = new CardService(cardRepositoryInstance);
 
+    console.log(card);
     await cardServiceInstance.createCard(card);
 
-    res.status(201).json({"message": "succefully created new card"});
+    res.status(201).json({ message: "succefully created new card" });
   } catch (err) {
-    res.status(404).json({"message": "creating card failed"});
+    res.status(404).json({ message: "creating card failed" });
   }
 }
 
 async function updateCard(req, res, next) {
-    try {
-      const cardRepositoryInstance = new CardRepository(Card, db);
-      const cardServiceInstance = new CardService(cardRepositoryInstance);
-      if (!req.body.content) res.status(204).send("No content");
+  try {
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+    if (!req.body.content) res.status(204).send("No content");
 
-      const card = new Card(req.body);
-      
-      await cardServiceInstance.updateCard(req.params.id, card);
-      res.status(200).send("succefully update card");
-    } catch (err) {
-      console.error(err);
-      res.status(404).send("update card failed");
-    }
+    const card = new Card(req.body);
+
+    await cardServiceInstance.updateCard(req.params.id, card);
+    res.status(200).send("succefully update card");
+  } catch (err) {
+    console.error(err);
+    res.status(404).send("update card failed");
+  }
 }
-  
+
 async function deleteOneCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
@@ -81,7 +82,6 @@ async function deleteOneCard(req, res, next) {
   } catch (err) {
     console.error(err);
     res.status(404).end();
-
   }
 }
 

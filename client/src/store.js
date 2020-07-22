@@ -102,6 +102,7 @@ export function toggleSidebar(val) {
 
 export async function fetchCards() {
   state.cards.data = await fetchCardsFromDB();
+  console.log(state.cards.data);
   publish(state.cards);
 }
 
@@ -118,7 +119,8 @@ export async function createCard(cardData) {
   await insertCreatedCardIntoDB(newCard);
 
   const latestId = await getLatestCardIdFromDB();
-  newCard.id = latestId+1;
+  newCard.id = latestId + 1;
+  console.log(latestId);
 
   state.cards.data.unshift(newCard);
   state.items.data.unshift({
@@ -164,14 +166,14 @@ export function moveCard(data) {
   );
 
   prevCategoryData.forEach((element) => {
-    if (element.order > prevOrder) {
-      element.order -= 1;
+    if (element.order_in_column > prevOrder) {
+      element.order_in_column -= 1;
     }
   });
 
   nextCategoryData.forEach((element) => {
-    if (element.order >= nextOrder) {
-      element.order += 1;
+    if (element.order_in_column >= nextOrder) {
+      element.order_in_column += 1;
     }
   });
 
@@ -180,7 +182,7 @@ export function moveCard(data) {
   state.cards.data.forEach((card) => {
     if (card.id === cardId) {
       card.category = nextCategory;
-      card.order = nextOrder;
+      card.order_in_column = nextOrder;
       if (prevCategory !== nextCategory) {
         state.items.data.unshift({
           username: card.author,

@@ -14,10 +14,11 @@ class CardRepository {
          Cards.order_in_column\
         FROM Cards \
         JOIN Users ON Cards.user_id = Users.id\
-        JOIN Columns ON Cards.column_id = Columns.id");
-        
+        JOIN Columns ON Cards.column_id = Columns.id"
+      );
+
       const cards = rows.map((row) => {
-        return new this.cardDTO(row)
+        return new this.cardDTO(row);
       });
       return cards;
     } catch (error) {
@@ -30,7 +31,8 @@ class CardRepository {
   async findCardById(id) {
     const conn = await this.db.getConnection();
     try {
-      const query = "SELECT Cards.id, Users.username AS author,\
+      const query =
+        "SELECT Cards.id, Users.username AS author,\
       Cards.last_updated, Cards.content, column_name AS category,\
       Cards.order_in_column\
       FROM Cards \
@@ -52,7 +54,9 @@ class CardRepository {
   async findLatestId() {
     const conn = await this.db.getConnection();
     try {
-      const [rows] = await conn.query("SELECT id FROM Cards ORDER BY id DESC LIMIT 1");
+      const [rows] = await conn.query(
+        "SELECT id FROM Cards ORDER BY id DESC LIMIT 1"
+      );
       return rows[0].id;
     } catch (error) {
       console.error(error);
@@ -78,14 +82,22 @@ class CardRepository {
       const columnId = rows[0].id;
 
       // column의 마지막 order 가져오기
-      const getLastOrderQeury = "SELECT order_in_column FROM Cards WHERE column_id=? ORDER BY order_in_column DESC LIMIT 1";
+      const getLastOrderQeury =
+        "SELECT order_in_column FROM Cards WHERE column_id=? ORDER BY order_in_column DESC LIMIT 1";
       [rows] = await conn.query(getLastOrderQeury, [columnId]);
-      const lastOrderNumber = rows[0].order_in_column;
+      // TODO : 컬럼의 row가 없을 때 값을 가져오지 못한다..
+      const lastOrderNumber = rows[0] ? rows[0].order_in_column : 0;
 
       // 새로 card insert
-      const insertCardQuery = "INSERT INTO todo.Cards (user_id, content, column_id, order_in_column)\
-      VALUES (?, ?, ?, ?);"
-      await conn.query(insertCardQuery, [userId, cardDTO.content ,columnId, lastOrderNumber+1]);
+      const insertCardQuery =
+        "INSERT INTO todo.Cards (user_id, content, column_id, order_in_column)\
+      VALUES (?, ?, ?, ?);";
+      await conn.query(insertCardQuery, [
+        userId,
+        cardDTO.content,
+        columnId,
+        lastOrderNumber + 1,
+      ]);
 
       await conn.commit();
     } catch (error) {
