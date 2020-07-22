@@ -7,10 +7,15 @@ $BORDER_COLOR: #bebebe;
   border-radius: 5px;
   border: 1px solid $BORDER_COLOR;
   display: flex;
+  box-sizing: border-box;
 
   ion-icon {
     display: flex;
     align-items: center;
+  }
+
+  &.card-click {
+    opacity: 0.5;
   }
 
   .card-header {

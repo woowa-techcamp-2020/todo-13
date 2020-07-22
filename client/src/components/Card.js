@@ -1,11 +1,11 @@
 import "./Card.scss";
 import { subscribe } from "../store";
 
-// TODO: Add drag and drop feature 
+// TODO: Add drag and drop feature
 
 export default function Card(props) {
   const componentName = `card-${props.card.id}`;
-  
+
   function render() {
     const html = `
       <div class="card-icon">

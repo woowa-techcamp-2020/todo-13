@@ -32,7 +32,7 @@ export const state = {
     listeners: {},
   },
   isSidebarVisible: {
-    data: false,
+    data: "",
     listeners: {},
   },
   isModalVisible: {
@@ -49,6 +49,10 @@ export const state = {
   },
   targetCardId: {
     data: Number.NEGATIVE_INFINITY,
+    listeners: {},
+  },
+  targetCardXY: {
+    data: {},
     listeners: {},
   },
   targetColumnId: {
@@ -95,8 +99,8 @@ export async function fetchItems() {
   publish(state.items);
 }
 
-export function toggleSidebar() {
-  state.isSidebarVisible.data = !state.isSidebarVisible.data;
+export function toggleSidebar(val) {
+  state.isSidebarVisible.data = val;
   publish(state.isSidebarVisible);
 }
 
@@ -148,6 +152,59 @@ export function updateCard(id, content) {
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
 }
 
+export function moveCard(data) {
+  // 카드의 순서와 이동한 컬럼으로 카테고리 값 바꿔주기
+  const { cardId, prevCategory, prevOrder, nextCategory, nextOrder } = data;
+
+  const prevCategoryData = state.cards.data.filter(
+    (card) => card.category === prevCategory
+  );
+  const nextCategoryData = state.cards.data.filter(
+    (card) => card.category === nextCategory
+  );
+
+  prevCategoryData.forEach((element) => {
+    if (element.order > prevOrder) {
+      element.order -= 1;
+    }
+  });
+
+  nextCategoryData.forEach((element) => {
+    if (element.order >= nextOrder) {
+      element.order += 1;
+    }
+  });
+
+  const updateData = [...prevCategoryData, ...nextCategoryData];
+
+  state.cards.data.forEach((card) => {
+    if (card.id === cardId) {
+      card.category = nextCategory;
+      card.order = nextOrder;
+      if (prevCategory !== nextCategory) {
+        state.items.data.unshift({
+          username: card.author,
+          action: `moved ${card.content} from ${prevCategory} to ${nextCategory}`,
+          last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+        });
+      }
+    }
+  });
+
+  state.cards.data.forEach((card) => {
+    updateData.forEach((newCard) => {
+      if (card.id === newCard.id) {
+        card = newCard;
+      }
+    });
+  });
+
+  publish(state.cards);
+  publish(state.items);
+
+  // TODO: call [BE] PUT or PATCH 'card/{id}' API
+}
+
 export function deleteCard(id) {
   let deletedCard;
   state.cards.data = state.cards.data
@@ -179,6 +236,22 @@ export function getTargetCardId() {
 export function setTargetCardId(value) {
   state.targetCardId.data = value;
   publish(state.targetCardId);
+}
+
+export function getTargetCardXY() {
+  return state.targetCardXY.data;
+}
+
+export function setTargetCardXY(xy) {
+  state.targetCardXY.data = xy;
+  publish(state.targetCardXY);
+}
+
+export function getTargetCardData(id) {
+  const cardsData = getCards();
+  const cardData = cardsData.filter((item) => item.id === parseInt(id));
+
+  return cardData[0];
 }
 
 export function clearTargetCardId() {
