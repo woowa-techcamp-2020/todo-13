@@ -39,8 +39,7 @@ class CardRepository {
       JOIN Columns ON Cards.column_id = Columns.id WHERE Cards.id=? ";
 
       const [rows] = await conn.query(query, [id]);
-      const row = rows[0];
-      const card = new this.cardDTO(row);
+      const card = new this.cardDTO(rows[0]);
 
       return card;
     } catch (error) {

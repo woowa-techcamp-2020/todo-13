@@ -32,9 +32,11 @@ class CardService {
   }
 
   async removeCard(id) {
-    // TODO: 사용자가 card를 삭제했을 때 필요한 logic 추가
-    // Activity Repository 이용해서 삭제 로그 쌓기
+    const targetCard = await this.CardRepository.findCardById(id);
     await this.CardRepository.removeCardById(id);
+
+    const activityContent = `removed ${targetCard.content}`;
+    await this.ActivityRepository.createActivity(targetCard.author, activityContent);
   }
 
   async moveCard(id, data) {

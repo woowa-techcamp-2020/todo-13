@@ -222,8 +222,8 @@ export async function deleteCard(id) {
 
   state.items.data.unshift({
     username: deletedCard.author,
-    action: `deleted ${deletedCard.content}`,
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    content: `removed ${deletedCard.content}`,
+    created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
   publish(state.cards);

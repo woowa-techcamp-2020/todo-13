@@ -71,7 +71,7 @@ async function updateCard(req, res, next) {
 
     const card = new Card(req.body);
     await cardServiceInstance.updateCardContent(req.params.id, card);
-    
+
     res.status(200).json({message: "succefully update card"});
   } catch (err) {
     console.error(err);
@@ -82,7 +82,9 @@ async function updateCard(req, res, next) {
 async function deleteOneCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance);
+    const activityRepositoryInstance = new ActivityRepository(Activity, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
+    
     await cardServiceInstance.removeCard(req.params.id);
 
     res.status(200).json({ message: "succefully deleted card" });
