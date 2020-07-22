@@ -1,5 +1,8 @@
 import * as Data from "./Data";
 const API_SERVER_URL = "http://localhost:3000/api";
+const header = new Headers({
+  "Content-Type": "application/json",
+});
 
 export const state = {
   categories: {
@@ -96,8 +99,21 @@ export function toggleSidebar() {
 }
 
 export async function fetchCards() {
-  state.cards.data = await Data.fetchCards();
-  publish(state.cards);
+  // TODO: call GET cards/ api
+  const options = {
+    method: "GET",
+    headers: header
+  }
+  fetch(`${API_SERVER_URL}/card`, options)
+  .then(res =>  res.json())
+  .then(data => {
+    state.cards.data = data
+    publish(state.cards);
+  })
+  .catch(error => console.error(error));
+
+
+  // state.cards.data = await Data.fetchCards();
 }
 
 export function getCards() {
@@ -114,13 +130,6 @@ export function createCard(cardData) {
     category: state.categories.data[cardData.index],
   };
 
-  // TODO: call [BE] POST 'card/' API
-  console.log(newCard);
-  console.log(JSON.stringify(newCard));
-  console.log(JSON.parse(JSON.stringify(newCard)));
-  const header = new Headers({
-    "Content-Type": "application/json",
-  });
   const options = {
     method: "POST",
     headers: header,
@@ -129,10 +138,9 @@ export function createCard(cardData) {
 
   fetch(`${API_SERVER_URL}/card`, options)
   .then(res => res.json())
-  .then(data => console.log("Create Success: ", data))
+  .then(console.log("Create Success"))
   .catch(error => console.error("Create Failed: ", error));
 
-  // TODO: state.card.data 에 새로 들어간 object의 id를 어떻게 넣어줄까
   fetch(`${API_SERVER_URL}/card/latest_id`, {
     method: "GET",
     headers: header,
@@ -141,17 +149,16 @@ export function createCard(cardData) {
   .then(data => {
     newCard.id = data.latestId;
     state.cards.data.unshift(newCard);
+    state.items.data.unshift({
+      username: "user1",
+      action: `added ${cardData.content}`,
+      last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    });
+
     publish(state.cards);
-  });
-
-
-  state.items.data.unshift({
-    username: "user1",
-    action: `added ${cardData.content}`,
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
-  });
-
-  publish(state.items);
+    publish(state.items);
+  })
+  .catch(error => console.error(error));
 }
 
 export function updateCard(id, content) {
