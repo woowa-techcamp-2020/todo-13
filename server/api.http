@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
     "author": "Jason", 
-    "content": "query 업데이트",
+    "content": "로그 쌓기 연동",
     "category": "하는 중"
 }
 
@@ -22,13 +22,11 @@ PUT  http://localhost:3000/api/card/2 HTTP/1.1
 Content-Type: application/json
 
 {
-    "author": "user2", 
-    "content": "페이지네이션 UI 리서치, 다른 일... 추가",
-    "category": "해야할 일"
+    "content": "페이지네이션 UI 리서치, 다른 일 받고 추가"
 }
 
 ### DELETE card api
-DELETE http://localhost:3000/api/card/4
+DELETE http://localhost:3000/api/card/39
 
 ### GET all activity api
 GET http://localhost:3000/api/activity

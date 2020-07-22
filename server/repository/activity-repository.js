@@ -1,5 +1,3 @@
-const ActivityService = require("../services/activity-service");
-
 class ActivityRepository {
   constructor(activityDTO, db) {
     this.activityDTO = activityDTO;
@@ -7,8 +5,10 @@ class ActivityRepository {
   }
 
   async findAllActivities() {
-    const query = "SELECT Activities.id, Users.username, Activities.content, Activities.created_at\
-    FROM Activities JOIN Users ON Activities.user_id = Users.id";
+    const query =
+      "SELECT Activities.id, Users.username, Activities.content, Activities.created_at\
+    FROM Activities JOIN Users ON Activities.user_id = Users.id\
+    ORDER BY Activities.created_at DESC";
     const [rows] = await this.db.query(query);
     const activities = rows.map((row) => {
       return new this.activityDTO(row);
@@ -31,17 +31,25 @@ class ActivityRepository {
     return activity;
   }
 
-  async createActivity(activityDTO) {
-    const query =
-      "INSERT INTO todo.Activities\
-        (userid, content)\
-        VALUES (?, ?)";
-    const [ , userid, content, ] = Object.values(activityDTO);
-
+  async createActivity(author, content) {
+    const conn = await this.db.getConnection();
     try {
-      await this.db.query(query, [userid, content]);
-    } catch (err) {
-      throw err;
+      await conn.beginTransaction();
+
+      const getUserIdQuery = "SELECT id FROM Users WHERE username=?";
+      let [rows] = await conn.query(getUserIdQuery, [author]);
+      const userId = rows[0].id;
+
+      const insertActivityQuery = "INSERT INTO Activities (user_id, content)\
+      VALUES (?, ?)";
+      await conn.query(insertActivityQuery, [userId, content]);
+
+      await conn.commit();
+    } catch (error) {
+      console.error(error);
+      conn.rollback();
+    } finally {
+      conn.release();
     }
   }
 }

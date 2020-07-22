@@ -1,5 +1,5 @@
 import * as Data from "./Data";
-import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB } from "./services/cardService";
+import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB, deleteCardInDB, updateCardContentInDB } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
@@ -123,22 +123,24 @@ export async function createCard(cardData) {
   state.cards.data.unshift(newCard);
   state.items.data.unshift({
     username: "user1",
-    action: `added ${cardData.content}`,
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    content: `added ${cardData.content}`,
+    created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
   publish(state.cards);
   publish(state.items);
 }
 
-export function updateCard(id, content) {
+export async function updateCard(id, content) {
+  let author = "";
   state.cards.data.forEach((card) => {
     if (card.id === id) {
       card.content = content;
+      author = card.author;
       state.items.data.unshift({
         username: card.author,
-        action: `updated ${content}`,
-        last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+        content: `updated ${content}`,
+        created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       });
     }
   });
@@ -146,6 +148,7 @@ export function updateCard(id, content) {
   publish(state.items);
 
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
+  await updateCardContentInDB(id, { author, content });
 }
 
 export function moveCard(data) {
@@ -205,7 +208,7 @@ export function moveCard(data) {
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
 }
 
-export function deleteCard(id) {
+export async function deleteCard(id) {
   let deletedCard;
   state.cards.data = state.cards.data
     .map((card) => {
@@ -219,14 +222,14 @@ export function deleteCard(id) {
 
   state.items.data.unshift({
     username: deletedCard.author,
-    action: `deleted ${deletedCard.content}`,
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    content: `removed ${deletedCard.content}`,
+    created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
   publish(state.cards);
   publish(state.items);
 
-  // TODO: call [BE] DELETE 'card/{id}' API
+  await deleteCardInDB(id);
 }
 
 export function getTargetCardId() {

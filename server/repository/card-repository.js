@@ -14,7 +14,8 @@ class CardRepository {
          Cards.order_in_column\
         FROM Cards \
         JOIN Users ON Cards.user_id = Users.id\
-        JOIN Columns ON Cards.column_id = Columns.id");
+        JOIN Columns ON Cards.column_id = Columns.id\
+        ORDER BY 6 DESC");
         
       const cards = rows.map((row) => {
         return new this.cardDTO(row)
@@ -38,8 +39,7 @@ class CardRepository {
       JOIN Columns ON Cards.column_id = Columns.id WHERE Cards.id=? ";
 
       const [rows] = await conn.query(query, [id]);
-      const row = rows[0];
-      const card = new this.cardDTO(row);
+      const card = new this.cardDTO(rows[0]);
 
       return card;
     } catch (error) {
@@ -96,33 +96,27 @@ class CardRepository {
     }
   }
 
-  async updateCardById(id, cardDTO) {
-    // TODO: query update needed since db design is renewed
-    const query =
-      "UPDATE todo.Cards\
-      SET\
-        author= ?,\
-        content= ?,\
-        category= ?\
-      WHERE id=? ;";
-
-    const { author, content, category } = cardDTO;
-
+  async updateCardContentById(id, cardDTO) {
+    const conn = await this.db.getConnection();
     try {
-      await this.db.query(query, [author, content, category, id]);
+      const query = "UPDATE Cards SET content= ? WHERE id=?";
+      await conn.query(query, [cardDTO.content, id]);
     } catch (err) {
-      throw err;
+      console.error(err)
+    } finally {
+      conn.release();
     }
   }
 
   async removeCardById(id) {
-    // TODO: query update needed since db design is renewed
-    const query = "DELETE FROM todo.Cards WHERE id=? ";
-
+    const conn = await this.db.getConnection();
     try {
-      await this.db.query(query, [id]);
+      const query = "DELETE FROM Cards WHERE id=?";
+      await conn.query(query, [id]);
     } catch (err) {
-      throw err;
+      console.error(err);
+    } finally {
+      conn.release();
     }
   }
 
