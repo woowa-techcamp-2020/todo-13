@@ -7,14 +7,11 @@ class ActivityRepository {
   }
 
   async findAllActivities() {
-    const [rows] = await this.db.query("SELECT * FROM todo.Activities");
+    const query = "SELECT Activities.id, Users.username, Activities.content, Activities.created_at\
+    FROM Activities JOIN Users ON Activities.user_id = Users.id";
+    const [rows] = await this.db.query(query);
     const activities = rows.map((row) => {
-      return new this.activityDTO({
-        id: row.id,
-        userid: row.userid,
-        content: row.content,
-        created_at: row.created_at,
-      });
+      return new this.activityDTO(row);
     });
     return activities;
   }

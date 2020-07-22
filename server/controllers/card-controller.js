@@ -12,7 +12,6 @@ async function getAllCards(req, res, next) {
 
     res.status(200).send(fetchedCards);
   } catch (err) {
-    console.log(err);
     res.status(404).end();
   }
 }
@@ -26,8 +25,19 @@ async function getOneCard(req, res, next) {
 
     res.status(200).send(fetchedCard);
   } catch (err) {
-    console.log(err);
     res.status(404).end();
+  }
+}
+
+async function getLatestCardId(req, res, next) {
+  try {
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+
+    const latestId = await cardServiceInstance.getLatestId();
+    res.status(200).json({"latestId": latestId});
+  } catch (error) {
+    res.status(404).json({"message": "retrieving latest cardId failed"});
   }
 }
 
@@ -39,10 +49,9 @@ async function createCard(req, res, next) {
 
     await cardServiceInstance.createCard(card);
 
-    res.status(201).send("succefully created new card");
+    res.status(201).json({"message": "succefully created new card"});
   } catch (err) {
-    console.error(err);
-    res.status(404).send("creating card failed");
+    res.status(404).json({"message": "creating card failed"});
   }
 }
 
@@ -80,6 +89,7 @@ module.exports = {
   getAllCards,
   createCard,
   getOneCard,
+  getLatestCardId,
   updateCard,
   deleteOneCard,
 };

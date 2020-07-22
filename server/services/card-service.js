@@ -14,24 +14,25 @@ class CardService {
     return card;
   }
 
+  async getLatestId() {
+    const latestId = await this.CardRepository.findLatestId();
+    return latestId;
+  }
+
   async createCard(cardDTO) {
     // TODO: 사용자가 card를 생성했을 때 필요한 logic 추가
-    try {
-      await this.CardRepository.createCard(cardDTO);
-    } catch (err) {
-      throw err;
-    }
+    await this.CardRepository.createCard(cardDTO);
   }
 
   async updateCard(id, cardDTO) {
     // TODO: 사용자가 card를 수정했을 때 필요한 logic 추가
     try {
-      await this.CardRepository.updateCardById(id, cardDTO);} 
-    catch (err) {
+      await this.CardRepository.updateCardById(id, cardDTO);
+    } catch (err) {
       throw err;
     }
   }
-  
+
   async removeCard(id) {
     // TODO: 사용자가 card를 삭제했을 때 필요한 logic 추가
     try {

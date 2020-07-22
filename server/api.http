@@ -2,16 +2,19 @@
 GET http://localhost:3000/api/card
 
 ### GET get one card api
-GET http://localhost:3000/api/card/2
+GET http://localhost:3000/api/card/5
+
+### GET latest card id api
+GET http://localhost:3000/api/card/latest_id
 
 ### POST card api
 POST http://localhost:3000/api/card HTTP/1.1
 Content-Type: application/json
 
 {
-    "author": "jason", 
-    "content": "FE 에서 api 호출",
-    "category": "해야할 일"
+    "author": "Jason", 
+    "content": "query 업데이트",
+    "category": "하는 중"
 }
 
 ### PUT card api
