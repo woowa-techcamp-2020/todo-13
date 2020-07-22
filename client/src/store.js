@@ -1,8 +1,4 @@
 import * as Data from "./Data";
-const API_SERVER_URL = "http://localhost:3000/api";
-const header = new Headers({
-  "Content-Type": "application/json",
-});
 import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 
@@ -155,7 +151,11 @@ export function updateCard(id, content) {
 export function moveCard(data) {
   // 카드의 순서와 이동한 컬럼으로 카테고리 값 바꿔주기
   const { cardId, prevCategory, prevOrder, nextCategory, nextOrder } = data;
-
+  // prevColumn
+  // orderInPrevColumn
+  // nextColumn
+  // orderInNextColumn
+  
   const prevCategoryData = state.cards.data.filter(
     (card) => card.category === prevCategory
   );

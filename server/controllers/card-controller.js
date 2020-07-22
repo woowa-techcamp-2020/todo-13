@@ -85,6 +85,20 @@ async function deleteOneCard(req, res, next) {
   }
 }
 
+async function moveCard(req, res, next) {
+  try {
+    const cardRepositoryInstance = new CardRepository(Card, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance);
+
+    await cardServiceInstance.moveCard(req.params.id, req.body.data);
+
+    res.status(203).json({"message": "card moved!"});
+  } catch (error) {
+    console.error(error);
+    res.status(404).end();
+  }
+}
+
 module.exports = {
   getAllCards,
   createCard,
@@ -92,4 +106,5 @@ module.exports = {
   getLatestCardId,
   updateCard,
   deleteOneCard,
+  moveCard
 };

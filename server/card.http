@@ -1,0 +1,11 @@
+PATCH http://localhost:3000/api/card/10
+Content-Type: application/json
+
+{
+    "data": {
+        "prevColumn": "하는 중",
+        "nextColumn": "다 했어",
+        "orderInPrevColumn": 3,
+        "orderInNextColumn": 2
+    }
+}
