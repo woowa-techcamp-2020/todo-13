@@ -1,15 +1,16 @@
-import {
-  bindEvent
-} from "../utils/util";
+import { bindEvent } from "../utils/util";
 import "./Modal.scss";
 import {
   subscribe,
   getIsModalVisibie,
   getModalData,
   toggleModal,
-  onCardEditTextChange,
+  getTargetColumnId,
   updateCard,
-  getTargetCardId
+  getTargetCardId,
+  updateCategories,
+  clearTargetCardId,
+  clearTargetColumnId,
 } from "../store";
 
 export default function Modal() {
@@ -17,11 +18,19 @@ export default function Modal() {
 
   function onSaveBtnClick(e) {
     const $modalContents = e.target.closest("div.modal-contents");
-    const cardId = getTargetCardId();
     const $modalNote = $modalContents.childNodes[3];
     const editContent = $modalNote.value;
 
-    updateCard(parseInt(cardId), editContent);
+    const columnId = getTargetColumnId();
+    if (columnId !== Number.NEGATIVE_INFINITY) {
+      updateCategories(columnId, editContent);
+      clearTargetColumnId();
+    } else {
+      const cardId = getTargetCardId();
+      updateCard(parseInt(cardId), editContent);
+      clearTargetCardId();
+    }
+
     toggleModal();
   }
 
@@ -36,19 +45,26 @@ export default function Modal() {
 
   function handleNullContent(e) {
     const $modalConfirm = document.querySelector(".modal-confirm");
-    $modalConfirm.disabled = (!e.target.value) ? true : false;
+    $modalConfirm.disabled = !e.target.value ? true : false;
   }
 
-
   function onCloseBtnMouseEnter(e) {
-    const closeBtns = [...document.querySelectorAll("ion-icon.md.hydrated[name=\"close-outline\"]")];
+    const closeBtns = [
+      ...document.querySelectorAll(
+        'ion-icon.md.hydrated[name="close-outline"]'
+      ),
+    ];
     if (closeBtns.includes(e.target)) {
       e.target.style.background = "lightgray";
     }
   }
 
   function onCloseBtnMouseOut(e) {
-    const closeBtns = [...document.querySelectorAll("ion-icon.md.hydrated[name=\"close-outline\"]")];
+    const closeBtns = [
+      ...document.querySelectorAll(
+        'ion-icon.md.hydrated[name="close-outline"]'
+      ),
+    ];
     if (closeBtns.includes(e.target)) {
       e.target.style.background = "white";
     }
@@ -57,10 +73,9 @@ export default function Modal() {
   function render() {
     const isModalVisible = getIsModalVisibie();
     const modalData = getModalData();
-    const hasTextInput = true;
 
     const html = `
-    <div class="${componentName} ${isModalVisible ? '': 'hidden'}">
+    <div class="${componentName} ${isModalVisible ? "" : "hidden"}">
       <div class="modal-box">
         <div class="modal-header">
           <p class="modal-title">Edit ${modalData.title}</p>
@@ -74,8 +89,7 @@ export default function Modal() {
             maxlength=500
             autofocus=true
             placeholer="입력해주세요">${modalData.content}</textarea>
-          <button class="modal-confirm" 
-            ${hasTextInput? "": "disabled"}>
+          <button class="modal-confirm">
             Save
           </button>
         </div>
@@ -95,7 +109,7 @@ export default function Modal() {
   }
 
   subscribe(componentName, "isModalVisible", render);
-  
+
   setTimeout(render, 0);
 
   return `<div class=modal-wrapper></div>`;

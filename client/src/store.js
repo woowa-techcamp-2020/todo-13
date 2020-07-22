@@ -1,4 +1,10 @@
 import * as Data from "./Data";
+const API_SERVER_URL = "http://localhost:3000/api";
+const header = new Headers({
+  "Content-Type": "application/json",
+});
+import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB } from "./services/cardService";
+import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
   categories: {
@@ -49,6 +55,10 @@ export const state = {
     data: {},
     listeners: {},
   },
+  targetColumnId: {
+    data: Number.NEGATIVE_INFINITY,
+    listeners: {},
+  },
 };
 
 export const subscribe = (component, key, eventHandler) => {
@@ -64,6 +74,18 @@ export function getCategories() {
   return state.categories.data;
 }
 
+export function updateCategories(idx, value) {
+  state.cards.data.map((card) => {
+    if (card.category === state.categories.data[idx]) {
+      card.category = value;
+    }
+  });
+  state.categories.data[idx] = value;
+
+  publish(state.cards);
+  publish(state.categories);
+}
+
 export function getIsSidebarVisible() {
   return state.isSidebarVisible.data;
 }
@@ -73,7 +95,7 @@ export function getItems() {
 }
 
 export async function fetchItems() {
-  state.items.data = await Data.fetchActivities();
+  state.items.data = await fetchActivitiesFromDB();
   publish(state.items);
 }
 
@@ -83,7 +105,7 @@ export function toggleSidebar(val) {
 }
 
 export async function fetchCards() {
-  state.cards.data = await Data.fetchCards();
+  state.cards.data = await fetchCardsFromDB();
   publish(state.cards);
 }
 
@@ -91,19 +113,18 @@ export function getCards() {
   return state.cards.data;
 }
 
-export function createCard(cardData) {
-  const lastId = state.cards.data.reduce(
-    (acc, cur) => Math.max(acc, cur.id),
-    0
-  );
-  state.cards.data.unshift({
-    id: lastId + 1,
-    author: "user1",
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+export async function createCard(cardData) {
+  const newCard = {
+    author: "Jason", // TODO: get loggined User data
     content: cardData.content,
     category: state.categories.data[cardData.index],
-  });
+  };
+  await insertCreatedCardIntoDB(newCard);
 
+  const latestId = await getLatestCardIdFromDB();
+  newCard.id = latestId+1;
+
+  state.cards.data.unshift(newCard);
   state.items.data.unshift({
     username: "user1",
     action: `added ${cardData.content}`,
@@ -112,8 +133,6 @@ export function createCard(cardData) {
 
   publish(state.cards);
   publish(state.items);
-
-  // TODO: call [BE] POST 'card/' API
 }
 
 export function updateCard(id, content) {
@@ -237,6 +256,19 @@ export function getTargetCardData(id) {
 
 export function clearTargetCardId() {
   state.targetCardId.data = Number.NEGATIVE_INFINITY;
+}
+
+export function getTargetColumnId() {
+  return state.targetColumnId.data;
+}
+
+export function setTargetColumnId(value) {
+  state.targetColumnId.data = value;
+  publish(state.targetColumnId);
+}
+
+export function clearTargetColumnId() {
+  state.targetColumnId.data = Number.NEGATIVE_INFINITY;
 }
 
 export function getPopupMessage() {

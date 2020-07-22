@@ -16,7 +16,7 @@ app.use(
 app.use(morgan('combined'));
 app.use(cookieParser());
 
-const apiRouter = require("./routes/apiRouter");
+const apiRouter = require("./routes/api-router");
 
 app.use("/api", apiRouter);
 

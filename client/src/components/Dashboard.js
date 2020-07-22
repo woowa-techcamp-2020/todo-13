@@ -15,6 +15,7 @@ import {
   getTargetCardXY,
   setTargetCardXY,
   moveCard,
+  setTargetColumnId,
 } from "../store";
 import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
@@ -227,7 +228,12 @@ export default function Dashboard() {
     ];
     if (editCardBtns.includes(e.target)) {
       const $columnHeader = e.target.closest(".column-header");
-      const title = $columnHeader.childNodes[3].innerText;
+      const title = $columnHeader.childNodes[3].innerHTML;
+
+      const $column = e.target.closest("div.column");
+      const columnId = $column.id.split("-")[1];
+
+      setTargetColumnId(parseInt(columnId));
 
       setModal({
         title,
