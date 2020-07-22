@@ -3,6 +3,7 @@ const API_SERVER_URL = "http://localhost:3000/api";
 const header = new Headers({
   "Content-Type": "application/json",
 });
+import { fetchCardsFromDB } from "./services/cardService";
 
 export const state = {
   categories: {
@@ -99,21 +100,8 @@ export function toggleSidebar() {
 }
 
 export async function fetchCards() {
-  // TODO: call GET cards/ api
-  const options = {
-    method: "GET",
-    headers: header
-  }
-  fetch(`${API_SERVER_URL}/card`, options)
-  .then(res =>  res.json())
-  .then(data => {
-    state.cards.data = data
-    publish(state.cards);
-  })
-  .catch(error => console.error(error));
-
-
-  // state.cards.data = await Data.fetchCards();
+  state.cards.data = await fetchCardsFromDB();
+  publish(state.cards);
 }
 
 export function getCards() {
