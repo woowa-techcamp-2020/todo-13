@@ -1,6 +1,8 @@
 const CardService = require("../services/card-service");
 const Card = require("../domain/card");
 const CardRepository = require("../repository/card-repository");
+const Activity = require("../domain/activity");
+const ActivityRepository = require("../repository/activity-repository");
 const db = require("../db");
 
 async function getAllCards(req, res, next) {
@@ -45,7 +47,8 @@ async function createCard(req, res, next) {
   try {
     const card = new Card(req.body);
     const cardRepositoryInstance = new CardRepository(Card, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance);
+    const activityRepositoryInstance = new ActivityRepository(Activity, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
 
     await cardServiceInstance.createCard(card);
 

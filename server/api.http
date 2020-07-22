@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
     "author": "Jason", 
-    "content": "query 업데이트",
+    "content": "로그 쌓기 연동",
     "category": "하는 중"
 }
 
