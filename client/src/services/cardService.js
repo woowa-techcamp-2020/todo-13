@@ -37,27 +37,29 @@ export function insertCreatedCardIntoDB(newCard) {
 }
 
 export function getLatestCardIdFromDB(newCard) {
-    return new Promise((resolve, reject) => {
-        const options = {
-            method: "GET",
-            headers: header,
-        };
-        fetch(`${API_SERVER_URL}/card/latest_id`, options)
-        .then(res => res.json())
-        .then(data => resolve(data.latestId))
-        .catch(error => reject(error));
-    })
-};
-
-export function updateMovedCardInfo(data) {
   return new Promise((resolve, reject) => {
-      const options = {
+    const options = {
+      method: "GET",
+      headers: header,
+    };
+    fetch(`${API_SERVER_URL}/card/latest_id`, options)
+      .then((res) => res.json())
+      .then((data) => resolve(data.latestId))
+      .catch((error) => reject(error));
+  });
+}
 
-      }
+export function updateMovedCardInfo(id, data) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "PATCH",
+      headers: header,
+      body: JSON.stringify({ data: data }),
+    };
 
-      fetch()
-      .then()
-      .then(resolve())
-      .catch(reject());
-  })
+    fetch(`${API_SERVER_URL}/card/${id}`, options)
+      .then((res) => res.json())
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
+  });
 }

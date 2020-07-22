@@ -1,5 +1,10 @@
 import * as Data from "./Data";
-import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB } from "./services/cardService";
+import {
+  fetchCardsFromDB,
+  insertCreatedCardIntoDB,
+  getLatestCardIdFromDB,
+  updateMovedCardInfo,
+} from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
@@ -102,7 +107,6 @@ export function toggleSidebar(val) {
 
 export async function fetchCards() {
   state.cards.data = await fetchCardsFromDB();
-  console.log(state.cards.data);
   publish(state.cards);
 }
 
@@ -150,61 +154,25 @@ export function updateCard(id, content) {
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
 }
 
-export function moveCard(data) {
-  // 카드의 순서와 이동한 컬럼으로 카테고리 값 바꿔주기
-  const { cardId, prevCategory, prevOrder, nextCategory, nextOrder } = data;
-  // prevColumn
-  // orderInPrevColumn
-  // nextColumn
-  // orderInNextColumn
-  
-  const prevCategoryData = state.cards.data.filter(
-    (card) => card.category === prevCategory
-  );
-  const nextCategoryData = state.cards.data.filter(
-    (card) => card.category === nextCategory
-  );
+export async function moveCard(data) {
+  const {
+    cardId,
+    prevColumn,
+    orderInPrevColumn,
+    nextColumn,
+    orderInNextColumn,
+  } = data;
 
-  prevCategoryData.forEach((element) => {
-    if (element.order_in_column > prevOrder) {
-      element.order_in_column -= 1;
-    }
+  await updateMovedCardInfo(cardId, {
+    prevColumn,
+    orderInPrevColumn,
+    nextColumn,
+    orderInNextColumn,
   });
 
-  nextCategoryData.forEach((element) => {
-    if (element.order_in_column >= nextOrder) {
-      element.order_in_column += 1;
-    }
-  });
-
-  const updateData = [...prevCategoryData, ...nextCategoryData];
-
-  state.cards.data.forEach((card) => {
-    if (card.id === cardId) {
-      card.category = nextCategory;
-      card.order_in_column = nextOrder;
-      if (prevCategory !== nextCategory) {
-        state.items.data.unshift({
-          username: card.author,
-          action: `moved ${card.content} from ${prevCategory} to ${nextCategory}`,
-          last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
-        });
-      }
-    }
-  });
-
-  state.cards.data.forEach((card) => {
-    updateData.forEach((newCard) => {
-      if (card.id === newCard.id) {
-        card = newCard;
-      }
-    });
-  });
-
+  state.cards.data = await fetchCardsFromDB();
   publish(state.cards);
   publish(state.items);
-
-  // TODO: call [BE] PUT or PATCH 'card/{id}' API
 }
 
 export function deleteCard(id) {

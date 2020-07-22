@@ -46,8 +46,10 @@ class CardService {
     // TODO: 사용자가 card를 이동했을 때 필요한 logic 추가
     if (data.prevColumn === data.nextColumn) {
       await this.CardRepository.updateCardOrderInSameColumn(id, data);
+      // TODO : activity 추가
     } else {
       await this.CardRepository.updateCardOrderInOtherColumn(id, data);
+      // TODO : activity 추가
     }
     //뭐하지?
     // TODO

@@ -92,7 +92,7 @@ async function moveCard(req, res, next) {
 
     await cardServiceInstance.moveCard(req.params.id, req.body.data);
 
-    res.status(203).json({"message": "card moved!"});
+    res.status(203).json({ message: "card moved!" });
   } catch (error) {
     console.error(error);
     res.status(404).end();
@@ -106,5 +106,5 @@ module.exports = {
   getLatestCardId,
   updateCard,
   deleteOneCard,
-  moveCard
+  moveCard,
 };

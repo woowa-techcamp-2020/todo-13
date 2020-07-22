@@ -139,7 +139,57 @@ class CardRepository {
   }
 
   async updateCardOrderInSameColumn(id, data) {
+    const conn = await this.db.getConnection();
+    try {
+      await conn.beginTransaction();
 
+      const { prevColumn, orderInNextColumn, orderInPrevColumn } = data;
+
+      // columnId 가져오기
+      const columnIdQuery = "SELECT id FROM Columns WHERE column_name=?";
+      let [rows] = await conn.query(columnIdQuery, [prevColumn]);
+      const columnId = rows[0].id;
+
+      // order 기준으로
+      // 1. 큰 수 -> 작은 수
+      if (orderInPrevColumn > orderInNextColumn) {
+        const incrementOrderQuery =
+          "UPDATE Cards SET order_in_column = (order_in_column + 1)\
+        where column_id =? and order_in_column >= ? and order_in_column < ?";
+        await conn.query(incrementOrderQuery, [
+          columnId,
+          orderInNextColumn,
+          orderInPrevColumn,
+        ]);
+      } else {
+        // 2. 작은 수 -> 큰 수
+        const decrementOrderQuery =
+          "UPDATE Cards SET order_in_column = (order_in_column - 1)\
+        where column_id =? and order_in_column > ? and order_in_column <= ?";
+        await conn.query(decrementOrderQuery, [
+          columnId,
+          orderInPrevColumn,
+          orderInNextColumn,
+        ]);
+      }
+
+      // 새로운 column의 order로 카드 정보 update
+      const updateTargetCardQuery =
+        "UPDATE Cards SET order_in_column=?,\
+      column_id=? WHERE id=?";
+      await conn.query(updateTargetCardQuery, [
+        orderInNextColumn,
+        columnId,
+        id,
+      ]);
+
+      await conn.commit();
+    } catch (error) {
+      console.error(error);
+      conn.rollback();
+    } finally {
+      conn.release();
+    }
   }
 
   async updateCardOrderInOtherColumn(id, data) {
@@ -157,21 +207,33 @@ class CardRepository {
       [rows] = await conn.query(getNextColumnQuery, [data.nextColumn]);
       const nextColumnId = rows[0].id;
       console.log(prevColumnId, nextColumnId);
-      
+
       // 들어갈 자리 비워주기
-      const incrementOrderQuery = "UPDATE Cards SET order_in_column = (order_in_column + 1)\
+      const incrementOrderQuery =
+        "UPDATE Cards SET order_in_column = (order_in_column + 1)\
       where column_id =? and order_in_column >= ?";
-      await conn.query(incrementOrderQuery, [nextColumnId, data.orderInNextColumn]);
+      await conn.query(incrementOrderQuery, [
+        nextColumnId,
+        data.orderInNextColumn,
+      ]);
 
       // 새로운 column의 order로 카드 정보 update
-      const updateTargetCardQuery = "UPDATE Cards SET order_in_column=?,\
+      const updateTargetCardQuery =
+        "UPDATE Cards SET order_in_column=?,\
       column_id=? WHERE id=?";
-      await conn.query(updateTargetCardQuery, [data.orderInNextColumn, nextColumnId, id]);
-      
-      
-      const decrementOrderQuery = "UPDATE Cards SET order_in_column = (order_in_column - 1)\
+      await conn.query(updateTargetCardQuery, [
+        data.orderInNextColumn,
+        nextColumnId,
+        id,
+      ]);
+
+      const decrementOrderQuery =
+        "UPDATE Cards SET order_in_column = (order_in_column - 1)\
       where column_id =? and order_in_column > ?";
-      await conn.query(decrementOrderQuery, [prevColumnId, data.orderInPrevColumn]);
+      await conn.query(decrementOrderQuery, [
+        prevColumnId,
+        data.orderInPrevColumn,
+      ]);
 
       await conn.commit();
     } catch (error) {
