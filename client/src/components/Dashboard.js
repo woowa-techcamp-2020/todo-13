@@ -70,80 +70,93 @@ export default function Dashboard() {
     } else {
       const card = document.querySelector(`#card-${getTargetCardId()}`);
       const copyCard = document.querySelector(".card-copy");
-
       const cardXY = getTargetCardXY();
       // 마우스 위치에 위치 시키기
       copyCard.style.top = `${event.clientY - parseInt(cardXY.y)}px`;
       copyCard.style.left = `${event.clientX - parseInt(cardXY.x)}px`;
 
-      // 원래 카드 위치 옮기기 - 다음, 이전 element에 넣어주기
-      const prevNode = card.previousSibling;
-      const nextNode = card.nextSibling;
-
-      // 위로 올라갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 감소됐을 때
-      if (copyCard.offsetTop < card.offsetTop - card.offsetHeight) {
-        if (!prevNode) {
-          card.parentNode.insertBefore(card, card.parentNode.firstChild);
-        } else {
-          card.parentNode.insertBefore(card, prevNode.previousSibling);
-        }
-      }
-
-      // 아래로 내려갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 더해졌을 때
-      if (copyCard.offsetTop > card.offsetTop + card.offsetHeight) {
-        if (!nextNode) {
-          card.parentNode.appendChild(card);
-        } else {
-          card.parentNode.insertBefore(card, nextNode.nextSibling);
-        }
-      }
-
-      // 다른 컬럼에 추가
-      const columnContentsNode = card.parentNode;
-      const columnNode = card.parentNode.parentNode;
-      const cardPrevParent = columnNode.previousSibling;
-      const cardNextParent = columnNode.nextSibling;
-      // 카드가 왼쪽으로 이동할 때
+      // columnBox 안에서만 카드 이동하게
+      // TODO : columnBox를 찾아서 마우스의 위치가 컬럼박스 내 일 경우에만 옮길 수 있게 리팩토링
+      const columnBox = document.querySelector(".columnBox");
+      const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = columnBox;
+      const { pageX, pageY } = event;
       if (
-        copyCard.offsetLeft <=
-        columnNode.offsetLeft - columnNode.offsetWidth / 2 - 20
+        pageX > offsetLeft &&
+        pageX < offsetLeft + offsetWidth &&
+        pageY > offsetTop &&
+        pageY < offsetTop + offsetHeight
       ) {
-        if (
-          cardPrevParent.classList &&
-          cardPrevParent.classList.contains("column")
-        ) {
-          const prevColumnContents = cardPrevParent.querySelector(
-            ".column-contents"
-          );
-          prevColumnContents.appendChild(card);
-        } else {
-          columnContentsNode.appendChild(card);
-        }
-      }
+        // 원래 카드 위치 옮기기 - 다음, 이전 element에 넣어주기
+        const prevNode = card.previousSibling;
+        const nextNode = card.nextSibling;
 
-      if (
-        copyCard.offsetLeft >
-        columnNode.offsetLeft + columnNode.offsetWidth / 2 + 20
-      ) {
-        //카드가 오른쪽으로 이동할 때
+        // 위로 올라갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 감소됐을 때
+        if (copyCard.offsetTop < card.offsetTop - card.offsetHeight - 10) {
+          // -2 153/261
+          console.log("위로", copyCard.offsetTop, card.offsetTop);
+          if (!prevNode) {
+            // card.parentNode.insertBefore(card, card.parentNode.firstChild);
+          } else {
+            card.parentNode.insertBefore(card, prevNode);
+          }
+        }
+
+        // 아래로 내려갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 더해졌을 때
+        if (copyCard.offsetTop > card.offsetTop + card.offsetHeight + 10) {
+          console.log("아래로", copyCard.offsetTop, card.offsetTop);
+          if (!nextNode) {
+            card.parentNode.appendChild(card);
+          } else {
+            card.parentNode.insertBefore(card, nextNode.nextSibling);
+          }
+        }
+
+        // 다른 컬럼에 추가
+        const columnContentsNode = card.parentNode;
+        const columnNode = card.parentNode.parentNode;
+        const cardPrevParent = columnNode.previousSibling;
+        const cardNextParent = columnNode.nextSibling;
+        // 카드가 왼쪽으로 이동할 때
         if (
-          copyCard.offsetLeft >=
-          columnNode.offsetLeft + columnNode.offsetWidth / 2
+          copyCard.offsetLeft <=
+          columnNode.offsetLeft - columnNode.offsetWidth / 2 - 20
         ) {
           if (
-            cardNextParent.classList &&
-            cardNextParent.classList.contains("column")
+            cardPrevParent.classList &&
+            cardPrevParent.classList.contains("column")
           ) {
-            const nextColumnContents = cardNextParent.querySelector(
+            const prevColumnContents = cardPrevParent.querySelector(
               ".column-contents"
             );
-            nextColumnContents.appendChild(card);
+            prevColumnContents.appendChild(card);
           } else {
-            columnContentsNode.appendChild(card);
+            // columnContentsNode.appendChild(card);
+          }
+        }
+
+        if (
+          copyCard.offsetLeft >
+          columnNode.offsetLeft + columnNode.offsetWidth / 2 + 20
+        ) {
+          //카드가 오른쪽으로 이동할 때
+          if (
+            copyCard.offsetLeft >=
+            columnNode.offsetLeft + columnNode.offsetWidth / 2
+          ) {
+            if (
+              cardNextParent.classList &&
+              cardNextParent.classList.contains("column")
+            ) {
+              const nextColumnContents = cardNextParent.querySelector(
+                ".column-contents"
+              );
+              nextColumnContents.appendChild(card);
+            } else {
+              // columnContentsNode.appendChild(card);
+            }
           }
         }
       }
-      // TODO : 카드가 옮겨질 때 카드의 id를 바꿔주어야 할 것 같다..!
     }
   }
 

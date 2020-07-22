@@ -10,6 +10,10 @@ $CARD_LENGTH_BG: #d0d2d4;
   border: 1px solid #bebebe;
   border-radius: 3px;
 
+  &:last-child {
+    margin: 0;
+  }
+
   .column-header {
     margin-bottom: 15px;
     display: flex;
