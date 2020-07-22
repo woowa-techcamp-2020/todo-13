@@ -77,11 +77,10 @@ async function deleteOneCard(req, res, next) {
     const cardServiceInstance = new CardService(cardRepositoryInstance);
     await cardServiceInstance.removeCard(req.params.id);
 
-    res.status(201).send("succefully delete card");
+    res.status(200).json({"message": "succefully deleted card"});
   } catch (err) {
     console.error(err);
     res.status(404).end();
-
   }
 }
 

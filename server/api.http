@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### DELETE card api
-DELETE http://localhost:3000/api/card/4
+DELETE http://localhost:3000/api/card/39
 
 ### GET all activity api
 GET http://localhost:3000/api/activity

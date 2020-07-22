@@ -1,5 +1,5 @@
 import * as Data from "./Data";
-import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB } from "./services/cardService";
+import { fetchCardsFromDB, insertCreatedCardIntoDB, getLatestCardIdFromDB, deleteCardInDB } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 
 export const state = {
@@ -205,7 +205,7 @@ export function moveCard(data) {
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
 }
 
-export function deleteCard(id) {
+export async function deleteCard(id) {
   let deletedCard;
   state.cards.data = state.cards.data
     .map((card) => {
@@ -226,7 +226,7 @@ export function deleteCard(id) {
   publish(state.cards);
   publish(state.items);
 
-  // TODO: call [BE] DELETE 'card/{id}' API
+  await deleteCardInDB(id);
 }
 
 export function getTargetCardId() {

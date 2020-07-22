@@ -27,34 +27,43 @@ export function insertCreatedCardIntoDB(newCard) {
     };
 
     fetch(`${API_SERVER_URL}/card`, options)
-    .then(res => res.json())
-    .then(resolve(newCard))
-    .catch(error => reject(error));
+      .then((res) => res.json())
+      .then(resolve(newCard))
+      .catch((error) => reject(error));
   });
 }
 
 export function getLatestCardIdFromDB(newCard) {
-    return new Promise((resolve, reject) => {
-        const options = {
-            method: "GET",
-            headers: header,
-        };
-        fetch(`${API_SERVER_URL}/card/latest_id`, options)
-        .then(res => res.json())
-        .then(data => resolve(data.latestId))
-        .catch(error => reject(error));
-    })
-};
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "GET",
+      headers: header,
+    };
+    fetch(`${API_SERVER_URL}/card/latest_id`, options)
+      .then((res) => res.json())
+      .then((data) => resolve(data.latestId))
+      .catch((error) => reject(error));
+  });
+}
 
 export function updateMovedCardInfo(data) {
   return new Promise((resolve, reject) => {
-      const options = {
+    const options = {};
 
-      }
+    fetch().then().then(resolve()).catch(reject());
+  });
+}
 
-      fetch()
-      .then()
-      .then(resolve())
-      .catch(reject());
-  })
+export function deleteCardInDB(id) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "DELETE",
+      headers: header
+    };
+
+    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    .then(res => res.json())
+    .then(resolve())
+    .catch(error => reject(error));
+  });
 }
