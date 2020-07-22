@@ -132,9 +132,11 @@ export async function createCard(cardData) {
 }
 
 export async function updateCard(id, content) {
+  let author = "";
   state.cards.data.forEach((card) => {
     if (card.id === id) {
       card.content = content;
+      author = card.author;
       state.items.data.unshift({
         username: card.author,
         content: `updated ${content}`,
@@ -146,7 +148,7 @@ export async function updateCard(id, content) {
   publish(state.items);
 
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
-  await updateCardContentInDB(id, content);
+  await updateCardContentInDB(id, { author, content });
 }
 
 export function moveCard(data) {

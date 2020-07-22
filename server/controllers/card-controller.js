@@ -61,14 +61,17 @@ async function createCard(req, res, next) {
 async function updateCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance);
+    const activityRepositoryInstance = new ActivityRepository(Activity, db);
+    const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
+
     if (!req.body.content) {
       res.status(400).json({ message: "Bad request" });
       return;
     }
-    const card = new Card(req.body);
 
+    const card = new Card(req.body);
     await cardServiceInstance.updateCardContent(req.params.id, card);
+    
     res.status(200).json({message: "succefully update card"});
   } catch (err) {
     console.error(err);

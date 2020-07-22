@@ -1,5 +1,3 @@
-const ActivityService = require("../services/activity-service");
-
 class ActivityRepository {
   constructor(activityDTO, db) {
     this.activityDTO = activityDTO;
@@ -37,8 +35,6 @@ class ActivityRepository {
     const conn = await this.db.getConnection();
     try {
       await conn.beginTransaction();
-      // 1. user table에서 author에 해당하는 userid 찾기
-      // 2. userid와 content 로 activity 테이블에 insert하기
 
       const getUserIdQuery = "SELECT id FROM Users WHERE username=?";
       let [rows] = await conn.query(getUserIdQuery, [author]);
@@ -49,23 +45,12 @@ class ActivityRepository {
       await conn.query(insertActivityQuery, [userId, content]);
 
       await conn.commit();
-      // const query =
-      //   "INSERT INTO Activities (userid, content)\
-      //   VALUES (?, ?)";
-      // const [, userid, content] = Object.values(activityDTO);
-      // await conn.query();
     } catch (error) {
       console.error(error);
       conn.rollback();
     } finally {
       conn.release();
     }
-
-    // try {
-    //   await this.db.query(query, [userid, content]);
-    // } catch (err) {
-    //   throw err;
-    // }
   }
 }
 

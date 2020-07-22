@@ -54,20 +54,17 @@ export function updateMovedCardInfo(data) {
   });
 }
 
-export function updateCardContentInDB(id, content) {
+export function updateCardContentInDB(id, { author, content }) {
   return new Promise((resolve, reject) => {
     const options = {
       method: "PUT",
       headers: header,
-      body: JSON.stringify({content})
+      body: JSON.stringify({ author, content })
     };
 
     fetch(`${API_SERVER_URL}/card/${id}`, options)
     .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      resolve();
-    })
+    .then(resolve())
     .catch(error => reject(error));
   });
 }
