@@ -14,6 +14,11 @@ class CardService {
     return card;
   }
 
+  async getLatestId() {
+    const latestId = await this.CardRepository.findLatestId();
+    return latestId;
+  }
+
   async createCard(cardDTO) {
     // TODO: 사용자가 card를 생성했을 때 필요한 logic 추가
     await this.CardRepository.createCard(cardDTO);

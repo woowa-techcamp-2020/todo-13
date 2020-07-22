@@ -49,6 +49,18 @@ class CardRepository {
     }
   }
 
+  async findLatestId() {
+    const conn = await this.db.getConnection();
+    try {
+      const [rows] = await conn.query("SELECT id FROM Cards ORDER BY id DESC LIMIT 1");
+      return rows[0].id;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await conn.release();
+    }
+  }
+
   // TODO: use transaction
   async createCard(cardDTO) {
     const conn = await this.db.getConnection();

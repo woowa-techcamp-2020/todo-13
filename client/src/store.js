@@ -1,4 +1,5 @@
 import * as Data from "./Data";
+const API_SERVER_URL = "http://localhost:3000/api";
 
 export const state = {
   categories: {
@@ -105,16 +106,44 @@ export function getCards() {
 
 export function createCard(cardData) {
   const lastId = state.cards.data.reduce(
-    (acc, cur) => Math.max(acc, cur.id),
-    0
-  );
-  state.cards.data.unshift({
-    id: lastId + 1,
-    author: "user1",
-    last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
+    (acc, cur) => Math.max(acc, cur.id), 0);
+  const newCard = {
+    author: "Jason",
+    // last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
     content: cardData.content,
     category: state.categories.data[cardData.index],
+  };
+
+  // TODO: call [BE] POST 'card/' API
+  console.log(newCard);
+  console.log(JSON.stringify(newCard));
+  console.log(JSON.parse(JSON.stringify(newCard)));
+  const header = new Headers({
+    "Content-Type": "application/json",
   });
+  const options = {
+    method: "POST",
+    headers: header,
+    body: JSON.stringify(newCard)
+  }
+
+  fetch(`${API_SERVER_URL}/card`, options)
+  .then(res => res.json())
+  .then(data => console.log("Create Success: ", data))
+  .catch(error => console.error("Create Failed: ", error));
+
+  // TODO: state.card.data 에 새로 들어간 object의 id를 어떻게 넣어줄까
+  fetch(`${API_SERVER_URL}/card/latest_id`, {
+    method: "GET",
+    headers: header,
+  })
+  .then(res => res.json())
+  .then(data => {
+    newCard.id = data.latestId;
+    state.cards.data.unshift(newCard);
+    publish(state.cards);
+  });
+
 
   state.items.data.unshift({
     username: "user1",
@@ -122,10 +151,7 @@ export function createCard(cardData) {
     last_updated: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
-  publish(state.cards);
   publish(state.items);
-
-  // TODO: call [BE] POST 'card/' API
 }
 
 export function updateCard(id, content) {
