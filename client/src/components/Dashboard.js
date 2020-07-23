@@ -27,7 +27,7 @@ export default function Dashboard() {
     const cardCloseBtns = [
       ...document.querySelectorAll(
         `div.card ion-icon.md.hydrated[name=\"close-outline\"]`
-      )
+      ),
     ];
     const isDoubleClick = e.detail !== 1;
     const hasClickedCloseBtn = cardCloseBtns.includes(e.target);
@@ -117,15 +117,19 @@ export default function Dashboard() {
   }
 
   function offCopyCard() {
-    // TODO : 꺼졌을 때도 move card update 해주어야한다.
     const copyCard = document.querySelector(".card-copy");
     if (copyCard.style.display === "block") {
+      // TODO : 카드가 원래 자리로 돌아오게 하기..
+      // 첫번째 : 카드의 원래 자리를 저장해 두었다가 다시 제자리로 놓는다.
+      // 두번째 : 카드 정보를 다시 불러온다.
+      // 일단은 두번째 방법을 사용하고 리팩토링 하기로 하자..
       copyCard.style.display = "none";
       const card = document.querySelector(`#card-${getTargetCardId()}`);
-      if (card.classList.contains("card-click"))
+      if (card.classList.contains("card-click")) {
         card.classList.remove("card-click");
+        fetchCards();
+      }
     }
-    // TODO : 카드가 원래 자리로 돌아오게 하기..
   }
 
   function onCardMouseMove(e) {
@@ -156,9 +160,7 @@ export default function Dashboard() {
 
         // 위로 올라갈 때 - 이동하는 카드가 잔상 카드높이가 카드의 높이갚만큼 감소됐을 때
         if (copyCard.offsetTop < card.offsetTop - card.offsetHeight - 10) {
-          if (!prevNode) {
-            // card.parentNode.insertBefore(card, card.parentNode.firstChild);
-          } else {
+          if (prevNode) {
             card.parentNode.insertBefore(card, prevNode);
           }
         }
@@ -190,16 +192,14 @@ export default function Dashboard() {
               ".column-contents"
             );
             prevColumnContents.appendChild(card);
-          } else {
-            // columnContentsNode.appendChild(card);
           }
         }
 
+        //카드가 오른쪽으로 이동할 때
         if (
           copyCard.offsetLeft >
           columnNode.offsetLeft + columnNode.offsetWidth / 2 + 20
         ) {
-          //카드가 오른쪽으로 이동할 때
           if (
             copyCard.offsetLeft >=
             columnNode.offsetLeft + columnNode.offsetWidth / 2
@@ -212,8 +212,6 @@ export default function Dashboard() {
                 ".column-contents"
               );
               nextColumnContents.appendChild(card);
-            } else {
-              // columnContentsNode.appendChild(card);
             }
           }
         }
