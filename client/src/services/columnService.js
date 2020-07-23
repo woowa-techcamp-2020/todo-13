@@ -1,4 +1,3 @@
-const API_SERVER_URL = "http://localhost:3000/api";
 const header = new Headers({
   "Content-Type": "application/json",
 });
@@ -10,7 +9,7 @@ export function fetchColumnsFromDB() {
       headers: header,
     };
 
-    fetch(`${API_SERVER_URL}/column`, options)
+    fetch(`${process.env.API_URL}/column`, options)
       .then((response) => response.json())
       .then((data) => {
         resolve(data);
@@ -27,7 +26,7 @@ export function updateColumnTitleInDB(id, { username, column_name }) {
       body: JSON.stringify({ username, column_name }),
     };
 
-    fetch(`${API_SERVER_URL}/column/${id}`, options)
+    fetch(`${process.env.API_URL}/column/${id}`, options)
       .then((res) => res.json())
       .then(resolve())
       .catch((error) => reject(error));

@@ -7,7 +7,10 @@ import {
   updateCardContentInDB,
 } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
-import { fetchColumnsFromDB, updateColumnTitleInDB } from "./services/columnService";
+import {
+  fetchColumnsFromDB,
+  updateColumnTitleInDB,
+} from "./services/columnService";
 import { getCreatedAtMessage, getTimeDifferenceFromNow } from "./utils/util";
 
 export const state = {
@@ -47,7 +50,8 @@ export const state = {
     data: false,
     listeners: {},
   },
-  isAddCardFormVisible: { // { id: , isVisible, }
+  isAddCardFormVisible: {
+    // { id: , isVisible, }
     data: [],
     listeners: {},
   },
@@ -89,11 +93,13 @@ export function getCategories() {
 }
 
 export async function updateCategories(idx, value) {
-  const oldColumnName = state.categories.data.filter(item => item.id === idx)[0].column_name;
+  const oldColumnName = state.categories.data.filter(
+    (item) => item.id === idx
+  )[0].column_name;
 
-  state.categories.data = state.categories.data.map(item => {
+  state.categories.data = state.categories.data.map((item) => {
     if (item.id === parseInt(idx)) {
-      return { id: item.id, column_name: value};
+      return { id: item.id, column_name: value };
     }
     return item;
   });
@@ -108,7 +114,7 @@ export async function updateCategories(idx, value) {
 
   publish(state.cards);
 
-  await updateColumnTitleInDB(idx, {username: "Jason", column_name: value});
+  await updateColumnTitleInDB(idx, { username: "Jason", column_name: value });
 }
 
 export function getIsSidebarVisible() {
@@ -140,10 +146,13 @@ export function getCards() {
 }
 
 export async function createCard(cardData) {
+  const category = state.categories.data.filter(
+    (item) => item.id === cardData.index
+  )[0].column_name;
   const newCard = {
     author: "Jason", // TODO: get loggined User data
     content: cardData.content,
-    category: state.categories.data[cardData.index],
+    category
   };
   await insertCreatedCardIntoDB(newCard);
 
@@ -323,16 +332,20 @@ export function clearCardFormText() {
 }
 
 export function getIsAddCardFormVisible(id) {
-  const target = state.isAddCardFormVisible.data.filter(item => item.id === id);
+  const target = state.isAddCardFormVisible.data.filter(
+    (item) => item.id === id
+  );
   return target[0].isVisible;
 }
 
 export function toggleIsAddCardFormVisible(idx) {
-  state.isAddCardFormVisible.data = state.isAddCardFormVisible.data.map(item => {
-    if (item.id === parseInt(idx)) {
-      return {id: item.id, isVisible: !item.isVisible};
+  state.isAddCardFormVisible.data = state.isAddCardFormVisible.data.map(
+    (item) => {
+      if (item.id === parseInt(idx)) {
+        return { id: item.id, isVisible: !item.isVisible };
+      }
+      return item;
     }
-    return item;
-  })
+  );
   publish(state.isAddCardFormVisible);
 }
