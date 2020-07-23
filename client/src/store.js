@@ -167,7 +167,7 @@ export async function updateCard(id, content) {
   });
 }
 
-export function moveCard(data) {
+export async function moveCard(data) {
   // 카드의 순서와 이동한 컬럼으로 카테고리 값 바꿔주기
   const {
     cardId,
