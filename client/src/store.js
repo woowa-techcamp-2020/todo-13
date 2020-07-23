@@ -5,14 +5,15 @@ import {
   updateMovedCardInfo,
   deleteCardInDB,
   updateCardContentInDB,
-  updateMovedCardInfo
 } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
+import { fetchColumnsFromDB } from "./services/columnService";
 import { getCreatedAtMessage, getTimeDifferenceFromNow } from "./utils/util";
 
 export const state = {
   categories: {
-    data: ["해야할 일", "하는 중", "다 했어"],
+    // data: ["해야할 일", "하는 중", "다 했어", "나중에 할래"],
+    data: [],
     listeners: {},
   },
   cards: {
@@ -48,7 +49,7 @@ export const state = {
     listeners: {},
   },
   isAddCardFormVisible: {
-    data: [false, false, false],
+    data: [],
     listeners: {},
   },
   targetCardId: {
@@ -73,6 +74,16 @@ const publish = (key) =>
   Object.values(key.listeners).forEach((eventHandler) =>
     eventHandler(key.data)
   );
+
+export async function fetchCategories() {
+  state.categories.data = await fetchColumnsFromDB();
+  publish(state.categories);
+
+  state.isAddCardFormVisible.data = state.categories.data.map((category) => {
+    return { id: category.id, isVisible: false };
+  });
+  publish(state.isAddCardFormVisible);
+}
 
 export function getCategories() {
   return state.categories.data;
@@ -301,11 +312,17 @@ export function clearCardFormText() {
   publish(state.cardFormText);
 }
 
-export function getIsAddCardFormVisible(idx) {
-  return state.isAddCardFormVisible.data[idx];
+export function getIsAddCardFormVisible(id) {
+  const target = state.isAddCardFormVisible.data.filter(item => item.id === id);
+  return target[0].isVisible;
 }
 
 export function toggleIsAddCardFormVisible(idx) {
-  state.isAddCardFormVisible.data[idx] = !state.isAddCardFormVisible.data[idx];
+  state.isAddCardFormVisible.data = state.isAddCardFormVisible.data.map(item => {
+    if (item.id === parseInt(idx)) {
+      return {id: item.id, isVisible: !item.isVisible};
+    }
+    return item;
+  })
   publish(state.isAddCardFormVisible);
 }

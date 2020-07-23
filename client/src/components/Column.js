@@ -16,8 +16,8 @@ import AddCardForm from "./AddCardForm";
 
 // TODO: Add drag and drop feature
 
-export default function Column(props, index) {
-  const componentName = `column-${index}`;
+export default function Column(props) {
+  const componentName = `column-${props.category.id}`;
 
   function onCardCloseBtnClick(e) {
     const cardCloseBtns = [
@@ -61,14 +61,14 @@ export default function Column(props, index) {
   }
 
   function render() {
-    const cards = getCards().filter((card) => card.category === props.category);
+    const cards = getCards().filter((card) => card.category === props.category.column_name);
 
-    const isAddCardFormVisible = getIsAddCardFormVisible(index);
+    const isAddCardFormVisible = getIsAddCardFormVisible(props.category.id);
 
     const html = `
       <div class="column-header">
         <div class="column-card-length">${cards.length}</div>
-        <div class="column-title">${props.category}</div>
+        <div class="column-title">${props.category.column_name}</div>
         <div class="column-header-btns">
           <button class="column-edit">
             <ion-icon name='pencil-outline'></ion-icon>
@@ -85,7 +85,7 @@ export default function Column(props, index) {
           </button>
         </div>
       </div>
-      ${AddCardForm(index)}
+      ${AddCardForm(props.category.id)}
       <div class="column-contents">
         ${cards
           .map((card) => {
