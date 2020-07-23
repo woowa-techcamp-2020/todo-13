@@ -46,7 +46,7 @@ export function getLatestCardIdFromDB(newCard) {
   });
 }
 
-export function updateMovedCardInfo(data) {
+export function updateMovedCardInfo(id, data) {
   return new Promise((resolve, reject) => {
     const options = {
       method: "PATCH",
@@ -66,13 +66,13 @@ export function updateCardContentInDB(id, { author, content }) {
     const options = {
       method: "PUT",
       headers: header,
-      body: JSON.stringify({ author, content })
+      body: JSON.stringify({ author, content }),
     };
 
     fetch(`${API_SERVER_URL}/card/${id}`, options)
-    .then(res => res.json())
-    .then(resolve())
-    .catch(error => reject(error));
+      .then((res) => res.json())
+      .then(resolve())
+      .catch((error) => reject(error));
   });
 }
 
@@ -80,12 +80,12 @@ export function deleteCardInDB(id) {
   return new Promise((resolve, reject) => {
     const options = {
       method: "DELETE",
-      headers: header
+      headers: header,
     };
 
     fetch(`${API_SERVER_URL}/card/${id}`, options)
-    .then(res => res.json())
-    .then(resolve())
-    .catch(error => reject(error));
+      .then((res) => res.json())
+      .then(resolve())
+      .catch((error) => reject(error));
   });
 }
