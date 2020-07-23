@@ -1,3 +1,5 @@
+import { getTimeDifferenceInSecond, getCreatedAtMessage } from "../utils/util";
+
 const API_SERVER_URL = "http://localhost:3000/api";
 const header = new Headers({
   "Content-Type": "application/json",
@@ -13,10 +15,10 @@ export function fetchActivitiesFromDB() {
       .then((response) => response.json())
       .then((data) => {
         data.forEach(
-          (activity) =>
-            (activity.created_at = activity.created_at
-              .slice(0, 19)
-              .replace("T", " "))
+          (activity) => {
+            const timeDifferenceInSecond = getTimeDifferenceInSecond(activity.created_at);
+            activity.created_at = getCreatedAtMessage(timeDifferenceInSecond);
+          }
         );
         resolve(data);
       })

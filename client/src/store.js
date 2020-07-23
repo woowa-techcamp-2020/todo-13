@@ -130,13 +130,9 @@ export async function createCard(cardData) {
   console.log(latestId);
 
   state.cards.data.unshift(newCard);
-  state.items.data.unshift({
-    username: "user1",
-    content: `added ${cardData.content}`,
-    created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
-  });
-
   publish(state.cards);
+  
+  state.items.data = await fetchActivitiesFromDB();
   publish(state.items);
 }
 
