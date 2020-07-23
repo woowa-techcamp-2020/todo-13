@@ -13,7 +13,7 @@ class ColumnService {
     const oldColumnName = this.ColumnRepository.findColumnById(id);
     await this.ColumnRepository.updateColumnById(id, columnDTO);
 
-    // TODO content string 만들고 user 정보 가져오기
+    // TODO: 수정 액션을 한 user 정보 가져오기
     const activityContent = `edited column name from ${oldColumnName} to ${columnDTO.column_name}`;
     await this.ActivityRepository.createActivity("", activityContent);
   }
