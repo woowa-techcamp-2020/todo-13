@@ -5,6 +5,7 @@ import {
   updateMovedCardInfo,
   deleteCardInDB,
   updateCardContentInDB,
+  updateMovedCardInfo
 } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
 import { getCreatedAtMessage, getTimeDifferenceFromNow } from "./utils/util";
