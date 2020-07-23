@@ -161,8 +161,8 @@ export async function createCard(cardData) {
   const category = state.categories.data.filter(
     (item) => item.id === cardData.index
   )[0].column_name;
+  
   const newCard = {
-    // author: "Jason", // TODO: get loggined User data
     author: state.username.data,
     content: cardData.content,
     category
@@ -175,38 +175,26 @@ export async function createCard(cardData) {
   state.cards.data.unshift(newCard);
   publish(state.cards);
 
-  state.items.data.unshift({
-    username: newCard.author,
-    content: `added ${newCard.content}`,
-    created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
-  });
+  state.items.data = await fetchActivitiesFromDB();
   publish(state.items);
 }
 
 export async function updateCard(id, content) {
-  // let author = "";
   state.cards.data.forEach((card) => {
     if (card.id === id) {
       card.content = content;
-      // author = card.author;
-      state.items.data.unshift({
-        // username: card.author,
-        username: state.username.data,
-        content: `updated ${content}`,
-        created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
-      });
     }
   });
 
   publish(state.cards);
-  publish(state.items);
 
-  // TODO: call [BE] PUT or PATCH 'card/{id}' API
   await updateCardContentInDB(id, {
-    // author,
     author: state.username.data,
     content,
   });
+
+  state.items.data = await fetchActivitiesFromDB();
+  publish(state.items);
 }
 
 export async function moveCard(data) {
@@ -228,6 +216,9 @@ export async function moveCard(data) {
 
   state.cards.data = await fetchCardsFromDB();
   publish(state.cards);
+
+  
+  state.items.data = await fetchActivitiesFromDB();
   publish(state.items);
 }
 
@@ -244,7 +235,7 @@ export async function deleteCard(id) {
     .filter((card) => card !== null);
 
   state.items.data.unshift({
-    // username: deletedCard.author,
+    username: deletedCard.author,
     username: state.username.data,
     content: `removed ${deletedCard.content}`,
     created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
@@ -252,7 +243,7 @@ export async function deleteCard(id) {
 
   publish(state.cards);
   publish(state.items);
-
+  
   await deleteCardInDB(id);
 }
 
