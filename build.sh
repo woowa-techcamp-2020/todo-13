@@ -16,7 +16,7 @@ fi
 cd ./client
 
 echo "FE 빌드를 시작합니다..."
-npx webpack
+npm run build
 
 echo "빌드 된 결과 bundle 파일을 server의 public 디렉토리로 복사합니다"
 cp ./public/index_bundle.js ../server/public/
