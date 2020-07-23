@@ -25,6 +25,7 @@
     flex-direction: column;
 
     .popup-btns {
+      display: flex;
       button {
         margin: 0 10px;
         width: 6rem;
@@ -37,7 +38,6 @@
     }
   }
 }
-
 
 .hidden {
   display: none;

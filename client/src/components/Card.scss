@@ -1,13 +1,28 @@
 $BORDER_COLOR: #bebebe;
 
+@keyframes scale-display {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .card {
   background-color: transparent;
   margin-bottom: 10px;
-  padding: 5px;
+  padding: 10px 5px;
   border-radius: 5px;
   border: 1px solid $BORDER_COLOR;
   display: flex;
   box-sizing: border-box;
+
+  &:hover {
+    border-color: #de0454;
+    animation: scale-display 0.5s;
+  }
 
   ion-icon {
     display: flex;
@@ -47,10 +62,9 @@ $BORDER_COLOR: #bebebe;
   }
 
   .card-delete {
-    font-size: 1.2rem;
     margin: 0;
-    cursor: pointer;
     z-index: 1;
+    align-items: flex-start;
   }
 }
 

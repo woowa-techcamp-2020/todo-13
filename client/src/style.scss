@@ -14,5 +14,24 @@ body {
 
   button {
     font-family: "Do Hyeon", sans-serif;
+    align-items: center;
+    display: flex;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+
+    &:focus-within {
+      border: 0;
+    }
+
+    &:hover {
+      color: #e91e63;
+    }
   }
 }
