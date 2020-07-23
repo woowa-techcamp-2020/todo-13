@@ -11,8 +11,10 @@ class ColumnRepository {
       const query = "SELECT * FROM Columns";
       const [rows] = await conn.query(query);
       const columns = rows.map((row) => {
-        return new this.columnDTO({ row });
+        return new this.columnDTO( row );
       });
+
+      return columns;
     } catch (error) {
       console.error(error);
     } finally {
@@ -23,10 +25,9 @@ class ColumnRepository {
   async findColumnById(id) {
     const conn = await this.db.getConnection();
     try {
-      const query = "SELECT * FROM Columns WHERE=?";
+      const query = "SELECT * FROM Columns WHERE id=?";
       const [rows] = await conn.query(query, [id]);
-      const row = rows[0];
-      const column = new this.columnDTO({ row });
+      const column = new this.columnDTO(rows[0]);
 
       return column;
     } catch (error) {
@@ -40,7 +41,7 @@ class ColumnRepository {
     // TODO: UPDATE column_name of a record
     const conn = await this.db.getConnection();
     try {
-      const query = "UPDATE Columns SET column_name=? WHERE=?";
+      const query = "UPDATE Columns SET column_name=? WHERE id=?";
       await conn.query(query, [columnDTO.column_name, id]);
     } catch (error) {
       console.error(error);

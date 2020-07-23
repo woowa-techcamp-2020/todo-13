@@ -9,13 +9,13 @@ class ColumnService {
     return columns;
   }
 
-  async editColumnName(id, columnDTO) {
-    const oldColumnName = this.ColumnRepository.findColumnById(id);
+  async editColumnName(id, username, columnDTO) {
+    const targetColumn = await this.ColumnRepository.findColumnById(id);
     await this.ColumnRepository.updateColumnById(id, columnDTO);
 
     // TODO: 수정 액션을 한 user 정보 가져오기
-    const activityContent = `edited column name from ${oldColumnName} to ${columnDTO.column_name}`;
-    await this.ActivityRepository.createActivity("", activityContent);
+    const activityContent = `edited column name from ${targetColumn.column_name} to ${columnDTO.column_name}`;
+    await this.ActivityRepository.createActivity(username, activityContent);
   }
 }
 

@@ -4,6 +4,6 @@ const router = express.Router();
 const columnController = require("../controllers/column-controller");
 
 router.get("/", columnController.getAllColumns);
-router.put("/", columnController.editColumnName);
+router.put("/:id", columnController.editColumnName);
 
 module.exports = router;
