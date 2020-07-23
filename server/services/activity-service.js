@@ -8,6 +8,7 @@ class ActivityService {
     return activities;
   }
 
+  /*
   async createActivity(activityDTO) {
     try {
       await this.ActivityRepository.createActivity(activityDTO);
@@ -15,6 +16,7 @@ class ActivityService {
       throw error;
     }
   }
+  */
 }
 
 module.exports = ActivityService;

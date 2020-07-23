@@ -8,7 +8,11 @@ class ColumnRepository {
         // TODO: SELECT every record in Columns table
     }
 
-    async updateColumnById(id) {
+    async findColumnById(id) {
+        
+    }
+
+    async updateColumnById(id, columnDTO) {
         // TODO: UPDATE column_name of a record
     }
 }
