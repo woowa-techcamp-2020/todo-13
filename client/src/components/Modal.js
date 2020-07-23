@@ -11,12 +11,21 @@ import {
   updateCategories,
   clearTargetCardId,
   clearTargetColumnId,
+  getUserAuth,
 } from "../store";
 
 export default function Modal() {
   const componentName = "modal";
 
   function onSaveBtnClick(e) {
+    const auth = getUserAuth();
+    if (auth === "guest") {
+      alert("로그인이 필요한 서비스입니다");
+      toggleModal();
+      clearTargetCardId();
+      return;
+    }
+
     const $modalContents = e.target.closest("div.modal-contents");
     const $modalNote = $modalContents.childNodes[3];
     const editContent = $modalNote.value;

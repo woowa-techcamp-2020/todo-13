@@ -6,6 +6,7 @@ import {
   toggleIsAddCardFormVisible,
   onCardFormTextChange,
   createCard,
+  getUserAuth,
 } from "../store";
 import { bindEvent } from "../utils/util";
 
@@ -13,6 +14,13 @@ export default function AddCardForm(index) {
   const componentName = "column-add-card-form";
 
   function onAddCardFormAddBtnClick(e) {
+    const auth = getUserAuth();
+    if (auth === "guest") {
+      alert("로그인이 필요한 서비스입니다");
+      toggleIsAddCardFormVisible(index);
+      return;
+    }
+    
     const $textarea = document.querySelector(
       `div#${componentName}-wrapper-${index} textarea.column-card-content`
     );

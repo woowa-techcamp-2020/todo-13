@@ -9,7 +9,8 @@ import {
   togglePopup,
   getTargetCardId,
   deleteCard,
-  clearTargetCardId
+  clearTargetCardId,
+  getUserAuth,
 } from "../store";
 
 export default function Popup() {
@@ -20,7 +21,13 @@ export default function Popup() {
   }
 
   function onConfirmBtnClick(e) {
-    // delete Card
+    const auth = getUserAuth();
+    if (auth !== "admin") {
+      alert(`${(auth === "guest") ? "로그인이 필요한 서비스입니다": "삭제 권한이 없습니다"}`);
+      togglePopup();
+      clearTargetCardId();
+      return;
+    }
     const targetCardId = getTargetCardId();
     deleteCard(targetCardId);
     togglePopup();

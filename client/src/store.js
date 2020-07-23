@@ -38,6 +38,14 @@ export const state = {
     data: "",
     listeners: {},
   },
+  userAuth: {
+    data: "guest",
+    listeners: {},
+  },
+  username: {
+    data: "",
+    listeners: {},
+  },
   isSidebarVisible: {
     data: "",
     listeners: {},
@@ -348,4 +356,23 @@ export function toggleIsAddCardFormVisible(idx) {
     }
   );
   publish(state.isAddCardFormVisible);
+}
+
+export function getUserAuth() {
+  return state.userAuth.data;
+}
+
+export function setUserAuth(value) {
+  console.log(`setting user auth ${value}`);
+  state.userAuth.data = value;
+  publish(state.userAuth);
+} 
+
+export function getUsername() {
+  return state.username.data;
+}
+
+export function setUsername(name) {
+  state.username.data = name;
+  publish(state.username);
 }

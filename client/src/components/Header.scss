@@ -9,6 +9,12 @@ $BACKGROUND_COLOR: #3e3e3e;
   font-size: 2rem;
   border-bottom: 1px solid #bebebe;
 
+  .header-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 30vw;
+  }
+
   .header-menu {
     cursor: pointer;
   }
