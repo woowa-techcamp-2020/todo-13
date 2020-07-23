@@ -111,7 +111,6 @@ export async function updateCategories(idx, value) {
     }
     return item;
   });
-
   publish(state.categories);
 
   state.cards.data.map((card) => {
@@ -119,8 +118,13 @@ export async function updateCategories(idx, value) {
       card.category = value;
     }
   });
-
   publish(state.cards);
+
+  state.items.data.unshift({
+    username: state.username.data,
+    content: `edited column name from ${oldColumnName} to ${value}`,
+    created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
+  })
 
   await updateColumnTitleInDB(idx, { username: "Jason", column_name: value });
 }
