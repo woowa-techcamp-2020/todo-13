@@ -50,6 +50,7 @@ async function createCard(req, res, next) {
     const activityRepositoryInstance = new ActivityRepository(Activity, db);
     const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
 
+    console.log(card);
     await cardServiceInstance.createCard(card);
 
     res.status(201).json({ message: "succefully created new card" });

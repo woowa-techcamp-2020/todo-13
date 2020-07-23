@@ -44,8 +44,10 @@ class CardService {
     // Activity Repository 이용해서 이동 로그 쌓기
     if (data.prevColumn === data.nextColumn) {
       await this.CardRepository.updateCardOrderInSameColumn(id, data);
+      // TODO : activity 추가
     } else {
       await this.CardRepository.updateCardOrderInOtherColumn(id, data);
+      // TODO : activity 추가
     }
 
     // TODO

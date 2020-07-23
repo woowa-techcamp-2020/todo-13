@@ -48,9 +48,16 @@ export function getLatestCardIdFromDB(newCard) {
 
 export function updateMovedCardInfo(data) {
   return new Promise((resolve, reject) => {
-    const options = {};
+    const options = {
+      method: "PATCH",
+      headers: header,
+      body: JSON.stringify({ data: data }),
+    };
 
-    fetch().then().then(resolve()).catch(reject());
+    fetch(`${API_SERVER_URL}/card/${id}`, options)
+      .then((res) => res.json())
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
   });
 }
 

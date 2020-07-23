@@ -66,45 +66,58 @@ export default function Dashboard() {
       const moveCardPrevNode = card.previousElementSibling;
       const moveCardNextNode = card.nextElementSibling;
 
-      let nextCardData;
-      let nextCategory = "";
-      let nextOrder = 0;
+      const nextCardId = moveCardPrevNode && moveCardPrevNode.id.split("-")[1];
+      const column = card.parentElement.parentElement;
 
-      if (moveCardPrevNode) {
-        const nextCardId = moveCardPrevNode.id.split("-")[1];
-        nextCardData = getTargetCardData(nextCardId);
-        nextOrder = nextCardData.order + 1;
-        nextCategory = nextCardData.category;
-      } else {
-        if (moveCardNextNode) {
-          const nextCardId = moveCardNextNode.id.split("-")[1];
-          nextCardData = getTargetCardData(nextCardId);
-          nextCategory = nextCardData.category;
-        } else {
-          const column = card.parentElement.parentElement;
-          console.log(column);
-          nextCategory = column.querySelector(".column-title").innerText;
-        }
-        nextOrder = 1;
-      }
-      // 2. 데이터를 취합하여 moveCard를 호출한다.
-      const data = {
-        cardId,
-        prevCategory: prevCardData.category,
-        prevOrder: prevCardData.order,
-        nextCategory,
-        nextOrder,
-      };
-
-      moveCard(data);
+      let nextCardData = getTargetCardData(nextCardId);
+      let nextColumn = column.querySelector(".column-title").innerText;
+      let orderInNextColumn = parseInt(
+        column.querySelector(".column-card-length").innerText
+      );
 
       card.classList.remove("card-click");
       e.target.closest(".card-copy").style.display = "none";
       clearTargetCardId();
+
+      if (orderInNextColumn === prevCardData.order_in_column) return;
+
+      // TODO : 너무 복잡한 if 구조... 리팩토링 하기!
+      if (prevCardData.category === nextColumn) {
+        if (prevCardData.order_in_column < orderInNextColumn) {
+          if (moveCardPrevNode) {
+            orderInNextColumn = nextCardData.order_in_column - 1;
+            nextColumn = nextCardData.category;
+          }
+        } else {
+          orderInNextColumn = nextCardData.order_in_column;
+          nextColumn = nextCardData.category;
+        }
+      } else {
+        if (moveCardPrevNode) {
+          orderInNextColumn = nextCardData.order_in_column;
+          nextColumn = nextCardData.category;
+        } else {
+          if (moveCardNextNode) {
+            nextColumn = nextCardData.category;
+          }
+        }
+      }
+
+      // 2. 데이터를 취합하여 moveCard를 호출한다.
+      const data = {
+        cardId,
+        prevColumn: prevCardData.category,
+        orderInPrevColumn: prevCardData.order_in_column,
+        nextColumn,
+        orderInNextColumn,
+      };
+
+      moveCard(data);
     }
   }
 
   function offCopyCard() {
+    // TODO : 꺼졌을 때도 move card update 해주어야한다.
     const copyCard = document.querySelector(".card-copy");
     if (copyCard.style.display === "block") {
       copyCard.style.display = "none";
@@ -112,6 +125,7 @@ export default function Dashboard() {
       if (card.classList.contains("card-click"))
         card.classList.remove("card-click");
     }
+    // TODO : 카드가 원래 자리로 돌아오게 하기..
   }
 
   function onCardMouseMove(e) {
