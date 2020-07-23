@@ -111,6 +111,7 @@ export async function fetchCards() {
 }
 
 export function getCards() {
+  state.cards.data.sort((a, b) => b.order_in_column - a.order_in_column);
   return state.cards.data;
 }
 

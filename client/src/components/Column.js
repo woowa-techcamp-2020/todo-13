@@ -62,7 +62,6 @@ export default function Column(props, index) {
 
   function render() {
     const cards = getCards().filter((card) => card.category === props.category);
-    cards.sort((a, b) => b.order_in_column - a.order_in_column);
 
     const isAddCardFormVisible = getIsAddCardFormVisible(index);
 

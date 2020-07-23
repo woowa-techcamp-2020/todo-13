@@ -150,28 +150,18 @@ class CardRepository {
       let [rows] = await conn.query(columnIdQuery, [prevColumn]);
       const columnId = rows[0].id;
 
-      // order 기준으로
-      // 1. 큰 수 -> 작은 수
-      if (orderInPrevColumn > orderInNextColumn) {
-        const incrementOrderQuery =
-          "UPDATE Cards SET order_in_column = (order_in_column + 1)\
-        where column_id =? and order_in_column >= ? and order_in_column < ?";
-        await conn.query(incrementOrderQuery, [
-          columnId,
-          orderInNextColumn,
-          orderInPrevColumn,
-        ]);
-      } else {
-        // 2. 작은 수 -> 큰 수
-        const decrementOrderQuery =
-          "UPDATE Cards SET order_in_column = (order_in_column - 1)\
+      const orderUpdateQuery =
+        orderInPrevColumn > orderInNextColumn
+          ? "UPDATE Cards SET order_in_column = (order_in_column + 1)\
+        where column_id =? and order_in_column < ? and order_in_column >= ?"
+          : "UPDATE Cards SET order_in_column = (order_in_column - 1)\
         where column_id =? and order_in_column > ? and order_in_column <= ?";
-        await conn.query(decrementOrderQuery, [
-          columnId,
-          orderInPrevColumn,
-          orderInNextColumn,
-        ]);
-      }
+
+      await conn.query(orderUpdateQuery, [
+        columnId,
+        orderInPrevColumn,
+        orderInNextColumn,
+      ]);
 
       // 새로운 column의 order로 카드 정보 update
       const updateTargetCardQuery =
