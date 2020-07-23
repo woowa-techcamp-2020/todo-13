@@ -48,7 +48,10 @@ async function createCard(req, res, next) {
     const card = new Card(req.body);
     const cardRepositoryInstance = new CardRepository(Card, db);
     const activityRepositoryInstance = new ActivityRepository(Activity, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
+    const cardServiceInstance = new CardService(
+      cardRepositoryInstance,
+      activityRepositoryInstance
+    );
 
     console.log(card);
     await cardServiceInstance.createCard(card);
@@ -63,7 +66,10 @@ async function updateCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
     const activityRepositoryInstance = new ActivityRepository(Activity, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
+    const cardServiceInstance = new CardService(
+      cardRepositoryInstance,
+      activityRepositoryInstance
+    );
 
     if (!req.body.content) {
       res.status(400).json({ message: "Bad request" });
@@ -73,10 +79,10 @@ async function updateCard(req, res, next) {
     const card = new Card(req.body);
     await cardServiceInstance.updateCardContent(req.params.id, card);
 
-    res.status(200).json({message: "succefully update card"});
+    res.status(200).json({ message: "succefully update card" });
   } catch (err) {
     console.error(err);
-    res.status(404).json({message: "update card failed"});
+    res.status(404).json({ message: "update card failed" });
   }
 }
 
@@ -84,8 +90,11 @@ async function deleteOneCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
     const activityRepositoryInstance = new ActivityRepository(Activity, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance, activityRepositoryInstance);
-    
+    const cardServiceInstance = new CardService(
+      cardRepositoryInstance,
+      activityRepositoryInstance
+    );
+
     await cardServiceInstance.removeCard(req.params.id);
 
     res.status(200).json({ message: "succefully deleted card" });
@@ -98,7 +107,11 @@ async function deleteOneCard(req, res, next) {
 async function moveCard(req, res, next) {
   try {
     const cardRepositoryInstance = new CardRepository(Card, db);
-    const cardServiceInstance = new CardService(cardRepositoryInstance);
+    const activityRepositoryInstance = new ActivityRepository(Activity, db);
+    const cardServiceInstance = new CardService(
+      cardRepositoryInstance,
+      activityRepositoryInstance
+    );
 
     await cardServiceInstance.moveCard(req.params.id, req.body.data);
 

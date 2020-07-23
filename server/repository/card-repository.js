@@ -190,7 +190,6 @@ class CardRepository {
       const getNextColumnQuery = "SELECT id FROM Columns WHERE column_name=?";
       [rows] = await conn.query(getNextColumnQuery, [data.nextColumn]);
       const nextColumnId = rows[0].id;
-      console.log(prevColumnId, nextColumnId);
 
       // 들어갈 자리 비워주기
       const incrementOrderQuery =
