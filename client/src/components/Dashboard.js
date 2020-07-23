@@ -8,7 +8,6 @@ import {
   setModal,
   toggleIsAddCardFormVisible,
   toggleModal,
-  deleteCard,
   getTargetCardId,
   setTargetCardId,
   getTargetCardData,
@@ -16,6 +15,7 @@ import {
   setTargetCardXY,
   moveCard,
   setTargetColumnId,
+  clearTargetCardId,
 } from "../store";
 import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
@@ -24,7 +24,15 @@ export default function Dashboard() {
   const componentName = "dashboard";
 
   function onCardMouseDown(e) {
-    if (e.target.closest(".card")) {
+    const cardCloseBtns = [
+      ...document.querySelectorAll(
+        `div.card ion-icon.md.hydrated[name=\"close-outline\"]`
+      )
+    ];
+    const isDoubleClick = e.detail !== 1;
+    const hasClickedCloseBtn = cardCloseBtns.includes(e.target);
+
+    if (!isDoubleClick && !hasClickedCloseBtn && e.target.closest(".card")) {
       const $card = e.target.closest(".card");
       $card.classList.add("card-click");
       const cardId = $card.id.split("-")[1];
@@ -69,6 +77,7 @@ export default function Dashboard() {
 
       card.classList.remove("card-click");
       e.target.closest(".card-copy").style.display = "none";
+      clearTargetCardId();
 
       if (orderInNextColumn === prevCardData.order_in_column) return;
 

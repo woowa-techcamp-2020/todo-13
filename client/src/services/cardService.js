@@ -46,7 +46,7 @@ export function getLatestCardIdFromDB(newCard) {
   });
 }
 
-export function updateMovedCardInfo(id, data) {
+export function updateMovedCardInfo(data) {
   return new Promise((resolve, reject) => {
     const options = {
       method: "PATCH",
@@ -58,5 +58,34 @@ export function updateMovedCardInfo(id, data) {
       .then((res) => res.json())
       .then((data) => resolve(data))
       .catch((error) => reject(error));
+  });
+}
+
+export function updateCardContentInDB(id, { author, content }) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "PUT",
+      headers: header,
+      body: JSON.stringify({ author, content })
+    };
+
+    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    .then(res => res.json())
+    .then(resolve())
+    .catch(error => reject(error));
+  });
+}
+
+export function deleteCardInDB(id) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "DELETE",
+      headers: header
+    };
+
+    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    .then(res => res.json())
+    .then(resolve())
+    .catch(error => reject(error));
   });
 }
