@@ -7,13 +7,12 @@ import {
   updateCardContentInDB,
 } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
-import { fetchColumnsFromDB } from "./services/columnService";
+import { fetchColumnsFromDB, updateColumnTitleInDB } from "./services/columnService";
 import { getCreatedAtMessage, getTimeDifferenceFromNow } from "./utils/util";
 
 export const state = {
   categories: {
-    // data: ["해야할 일", "하는 중", "다 했어", "나중에 할래"],
-    data: [],
+    data: [], //  {id: , column_name: }
     listeners: {},
   },
   cards: {
@@ -48,7 +47,7 @@ export const state = {
     data: false,
     listeners: {},
   },
-  isAddCardFormVisible: {
+  isAddCardFormVisible: { // { id: , isVisible, }
     data: [],
     listeners: {},
   },
@@ -89,16 +88,27 @@ export function getCategories() {
   return state.categories.data;
 }
 
-export function updateCategories(idx, value) {
+export async function updateCategories(idx, value) {
+  const oldColumnName = state.categories.data.filter(item => item.id === idx)[0].column_name;
+
+  state.categories.data = state.categories.data.map(item => {
+    if (item.id === parseInt(idx)) {
+      return { id: item.id, column_name: value};
+    }
+    return item;
+  });
+
+  publish(state.categories);
+
   state.cards.data.map((card) => {
-    if (card.category === state.categories.data[idx]) {
+    if (card.category === oldColumnName) {
       card.category = value;
     }
   });
-  state.categories.data[idx] = value;
 
   publish(state.cards);
-  publish(state.categories);
+
+  await updateColumnTitleInDB(idx, {username: "Jason", column_name: value});
 }
 
 export function getIsSidebarVisible() {

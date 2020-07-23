@@ -13,25 +13,23 @@ export function fetchColumnsFromDB() {
     fetch(`${API_SERVER_URL}/column`, options)
       .then((response) => response.json())
       .then((data) => {
-        // const categories = data.map((item) => item.column_name);
-        // resolve(categories);
         resolve(data);
       })
       .catch((error) => reject(error));
   });
 }
 
-// export function updateColumnTitleInDB(id, { username, column_name }) {
-//   return new Promise((resolve, reject) => {
-//     const options = {
-//       method: "PUT",
-//       headers: header,
-//       body: JSON.stringify({ author, content }),
-//     };
+export function updateColumnTitleInDB(id, { username, column_name }) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "PUT",
+      headers: header,
+      body: JSON.stringify({ username, column_name }),
+    };
 
-//     fetch(`${API_SERVER_URL}//${id}`, options)
-//       .then((res) => res.json())
-//       .then(resolve())
-//       .catch((error) => reject(error));
-//   });
-// }
+    fetch(`${API_SERVER_URL}/column/${id}`, options)
+      .then((res) => res.json())
+      .then(resolve())
+      .catch((error) => reject(error));
+  });
+}
