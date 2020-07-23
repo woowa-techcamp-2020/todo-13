@@ -22,13 +22,19 @@ class CardService {
   async createCard(cardDTO) {
     await this.CardRepository.createCard(cardDTO);
     const activityContent = `added ${cardDTO.content} to ${cardDTO.category}`;
-    await this.ActivityRepository.createActivity(cardDTO.author, activityContent);
+    await this.ActivityRepository.createActivity(
+      cardDTO.author,
+      activityContent
+    );
   }
 
   async updateCardContent(id, cardDTO) {
     await this.CardRepository.updateCardContentById(id, cardDTO);
     const activityContent = `updated ${cardDTO.content}`;
-    await this.ActivityRepository.createActivity(cardDTO.author, activityContent);
+    await this.ActivityRepository.createActivity(
+      cardDTO.author,
+      activityContent
+    );
   }
 
   async removeCard(id) {
@@ -36,20 +42,41 @@ class CardService {
     await this.CardRepository.removeCardById(id);
 
     const activityContent = `removed ${targetCard.content}`;
-    await this.ActivityRepository.createActivity(targetCard.author, activityContent);
+    await this.ActivityRepository.createActivity(
+      targetCard.author,
+      activityContent
+    );
   }
 
   async moveCard(id, data) {
-    // TODO: 사용자가 card를 이동했을 때 필요한 logic 추가
-    // Activity Repository 이용해서 이동 로그 쌓기
-    if (data.prevColumn === data.nextColumn) {
+    const {
+      prevColumn,
+      nextColumn,
+      orderInNextColumn,
+      orderInPrevColumn,
+    } = data;
+    const targetCard = await this.CardRepository.findCardById(id);
+    let activityContent = "";
+    if (prevColumn === nextColumn) {
       await this.CardRepository.updateCardOrderInSameColumn(id, data);
       // TODO : activity 추가
+      const from =
+        orderInPrevColumn > orderInNextColumn
+          ? orderInNextColumn
+          : orderInPrevColumn;
+      const to =
+        from === orderInPrevColumn ? orderInNextColumn : orderInPrevColumn;
+      activityContent = `moved ${targetCard.content} from ${from}번째 to ${to}번째  at ${prevColumn}`;
     } else {
       await this.CardRepository.updateCardOrderInOtherColumn(id, data);
-      // TODO : activity 추가
+      activityContent = `moved ${targetCard.content} from ${prevColumn} to ${nextColumn}`;
     }
 
+    // Activity Repository 이용해서 이동 로그 쌓기
+    await this.ActivityRepository.createActivity(
+      targetCard.author,
+      activityContent
+    );
     // TODO
     // UPDATE query 1.
     //   이동한 카드의 카테고리(column_id) 수정

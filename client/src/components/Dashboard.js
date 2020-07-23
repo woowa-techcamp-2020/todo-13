@@ -80,6 +80,7 @@ export default function Dashboard() {
 
       // TODO : 너무 복잡한 if 구조... 리팩토링 하기!
       if (prevCardData.category === nextColumn) {
+        if (orderInNextColumn === prevCardData.order_in_column) return;
         if (prevCardData.order_in_column < orderInNextColumn) {
           if (moveCardPrevNode) {
             orderInNextColumn = nextCardData.order_in_column - 1;
