@@ -15,6 +15,23 @@ $BACKGROUND_COLOR: #3e3e3e;
     width: 30vw;
   }
 
+  .header-greeting {
+    font-size: 1rem;
+    font-weight: 600;
+    width: 6rem;
+    text-align: center;
+  }
+
+  button {
+    margin: 0 10px;
+    width: 6rem;
+    padding: 12px 0;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 0.8rem;
+  }
+
   .header-menu {
     cursor: pointer;
   }

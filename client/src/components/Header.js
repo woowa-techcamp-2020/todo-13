@@ -1,6 +1,14 @@
 import "./Header.scss";
 import { bindEvent } from "../utils/util";
-import { subscribe, fetchItems, toggleSidebar, getUserAuth, setUserAuth } from "../store";
+import {
+  subscribe,
+  fetchItems,
+  toggleSidebar,
+  getUserAuth,
+  setUserAuth,
+  setUsername,
+  getUsername,
+} from "../store";
 
 export default function Header(props) {
   const componentName = "header";
@@ -11,19 +19,26 @@ export default function Header(props) {
   }
 
   function onAdminLoginClick(e) {
-    setUserAuth("admin")
+    // TODO: remove hard coded parameter
+    setUsername("Friday");
+    setUserAuth("admin");
   }
 
   function onUserLoginClick(e) {
+    // TODO: remove hard coded parameter
+    setUsername("Stark");
     setUserAuth("user");
   }
 
   function onLogOutBtnClick(e) {
+    // TODO: remove hard coded parameter
+    setUsername("");
     setUserAuth("guest");
   }
 
   function render() {
     const auth = getUserAuth();
+    const username = getUsername();
 
     const html = `
     <div class="header-title">📝 TODO</div>
@@ -32,7 +47,8 @@ export default function Header(props) {
         auth === "guest"
           ? `<button class="header-admin-login-btn"> log in as Admin </button>
           <button class="header-user-login-btn"> log in as User </button>`
-          : "<button class=\"header-logout-btn\"> log out </button>"
+          : `<h1 class="header-greeting">${username}</h1>
+          <button class="header-logout-btn"> log out </button>`
       }
       <div class="header-menu">menu</div>
     </div>

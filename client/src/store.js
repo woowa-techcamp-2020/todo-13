@@ -158,7 +158,8 @@ export async function createCard(cardData) {
     (item) => item.id === cardData.index
   )[0].column_name;
   const newCard = {
-    author: "Jason", // TODO: get loggined User data
+    // author: "Jason", // TODO: get loggined User data
+    author: state.username.data,
     content: cardData.content,
     category
   };
@@ -179,13 +180,14 @@ export async function createCard(cardData) {
 }
 
 export async function updateCard(id, content) {
-  let author = "";
+  // let author = "";
   state.cards.data.forEach((card) => {
     if (card.id === id) {
       card.content = content;
-      author = card.author;
+      // author = card.author;
       state.items.data.unshift({
-        username: card.author,
+        // username: card.author,
+        username: state.username.data,
         content: `updated ${content}`,
         created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
       });
@@ -197,7 +199,8 @@ export async function updateCard(id, content) {
 
   // TODO: call [BE] PUT or PATCH 'card/{id}' API
   await updateCardContentInDB(id, {
-    author,
+    // author,
+    author: state.username.data,
     content,
   });
 }
@@ -237,7 +240,8 @@ export async function deleteCard(id) {
     .filter((card) => card !== null);
 
   state.items.data.unshift({
-    username: deletedCard.author,
+    // username: deletedCard.author,
+    username: state.username.data,
     content: `removed ${deletedCard.content}`,
     created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
   });
@@ -363,7 +367,6 @@ export function getUserAuth() {
 }
 
 export function setUserAuth(value) {
-  console.log(`setting user auth ${value}`);
   state.userAuth.data = value;
   publish(state.userAuth);
 } 
