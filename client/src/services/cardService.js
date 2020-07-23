@@ -1,4 +1,3 @@
-const API_SERVER_URL = "http://localhost:3000/api";
 const header = new Headers({
   "Content-Type": "application/json",
 });
@@ -10,7 +9,7 @@ export function fetchCardsFromDB() {
       headers: header,
     };
 
-    fetch(`${API_SERVER_URL}/card`, options)
+    fetch(`${process.env.API_URL}/card`, options)
       .then((response) => response.json())
       .then((data) => resolve(data))
       .catch((error) => reject(error));
@@ -26,7 +25,7 @@ export function insertCreatedCardIntoDB(newCard) {
       body: JSON.stringify(newCard),
     };
 
-    fetch(`${API_SERVER_URL}/card`, options)
+    fetch(`${process.env.API_URL}/card`, options)
       .then((res) => res.json())
       .then(resolve(newCard))
       .catch((error) => reject(error));
@@ -39,7 +38,7 @@ export function getLatestCardIdFromDB(newCard) {
       method: "GET",
       headers: header,
     };
-    fetch(`${API_SERVER_URL}/card/latest_id`, options)
+    fetch(`${process.env.API_URL}/card/latest_id`, options)
       .then((res) => res.json())
       .then((data) => resolve(data.latestId))
       .catch((error) => reject(error));
@@ -54,7 +53,7 @@ export function updateMovedCardInfo(id, data) {
       body: JSON.stringify({ data: data }),
     };
 
-    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    fetch(`${process.env.API_URL}/card/${id}`, options)
       .then((res) => res.json())
       .then((data) => resolve(data))
       .catch((error) => reject(error));
@@ -69,7 +68,7 @@ export function updateCardContentInDB(id, { author, content }) {
       body: JSON.stringify({ author, content }),
     };
 
-    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    fetch(`${process.env.API_URL}/card/${id}`, options)
       .then((res) => res.json())
       .then(resolve())
       .catch((error) => reject(error));
@@ -83,7 +82,7 @@ export function deleteCardInDB(id) {
       headers: header,
     };
 
-    fetch(`${API_SERVER_URL}/card/${id}`, options)
+    fetch(`${process.env.API_URL}/card/${id}`, options)
       .then((res) => res.json())
       .then(resolve())
       .catch((error) => reject(error));
