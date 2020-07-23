@@ -53,10 +53,9 @@ class CardRepository {
   async findLatestId() {
     const conn = await this.db.getConnection();
     try {
-      const [rows] = await conn.query(
-        "SELECT id FROM Cards ORDER BY id DESC LIMIT 1"
-      );
-      return rows[0].id;
+      const [rows] = await conn.query("SELECT id FROM Cards ORDER BY id DESC LIMIT 1");
+      const latestId = rows[0] ? rows[0].id : 1;
+      return latestId;
     } catch (error) {
       console.error(error);
     } finally {
@@ -84,8 +83,12 @@ class CardRepository {
       const getLastOrderQeury =
         "SELECT order_in_column FROM Cards WHERE column_id=? ORDER BY order_in_column DESC LIMIT 1";
       [rows] = await conn.query(getLastOrderQeury, [columnId]);
+<<<<<<< HEAD
       // TODO : 컬럼의 row가 없을 때 값을 가져오지 못한다..
       const lastOrderNumber = rows[0] ? rows[0].order_in_column : 0;
+=======
+      const lastOrderNumber = rows[0] ? rows[0].order_in_column : 1;
+>>>>>>> Update time message in Sidebar > Item component
 
       // 새로 card insert
       const insertCardQuery =

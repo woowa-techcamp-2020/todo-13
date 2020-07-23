@@ -8,6 +8,7 @@ export default function Header(props) {
   const componentName = "header";
 
   function onMenuClick(e) {
+    fetchItems();
     toggleSidebar('active');
   }
 
