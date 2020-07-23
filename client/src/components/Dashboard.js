@@ -78,8 +78,6 @@ export default function Dashboard() {
       card.classList.remove("card-click");
       e.target.closest(".card-copy").style.display = "none";
 
-      if (orderInNextColumn === prevCardData.order_in_column) return;
-
       // TODO : 너무 복잡한 if 구조... 리팩토링 하기!
       if (prevCardData.category === nextColumn) {
         if (prevCardData.order_in_column < orderInNextColumn) {
@@ -96,9 +94,7 @@ export default function Dashboard() {
           orderInNextColumn = nextCardData.order_in_column;
           nextColumn = nextCardData.category;
         } else {
-          if (moveCardNextNode) {
-            nextColumn = nextCardData.category;
-          }
+          orderInNextColumn = orderInNextColumn + 1;
         }
       }
 
@@ -110,6 +106,12 @@ export default function Dashboard() {
         nextColumn,
         orderInNextColumn,
       };
+
+      if (
+        prevCardData.category === nextColumn &&
+        orderInNextColumn === data.orderInPrevColumn
+      )
+        return;
 
       moveCard(data);
       clearTargetCardId();
