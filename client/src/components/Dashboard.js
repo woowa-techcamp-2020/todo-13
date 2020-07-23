@@ -16,6 +16,7 @@ import {
   moveCard,
   setTargetColumnId,
   clearTargetCardId,
+  fetchCategories,
 } from "../store";
 import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
@@ -305,8 +306,8 @@ export default function Dashboard() {
     const html = `
     <div class="columnBox">
       ${categories
-        .map((category, index) => {
-          return Column({ category }, index);
+        .map((category) => {
+          return Column({ category });
         })
         .join("")}
         ${copycard}
@@ -331,6 +332,7 @@ export default function Dashboard() {
     });
   }
 
+  fetchCategories();
   fetchCards();
 
   subscribe(componentName, "categories", render);

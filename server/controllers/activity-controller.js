@@ -16,7 +16,7 @@ async function getAllActivities(req, res, next) {
     res.status(404).end();
   }
 }
-
+/*
 async function createActivity(req, res, next) {
     try {
         const activity = new Activity({
@@ -37,8 +37,9 @@ async function createActivity(req, res, next) {
         res.status(404).send("creating activity has failed");
     }
 }
+*/
 
 module.exports = {
     getAllActivities,
-    createActivity,
+    // createActivity,
 }

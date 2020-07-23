@@ -7,11 +7,12 @@ import {
   updateCardContentInDB,
 } from "./services/cardService";
 import { fetchActivitiesFromDB } from "./services/activityService";
+import { fetchColumnsFromDB, updateColumnTitleInDB } from "./services/columnService";
 import { getCreatedAtMessage, getTimeDifferenceFromNow } from "./utils/util";
 
 export const state = {
   categories: {
-    data: ["해야할 일", "하는 중", "다 했어"],
+    data: [], //  {id: , column_name: }
     listeners: {},
   },
   cards: {
@@ -46,8 +47,8 @@ export const state = {
     data: false,
     listeners: {},
   },
-  isAddCardFormVisible: {
-    data: [false, false, false],
+  isAddCardFormVisible: { // { id: , isVisible, }
+    data: [],
     listeners: {},
   },
   targetCardId: {
@@ -73,20 +74,41 @@ const publish = (key) =>
     eventHandler(key.data)
   );
 
+export async function fetchCategories() {
+  state.categories.data = await fetchColumnsFromDB();
+  publish(state.categories);
+
+  state.isAddCardFormVisible.data = state.categories.data.map((category) => {
+    return { id: category.id, isVisible: false };
+  });
+  publish(state.isAddCardFormVisible);
+}
+
 export function getCategories() {
   return state.categories.data;
 }
 
-export function updateCategories(idx, value) {
+export async function updateCategories(idx, value) {
+  const oldColumnName = state.categories.data.filter(item => item.id === idx)[0].column_name;
+
+  state.categories.data = state.categories.data.map(item => {
+    if (item.id === parseInt(idx)) {
+      return { id: item.id, column_name: value};
+    }
+    return item;
+  });
+
+  publish(state.categories);
+
   state.cards.data.map((card) => {
-    if (card.category === state.categories.data[idx]) {
+    if (card.category === oldColumnName) {
       card.category = value;
     }
   });
-  state.categories.data[idx] = value;
 
   publish(state.cards);
-  publish(state.categories);
+
+  await updateColumnTitleInDB(idx, {username: "Jason", column_name: value});
 }
 
 export function getIsSidebarVisible() {
@@ -300,11 +322,17 @@ export function clearCardFormText() {
   publish(state.cardFormText);
 }
 
-export function getIsAddCardFormVisible(idx) {
-  return state.isAddCardFormVisible.data[idx];
+export function getIsAddCardFormVisible(id) {
+  const target = state.isAddCardFormVisible.data.filter(item => item.id === id);
+  return target[0].isVisible;
 }
 
 export function toggleIsAddCardFormVisible(idx) {
-  state.isAddCardFormVisible.data[idx] = !state.isAddCardFormVisible.data[idx];
+  state.isAddCardFormVisible.data = state.isAddCardFormVisible.data.map(item => {
+    if (item.id === parseInt(idx)) {
+      return {id: item.id, isVisible: !item.isVisible};
+    }
+    return item;
+  })
   publish(state.isAddCardFormVisible);
 }

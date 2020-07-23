@@ -9,3 +9,16 @@ Content-Type: application/json
         "orderInNextColumn": 2
     }
 }
+
+### GET column api
+GET http://localhost:3000/api/column
+
+
+### PUT column api
+PUT http://localhost:3000/api/column/3
+Content-Type: application/json
+
+{
+    "username": "Jason",
+    "column_name": "다 했어요"
+}

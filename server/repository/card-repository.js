@@ -88,6 +88,7 @@ class CardRepository {
       [rows] = await conn.query(getLastOrderQeury, [columnId]);
       // TODO : 컬럼의 row가 없을 때 값을 가져오지 못한다..
       const lastOrderNumber = rows[0] ? rows[0].order_in_column : 0;
+
       // 새로 card insert
       const insertCardQuery =
         "INSERT INTO todo.Cards (user_id, content, column_id, order_in_column)\
