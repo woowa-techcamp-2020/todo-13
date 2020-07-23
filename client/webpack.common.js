@@ -6,13 +6,7 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
     filename: "index_bundle.js",
     publicPath: "public/",
-    sourceMapFilename: "index_bundle.js.map"
-  },
-  devtool: "eval",
-  devServer: {
-    contentBase: path.join(__dirname, "public"),
-    compress: true,
-    port: 9000,
+    sourceMapFilename: "index_bundle.js.map",
   },
   module: {
     rules: [
