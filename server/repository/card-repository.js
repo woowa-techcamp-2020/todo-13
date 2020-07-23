@@ -15,8 +15,9 @@ class CardRepository {
         FROM Cards \
         JOIN Users ON Cards.user_id = Users.id\
         JOIN Columns ON Cards.column_id = Columns.id\
-        ORDER BY 6 DESC");
-      
+        ORDER BY 6 DESC"
+      );
+
       const cards = rows.map((row) => {
         return new this.cardDTO(row);
       });
@@ -53,7 +54,9 @@ class CardRepository {
   async findLatestId() {
     const conn = await this.db.getConnection();
     try {
-      const [rows] = await conn.query("SELECT id FROM Cards ORDER BY id DESC LIMIT 1");
+      const [rows] = await conn.query(
+        "SELECT id FROM Cards ORDER BY id DESC LIMIT 1"
+      );
       const latestId = rows[0] ? rows[0].id : 1;
       return latestId;
     } catch (error) {
@@ -83,13 +86,8 @@ class CardRepository {
       const getLastOrderQeury =
         "SELECT order_in_column FROM Cards WHERE column_id=? ORDER BY order_in_column DESC LIMIT 1";
       [rows] = await conn.query(getLastOrderQeury, [columnId]);
-<<<<<<< HEAD
       // TODO : 컬럼의 row가 없을 때 값을 가져오지 못한다..
       const lastOrderNumber = rows[0] ? rows[0].order_in_column : 0;
-=======
-      const lastOrderNumber = rows[0] ? rows[0].order_in_column : 1;
->>>>>>> Update time message in Sidebar > Item component
-
       // 새로 card insert
       const insertCardQuery =
         "INSERT INTO todo.Cards (user_id, content, column_id, order_in_column)\
@@ -116,7 +114,7 @@ class CardRepository {
       const query = "UPDATE Cards SET content= ? WHERE id=?";
       await conn.query(query, [cardDTO.content, id]);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
       conn.release();
     }

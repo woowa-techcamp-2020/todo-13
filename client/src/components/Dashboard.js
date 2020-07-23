@@ -77,7 +77,6 @@ export default function Dashboard() {
 
       card.classList.remove("card-click");
       e.target.closest(".card-copy").style.display = "none";
-      clearTargetCardId();
 
       if (orderInNextColumn === prevCardData.order_in_column) return;
 
@@ -113,6 +112,7 @@ export default function Dashboard() {
       };
 
       moveCard(data);
+      clearTargetCardId();
     }
   }
 
