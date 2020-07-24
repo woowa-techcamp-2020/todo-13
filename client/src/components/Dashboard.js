@@ -59,16 +59,15 @@ export default function Dashboard() {
   }
 
   function onCardMouseUp(e) {
-    const auth = getUserAuth();
-
-    if (auth === "guest") {
-      alert("로그인이 필요한 서비스입니다");
-      offCopyCard();
-      clearTargetCardId();
-      return;
-    }
-
     if (e.target.closest(".card-copy")) {
+      const auth = getUserAuth();
+
+      if (auth === "guest") {
+        alert("로그인이 필요한 서비스입니다");
+        offCopyCard();
+        clearTargetCardId();
+        return;
+      }
       const cardId = getTargetCardId();
       const card = document.querySelector(`#card-${cardId}`);
       // 1. card가 옮겨진 컬럼과 위치를 찾는다.

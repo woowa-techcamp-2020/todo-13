@@ -3,8 +3,8 @@ class ActivityService {
     this.ActivityRepository = ActivityRepository;
   }
 
-  async fetchAllActivities() {
-    const activities = await this.ActivityRepository.findAllActivities();
+  fetchAllActivities() {
+    const activities = this.ActivityRepository.findAllActivities();
     return activities;
   }
 

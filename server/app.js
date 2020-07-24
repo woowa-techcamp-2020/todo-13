@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const errHandler = require("./error");
 const port = process.env.PORT || 3000;
 
 const cookieParser = require("cookie-parser");
@@ -26,6 +27,12 @@ app.get("/", (req, res) =>
   res.sendFile("public/index.html", { root: __dirname })
 );
 
+// logger
+app.use(errHandler.logErrors);
+
+// send response
+app.use(errHandler.sendErrors)
+
 app.listen(port, () =>
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at: ${port}`)
 );
