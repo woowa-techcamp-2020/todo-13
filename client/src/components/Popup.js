@@ -1,6 +1,4 @@
-import {
-  bindEvent
-} from "../utils/util";
+import { bindEvent } from "../utils/util";
 import "./Popup.scss";
 import {
   getIsPopupVisible,
@@ -9,18 +7,31 @@ import {
   togglePopup,
   getTargetCardId,
   deleteCard,
-  clearTargetCardId
+  clearTargetCardId,
+  getUserAuth,
 } from "../store";
 
 export default function Popup() {
-  const componentName = 'popup'
+  const componentName = "popup";
 
   function onCancelBtnClick(e) {
     togglePopup();
   }
 
   function onConfirmBtnClick(e) {
-    // delete Card
+    const auth = getUserAuth();
+    if (auth !== "admin") {
+      alert(
+        `${
+          auth === "guest"
+            ? "로그인이 필요한 서비스입니다"
+            : "삭제 권한이 없습니다"
+        }`
+      );
+      togglePopup();
+      clearTargetCardId();
+      return;
+    }
     const targetCardId = getTargetCardId();
     deleteCard(targetCardId);
     togglePopup();
@@ -32,7 +43,7 @@ export default function Popup() {
     const popupMessage = getPopupMessage();
 
     const html = `
-    <div class="popup ${isPopupVisible ? '': 'hidden'}">
+    <div class="popup ${isPopupVisible ? "" : "hidden"}">
       <div class="popup-box">
         <div class="popup-message">
           ${popupMessage}
@@ -53,7 +64,7 @@ export default function Popup() {
   }
 
   // subscribe(componentName, 'popupMessage', render);
-  subscribe(componentName, 'isPopupVisible', render);
+  subscribe(componentName, "isPopupVisible", render);
 
   setTimeout(render, 0);
 

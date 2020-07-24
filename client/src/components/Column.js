@@ -14,8 +14,6 @@ import {
 } from "../store";
 import AddCardForm from "./AddCardForm";
 
-// TODO: Add drag and drop feature
-
 export default function Column(props) {
   const componentName = `column-${props.category.id}`;
 

@@ -5,6 +5,7 @@ body {
   font-family: "Do Hyeon", sans-serif;
   height: 100vh;
   overflow-x: hidden;
+  user-select: none;
 
   #App {
     height: 100%;

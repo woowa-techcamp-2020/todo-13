@@ -38,6 +38,14 @@ export const state = {
     data: "",
     listeners: {},
   },
+  userAuth: {
+    data: "guest",
+    listeners: {},
+  },
+  username: {
+    data: "",
+    listeners: {},
+  },
   isSidebarVisible: {
     data: "",
     listeners: {},
@@ -103,7 +111,6 @@ export async function updateCategories(idx, value) {
     }
     return item;
   });
-
   publish(state.categories);
 
   state.cards.data.map((card) => {
@@ -111,8 +118,13 @@ export async function updateCategories(idx, value) {
       card.category = value;
     }
   });
-
   publish(state.cards);
+
+  state.items.data.unshift({
+    username: state.username.data,
+    content: `edited column name from ${oldColumnName} to ${value}`,
+    created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
+  })
 
   await updateColumnTitleInDB(idx, { username: "Jason", column_name: value });
 }
@@ -149,8 +161,9 @@ export async function createCard(cardData) {
   const category = state.categories.data.filter(
     (item) => item.id === cardData.index
   )[0].column_name;
+  
   const newCard = {
-    author: "Jason", // TODO: get loggined User data
+    author: state.username.data,
     content: cardData.content,
     category
   };
@@ -162,36 +175,26 @@ export async function createCard(cardData) {
   state.cards.data.unshift(newCard);
   publish(state.cards);
 
-  state.items.data.unshift({
-    username: newCard.author,
-    content: `added ${newCard.content}`,
-    created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
-  });
+  state.items.data = await fetchActivitiesFromDB();
   publish(state.items);
 }
 
 export async function updateCard(id, content) {
-  let author = "";
   state.cards.data.forEach((card) => {
     if (card.id === id) {
       card.content = content;
-      author = card.author;
-      state.items.data.unshift({
-        username: card.author,
-        content: `updated ${content}`,
-        created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
-      });
     }
   });
 
   publish(state.cards);
-  publish(state.items);
 
-  // TODO: call [BE] PUT or PATCH 'card/{id}' API
   await updateCardContentInDB(id, {
-    author,
+    author: state.username.data,
     content,
   });
+
+  state.items.data = await fetchActivitiesFromDB();
+  publish(state.items);
 }
 
 export async function moveCard(data) {
@@ -213,6 +216,9 @@ export async function moveCard(data) {
 
   state.cards.data = await fetchCardsFromDB();
   publish(state.cards);
+
+  
+  state.items.data = await fetchActivitiesFromDB();
   publish(state.items);
 }
 
@@ -230,13 +236,14 @@ export async function deleteCard(id) {
 
   state.items.data.unshift({
     username: deletedCard.author,
+    username: state.username.data,
     content: `removed ${deletedCard.content}`,
     created_at: getCreatedAtMessage(getTimeDifferenceFromNow(new Date())),
   });
 
   publish(state.cards);
   publish(state.items);
-
+  
   await deleteCardInDB(id);
 }
 
@@ -348,4 +355,22 @@ export function toggleIsAddCardFormVisible(idx) {
     }
   );
   publish(state.isAddCardFormVisible);
+}
+
+export function getUserAuth() {
+  return state.userAuth.data;
+}
+
+export function setUserAuth(value) {
+  state.userAuth.data = value;
+  publish(state.userAuth);
+} 
+
+export function getUsername() {
+  return state.username.data;
+}
+
+export function setUsername(name) {
+  state.username.data = name;
+  publish(state.username);
 }

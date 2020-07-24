@@ -11,21 +11,44 @@ import {
   updateCategories,
   clearTargetCardId,
   clearTargetColumnId,
+  getUserAuth,
 } from "../store";
 
 export default function Modal() {
   const componentName = "modal";
 
   function onSaveBtnClick(e) {
+    const auth = getUserAuth();
+
     const $modalContents = e.target.closest("div.modal-contents");
     const $modalNote = $modalContents.childNodes[3];
     const editContent = $modalNote.value;
 
     const columnId = getTargetColumnId();
     if (columnId !== Number.NEGATIVE_INFINITY) {
+      // 컬럼 제목 수정하는 경우
+      if (auth !== "admin") {
+        alert(
+          `${
+            auth === "guest"
+              ? "로그인이 필요한 서비스입니다"
+              : "수정 권한이 없습니다"
+          }`
+        );
+        toggleModal();
+        clearTargetColumnId();
+        return;
+      }
       updateCategories(columnId, editContent);
       clearTargetColumnId();
     } else {
+      // 카드 내용 수정하는 경우
+      if (auth === "guest") {
+        alert("로그인이 필요한 서비스입니다");
+        toggleModal();
+        clearTargetCardId();
+        return;
+      }
       const cardId = getTargetCardId();
       updateCard(parseInt(cardId), editContent);
       clearTargetCardId();
