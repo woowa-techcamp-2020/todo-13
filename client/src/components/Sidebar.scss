@@ -23,7 +23,7 @@
   }
 }
 
-$BACKGROUND_COLOR: #f5f8fa;
+$BACKGROUND_COLOR: #de0454;
 
 .sidebar {
   width: 30em;
@@ -34,7 +34,7 @@ $BACKGROUND_COLOR: #f5f8fa;
   right: 0;
   z-index: 1;
   display: none;
-
+  box-shadow: 5px 0 20px 0 #000;
   &.active {
     animation: scale-display 0.3s;
     display: inline-flex;
@@ -55,11 +55,13 @@ $BACKGROUND_COLOR: #f5f8fa;
     justify-content: space-between;
     padding: 0 10px;
     box-sizing: border-box;
-    background-color: $BACKGROUND_COLOR;
+    font-size: 1.5em;
+    color: #000;
+    border-bottom: 1px solid #ebebeb;
 
     .sidebar-header-close {
       cursor: pointer;
-      font-size: 1.5rem;
+      font-size: 2rem;
       display: flex;
       align-items: center;
     }
@@ -67,5 +69,6 @@ $BACKGROUND_COLOR: #f5f8fa;
 
   .sidebar-contents {
     overflow-y: auto;
+    height: 100%;
   }
 }

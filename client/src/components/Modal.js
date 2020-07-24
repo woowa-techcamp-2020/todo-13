@@ -48,28 +48,6 @@ export default function Modal() {
     $modalConfirm.disabled = !e.target.value ? true : false;
   }
 
-  function onCloseBtnMouseEnter(e) {
-    const closeBtns = [
-      ...document.querySelectorAll(
-        'ion-icon.md.hydrated[name="close-outline"]'
-      ),
-    ];
-    if (closeBtns.includes(e.target)) {
-      e.target.style.background = "lightgray";
-    }
-  }
-
-  function onCloseBtnMouseOut(e) {
-    const closeBtns = [
-      ...document.querySelectorAll(
-        'ion-icon.md.hydrated[name="close-outline"]'
-      ),
-    ];
-    if (closeBtns.includes(e.target)) {
-      e.target.style.background = "white";
-    }
-  }
-
   function render() {
     const isModalVisible = getIsModalVisibie();
     const modalData = getModalData();
@@ -102,8 +80,6 @@ export default function Modal() {
 
     bindEvent(".modal-confirm", "click", onSaveBtnClick);
     bindEvent(".modal-cancel", "click", onCloseBtnClick);
-    bindEvent(`div.${componentName}`, "mouseenter", onCloseBtnMouseEnter, true);
-    bindEvent(`div.${componentName}`, "mouseout", onCloseBtnMouseOut, true);
     bindEvent(".modal", "click", onOutsideClick);
     bindEvent(".modal", "keyup", handleNullContent);
   }

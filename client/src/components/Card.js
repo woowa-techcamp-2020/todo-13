@@ -15,15 +15,15 @@ export default function Card(props) {
         <div class="card-text">${props.card.content}</div>
         <div class="card-author">${props.card.author}</div>
       </div>
-      <div class="card-delete">
+      <button class="card-delete">
         <ion-icon name='close-outline'></ion-icon>
-      </div>
+      </button>
     `;
 
     const $card = document.querySelector(`#${componentName}`);
     $card.innerHTML = html;
   }
-  
+
   setTimeout(render, 0);
 
   return `<div class="card" id=${componentName}></div>`;
