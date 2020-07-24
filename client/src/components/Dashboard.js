@@ -118,8 +118,6 @@ export default function Dashboard() {
         orderInNextColumn,
       };
 
-      console.log(orderInNextColumn, data.orderInPrevColumn);
-
       if (
         prevCardData.category === nextColumn &&
         orderInNextColumn === data.orderInPrevColumn
