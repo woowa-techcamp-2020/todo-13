@@ -31,13 +31,13 @@ class ActivityRepository {
     return activity;
   }
 
-  async createActivity(author, content) {
+  async createActivity(username, content) {
     const conn = await this.db.getConnection();
     try {
       await conn.beginTransaction();
 
       const getUserIdQuery = "SELECT id FROM Users WHERE username=?";
-      let [rows] = await conn.query(getUserIdQuery, [author]);
+      let [rows] = await conn.query(getUserIdQuery, [username]);
       const userId = rows[0].id;
 
       const insertActivityQuery = "INSERT INTO Activities (user_id, content)\

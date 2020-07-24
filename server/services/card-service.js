@@ -50,6 +50,7 @@ class CardService {
 
   async moveCard(id, data) {
     const {
+      username,
       prevColumn,
       nextColumn,
       orderInNextColumn,
@@ -59,22 +60,20 @@ class CardService {
     let activityContent = "";
     if (prevColumn === nextColumn) {
       await this.CardRepository.updateCardOrderInSameColumn(id, data);
-      // TODO : activity 추가
       const from =
         orderInPrevColumn > orderInNextColumn
           ? orderInNextColumn
           : orderInPrevColumn;
       const to =
-        from === orderInPrevColumn ? orderInNextColumn : orderInPrevColumn;
+        (from === orderInPrevColumn) ? orderInNextColumn : orderInPrevColumn;
       activityContent = `moved ${targetCard.content} from ${from}번째 to ${to}번째  at ${prevColumn}`;
     } else {
       await this.CardRepository.updateCardOrderInOtherColumn(id, data);
       activityContent = `moved ${targetCard.content} from ${prevColumn} to ${nextColumn}`;
     }
 
-    // Activity Repository 이용해서 이동 로그 쌓기
     await this.ActivityRepository.createActivity(
-      targetCard.author,
+      username,
       activityContent
     );
     // TODO

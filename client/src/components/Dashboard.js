@@ -17,6 +17,7 @@ import {
   setTargetColumnId,
   clearTargetCardId,
   fetchCategories,
+  getUserAuth,
 } from "../store";
 import { bindEvent } from "../utils/util";
 import MESSAGE from "../utils/messages";
@@ -58,6 +59,15 @@ export default function Dashboard() {
   }
 
   function onCardMouseUp(e) {
+    const auth = getUserAuth();
+
+    if (auth === "guest") {
+      alert("로그인이 필요한 서비스입니다");
+      offCopyCard();
+      clearTargetCardId();
+      return;
+    }
+
     if (e.target.closest(".card-copy")) {
       const cardId = getTargetCardId();
       const card = document.querySelector(`#card-${cardId}`);
