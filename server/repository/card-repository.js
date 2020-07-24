@@ -27,7 +27,7 @@ class CardRepository {
     } catch (err) {
       throw err;
     } finally {
-      await conn.release();
+      conn.release();
     }
   }
 
@@ -52,7 +52,7 @@ class CardRepository {
     } catch (err) {
       throw err;
     } finally {
-      await conn.release();
+      conn.release();
     }
   }
 
@@ -67,7 +67,7 @@ class CardRepository {
     } catch (err) {
       throw err;
     } finally {
-      await conn.release();
+      conn.release();
     }
   }
 
