@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    border-radius: 10px;
 
     .modal-header {
       display: flex;
@@ -32,8 +33,9 @@
       width: 100%;
       height: 50px;
       align-items: center;
-      background-color: #f5f8fa;
-      border-bottom: 1px solid #d6dadf;
+      background-color: #e91e63;
+      color: white;
+      border-radius: 10px 10px 0 0;
 
       .modal-title {
         margin: 0;
@@ -43,8 +45,13 @@
       .modal-cancel {
         background-color: transparent;
         border: 0;
-        font-size: 1rem;
+        font-size: 2rem;
         cursor: pointer;
+        color: #fff;
+      }
+
+      .modal-cancel:hover {
+        color: #000;
       }
     }
 
@@ -67,7 +74,7 @@
         padding: 1em;
         font-size: 1.1rem;
         margin: 10px 0 25px;
-        border: 1px solid black;
+        border: 1px solid #bebebe;
       }
 
       .modal-confirm {

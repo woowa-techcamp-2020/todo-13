@@ -22,10 +22,12 @@ export default function Sidebar() {
     const html = `
     <div class="sidebar ${isSidebarVisible}">
       <div class="sidebar-header">
-        <div class="sidebar-header-title">Menu</div>
-        <div class="sidebar-header-close">
-          <ion-icon name='close-outline'></ion-icon>
+        <div class="sidebar-header-title">
+          🛎 Activities
         </div>
+        <button class="sidebar-header-close">
+          <ion-icon name='close-outline'></ion-icon>
+        </button>
       </div>
       <div class="sidebar-contents">
         ${items

@@ -6,7 +6,7 @@ export default function Item(props, index) {
 
   function render() {
     const html = `
-      <img src=${ThumbnailImg} class="item-thumbnail"/>
+      <p class="item-thumbnail">👦🏻</p>
         <div class="item-wrapper">
           <p class="item-text">
             ${props.item.username} ${props.item.content}

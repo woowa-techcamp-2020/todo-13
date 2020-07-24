@@ -50,7 +50,11 @@ export default function Header(props) {
           : `<h1 class="header-greeting">${username}</h1>
           <button class="header-logout-btn"> log out </button>`
       }
-      <div class="header-menu">menu</div>
+      </div>
+      <div class="header-menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <p class='header-text'>MENU</p>
+      </div>
     </div>
     `;
 

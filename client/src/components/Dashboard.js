@@ -268,22 +268,6 @@ export default function Dashboard() {
     }
   }
 
-  function onBtnMouseEnter(e) {
-    const addCardBtns = [
-      ...document.querySelectorAll(
-        'ion-icon.md.hydrated[name="add-circle-outline"]'
-      ),
-    ];
-    const closeBtns = [
-      ...document.querySelectorAll(
-        'ion-icon.md.hydrated[name="close-outline"]'
-      ),
-    ];
-    if (addCardBtns.includes(e.target) || closeBtns.includes(e.target)) {
-      e.target.style.background = "lightgray";
-    }
-  }
-
   function onBtnMouseOut(e) {
     const addCardBtns = [
       ...document.querySelectorAll(
@@ -319,7 +303,6 @@ export default function Dashboard() {
 
     bindEvent(`section.${componentName}`, "click", onColumnTitleEditClick);
     bindEvent(`section.${componentName}`, "click", onColumnAddCardClick);
-    bindEvent(`section.${componentName}`, "mouseenter", onBtnMouseEnter, true);
     bindEvent(`section.${componentName}`, "mouseout", onBtnMouseOut, true);
     bindEvent(`section.${componentName}`, "mousedown", onCardMouseDown);
     bindEvent(`section.${componentName}`, "mouseup", onCardMouseUp);

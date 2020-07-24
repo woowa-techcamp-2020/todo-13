@@ -43,7 +43,7 @@ export default function Column(props) {
     if (
       e.target !== $cardDelete &&
       e.target !== $column &&
-      e.target !== $columnHeader
+      !e.target.closest(".column-header")
     ) {
       const $card = e.target.closest(".card");
       const cardContent = $card.childNodes[3].firstElementChild.innerHTML;
@@ -59,13 +59,16 @@ export default function Column(props) {
   }
 
   function render() {
-    const cards = getCards().filter((card) => card.category === props.category.column_name);
+    const cards = getCards().filter(
+      (card) => card.category === props.category.column_name
+    );
 
     const isAddCardFormVisible = getIsAddCardFormVisible(props.category.id);
 
     const html = `
       <div class="column-header">
-        <div class="column-card-length">${cards.length}</div>
+        <div>📌</div>
+        <div class="column-card-length">${cards.length}개</div>
         <div class="column-title">${props.category.column_name}</div>
         <div class="column-header-btns">
           <button class="column-edit">
