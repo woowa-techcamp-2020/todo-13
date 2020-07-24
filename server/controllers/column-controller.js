@@ -13,9 +13,8 @@ async function getAllColumns(req, res, next) {
     const columns = await columnServiceInstance.fetchAllColumns();
 
     res.status(200).json(columns);
-  } catch (error) {
-    console.error(error);
-    res.status(404).end();
+  } catch (err) {
+    next(err);
   }
 }
 
@@ -25,8 +24,8 @@ async function editColumnName(req, res, next) {
     const activityRepositoryInstance = new ActivityRepository(Activity, db);
     const columnServiceInstance = new ColumnService(columnRepositoryInstance, activityRepositoryInstance);
 
-    if (!req.body.column_name) {
-      res.status(400).json({ message: "Bad request" });
+    if (!req.body.column_name || !req.body.username) {
+      next(new Error("Bad request"));
       return;
     }
 
@@ -34,9 +33,8 @@ async function editColumnName(req, res, next) {
     await columnServiceInstance.editColumnName(req.params.id, req.body.username, column);
 
     res.status(200).json({ message: "succefully updated column name" });
-  } catch (error) {
-    console.error(error);
-    res.status(404).json({ message: "update column name has failed" });
+  } catch (err) {
+    next(err);
   }
 }
 

@@ -27,12 +27,11 @@ app.get("/", (req, res) =>
   res.sendFile("public/index.html", { root: __dirname })
 );
 
-// logger
 app.use(errHandler.logErrors);
+app.use(errHandler.sendErrorMessage);
 
-// send response
-app.use(errHandler.sendErrors)
+app.use((req, res, next) => {
+  res.status(404).sendFile("public/notFound.html", { root: __dirname });
+});
 
-app.listen(port, () =>
-  console.log(`Example app listening at: ${port}`)
-);
+app.listen(port, () => console.log(`Example app listening at: ${port}`));

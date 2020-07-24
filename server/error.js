@@ -4,11 +4,11 @@ function logErrors(err, req, res, next) {
   next(err);
 }
 // error response sender
-function sendErrors(err, req, res, next) {
-  res.json({ message: err.message });
+function sendErrorMessage(err, req, res, next) {
+  res.status(500).json({ error: err.message });
 }
 
 module.exports = {
   logErrors,
-  sendErrors,
+  sendErrorMessage,
 };

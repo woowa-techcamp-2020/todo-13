@@ -6,7 +6,7 @@ class ActivityRepository {
 
   async findAllActivities() {
     const query =
-      "ELECT Activities.id, Users.username, Activities.content, Activities.created_at\
+      "SELECT Activities.id, Users.username, Activities.content, Activities.created_at\
     FROM Activities JOIN Users ON Activities.user_id = Users.id\
     ORDER BY Activities.created_at DESC";
     const [rows] = await this.db.query(query);
