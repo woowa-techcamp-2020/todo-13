@@ -206,8 +206,10 @@ export async function moveCard(data) {
     nextColumn,
     orderInNextColumn,
   } = data;
+  const username = getUsername();
 
   await updateMovedCardInfo(cardId, {
+    username,
     prevColumn,
     orderInPrevColumn,
     nextColumn,

@@ -5,7 +5,6 @@ class CardRepository {
   }
 
   async findAllCards() {
-    // TODO edit query
     const conn = await this.db.getConnection();
     try {
       const [rows] = await conn.query(
@@ -17,15 +16,18 @@ class CardRepository {
         JOIN Columns ON Cards.column_id = Columns.id\
         ORDER BY 6 DESC"
       );
+      if (rows.length === 0) {
+        throw new Error("No Card has been found");
+      }
 
       const cards = rows.map((row) => {
         return new this.cardDTO(row);
       });
       return cards;
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      throw err;
     } finally {
-      await conn.release();
+      conn.release();
     }
   }
 
@@ -41,13 +43,16 @@ class CardRepository {
       JOIN Columns ON Cards.column_id = Columns.id WHERE Cards.id=? ";
 
       const [rows] = await conn.query(query, [id]);
+      if (rows.length === 0) {
+        throw new Error("Card not found with given id");
+      }
       const card = new this.cardDTO(rows[0]);
 
       return card;
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      throw err;
     } finally {
-      await conn.release();
+      conn.release();
     }
   }
 
@@ -59,10 +64,10 @@ class CardRepository {
       );
       const latestId = rows[0] ? rows[0].id : 1;
       return latestId;
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      throw err;
     } finally {
-      await conn.release();
+      conn.release();
     }
   }
 
@@ -75,6 +80,9 @@ class CardRepository {
       // userid 가져오기
       const getUserIdQuery = "SELECT id FROM Users WHERE username=?";
       let [rows] = await conn.query(getUserIdQuery, [cardDTO.author]);
+      if (rows.length === 0) {
+        throw new Error("User who created current card is not registered");
+      }
       const userId = rows[0].id;
 
       // column_id 가져오기
@@ -101,9 +109,9 @@ class CardRepository {
       ]);
 
       await conn.commit();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       conn.rollback();
+      throw err;
     } finally {
       conn.release();
     }
@@ -115,7 +123,7 @@ class CardRepository {
       const query = "UPDATE Cards SET content= ? WHERE id=?";
       await conn.query(query, [cardDTO.content, id]);
     } catch (err) {
-      console.error(err);
+      throw(err);
     } finally {
       conn.release();
     }
@@ -127,7 +135,7 @@ class CardRepository {
       const query = "DELETE FROM Cards WHERE id=?";
       await conn.query(query, [id]);
     } catch (err) {
-      console.error(err);
+      throw err;
     } finally {
       conn.release();
     }
@@ -169,9 +177,9 @@ class CardRepository {
       ]);
 
       await conn.commit();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       conn.rollback();
+      throw err;
     } finally {
       conn.release();
     }
@@ -220,9 +228,9 @@ class CardRepository {
       ]);
 
       await conn.commit();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       conn.rollback();
+      throw err;
     } finally {
       conn.release();
     }

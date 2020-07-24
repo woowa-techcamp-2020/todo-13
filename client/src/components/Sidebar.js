@@ -19,6 +19,17 @@ export default function Sidebar() {
       toggleSidebar("inactive");
     }
 
+    function onOutOfSidebarClick(e) {
+      // TODO: sidebar가 열려있을 때, 밖의 영역을 클릭하면 닫힌다.
+      const isSidebarVisible = getIsSidebarVisible() === "active";
+      const hasClickedOutSide = !e.target.closest("div.sidebar");
+  
+      if (isSidebarVisible && hasClickedOutSide) {
+        toggleSidebar("inactive");
+        e.stopPropagation();
+      }
+    }
+
     const html = `
     <div class="sidebar ${isSidebarVisible}">
       <div class="sidebar-header">
@@ -43,6 +54,7 @@ export default function Sidebar() {
     $sidebar.innerHTML = html;
 
     bindEvent(".sidebar-header-close", "click", onCloseClick);
+    bindEvent("#App", "click", onOutOfSidebarClick, true);
   }
 
   subscribe(componentName, "isSidebarVisible", render);

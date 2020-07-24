@@ -14,7 +14,7 @@ async function getAllCards(req, res, next) {
 
     res.status(200).send(fetchedCards);
   } catch (err) {
-    res.status(404).end();
+    next(err);
   }
 }
 
@@ -27,7 +27,7 @@ async function getOneCard(req, res, next) {
 
     res.status(200).send(fetchedCard);
   } catch (err) {
-    res.status(404).end();
+    next(err);
   }
 }
 
@@ -38,8 +38,8 @@ async function getLatestCardId(req, res, next) {
 
     const latestId = await cardServiceInstance.getLatestId();
     res.status(200).json({ latestId: latestId });
-  } catch (error) {
-    res.status(404).json({ message: "retrieving latest cardId failed" });
+  } catch (err) {
+    next(err);
   }
 }
 
@@ -57,7 +57,7 @@ async function createCard(req, res, next) {
 
     res.status(201).json({ message: "succefully created new card" });
   } catch (err) {
-    res.status(404).json({ message: "creating card failed" });
+    next(err);
   }
 }
 
@@ -71,7 +71,7 @@ async function updateCard(req, res, next) {
     );
 
     if (!req.body.content) {
-      res.status(400).json({ message: "Bad request" });
+      next(new Error("Bad request"));
       return;
     }
 
@@ -80,8 +80,7 @@ async function updateCard(req, res, next) {
 
     res.status(200).json({ message: "succefully update card" });
   } catch (err) {
-    console.error(err);
-    res.status(404).json({ message: "update card failed" });
+    next(err);
   }
 }
 
@@ -98,8 +97,7 @@ async function deleteOneCard(req, res, next) {
 
     res.status(200).json({ message: "succefully deleted card" });
   } catch (err) {
-    console.error(err);
-    res.status(404).end();
+    next(err);
   }
 }
 
@@ -112,12 +110,16 @@ async function moveCard(req, res, next) {
       activityRepositoryInstance
     );
 
+    if (!req.body.data) {
+      next(new Error("Bad request"));
+      return;
+    }
+
     await cardServiceInstance.moveCard(req.params.id, req.body.data);
 
     res.status(203).json({ message: "card moved!" });
-  } catch (error) {
-    console.error(error);
-    res.status(404).end();
+  } catch (err) {
+    next(err);
   }
 }
 

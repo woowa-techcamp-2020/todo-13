@@ -15,8 +15,8 @@ class ColumnRepository {
       });
 
       return columns;
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      throw err;
     } finally {
       conn.release();
     }
@@ -30,8 +30,8 @@ class ColumnRepository {
       const column = new this.columnDTO(rows[0]);
 
       return column;
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      throw err;
     } finally {
       conn.release();
     }
@@ -43,8 +43,8 @@ class ColumnRepository {
     try {
       const query = "UPDATE Columns SET column_name=? WHERE id=?";
       await conn.query(query, [columnDTO.column_name, id]);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      throw err;
     } finally {
       conn.release();
     }
