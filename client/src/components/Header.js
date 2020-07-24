@@ -45,15 +45,17 @@ export default function Header(props) {
       <div class="header-btn-wrapper">
       ${
         auth === "guest"
-          ? `<button class="header-admin-login-btn"> log in as Admin </button>
-          <button class="header-user-login-btn"> log in as User </button>`
-          : `<h1 class="header-greeting">${username}</h1>
-          <button class="header-logout-btn"> log out </button>`
+          ? `<button class="header-admin-login-btn"> LOGIN Admin </button>
+          |
+          <button class="header-user-login-btn"> LOGIN User </button>`
+          : `<p class="header-greeting">${username}님 안녕하세요!</p>
+          |
+          <button class="header-logout-btn"> LOGOUT </button>`
       }
-      </div>
-      <div class="header-menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <p class='header-text'>MENU</p>
+        <div class="header-menu">
+          <ion-icon name="menu-outline"></ion-icon>
+          <p class='header-text'>MENU</p>
+        </div>
       </div>
     </div>
     `;

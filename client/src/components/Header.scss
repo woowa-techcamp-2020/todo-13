@@ -11,24 +11,26 @@ $BACKGROUND_COLOR: #3e3e3e;
   .header-btn-wrapper {
     display: flex;
     justify-content: space-between;
-    width: 30vw;
+    align-items: center;
   }
 
   .header-greeting {
     font-size: 1rem;
     font-weight: 600;
-    width: 6rem;
     text-align: center;
+    margin: 0;
+    margin-right: 15px;
   }
 
   button {
     margin: 0 10px;
-    width: 6rem;
-    padding: 12px 0;
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 5px;
-    font-size: 0.8rem;
+    padding: 5px;
+    font-size: 1rem;
+    color: #fff;
+
+    &:hover {
+      color: #000;
+    }
   }
 
   .header-menu {

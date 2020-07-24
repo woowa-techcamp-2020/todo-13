@@ -23,8 +23,6 @@
   }
 }
 
-$BACKGROUND_COLOR: #de0454;
-
 .sidebar {
   width: 30em;
   height: 100vh;
@@ -35,6 +33,7 @@ $BACKGROUND_COLOR: #de0454;
   z-index: 1;
   display: none;
   box-shadow: 5px 0 20px 0 #000;
+
   &.active {
     animation: scale-display 0.3s;
     display: inline-flex;

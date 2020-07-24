@@ -81,13 +81,13 @@ export default function Dashboard() {
 
       // TODO : 너무 복잡한 if 구조... 리팩토링 하기!
       if (prevCardData.category === nextColumn) {
-        if (orderInNextColumn === prevCardData.order_in_column) return;
         if (prevCardData.order_in_column < orderInNextColumn) {
           if (moveCardPrevNode) {
             orderInNextColumn = nextCardData.order_in_column - 1;
             nextColumn = nextCardData.category;
           }
         } else {
+          if (orderInNextColumn === prevCardData.order_in_column) return;
           orderInNextColumn = nextCardData.order_in_column;
           nextColumn = nextCardData.category;
         }
@@ -108,6 +108,8 @@ export default function Dashboard() {
         nextColumn,
         orderInNextColumn,
       };
+
+      console.log(orderInNextColumn, data.orderInPrevColumn);
 
       if (
         prevCardData.category === nextColumn &&
@@ -252,7 +254,7 @@ export default function Dashboard() {
     ];
     if (editCardBtns.includes(e.target)) {
       const $columnHeader = e.target.closest(".column-header");
-      const title = $columnHeader.childNodes[3].innerHTML;
+      const title = $columnHeader.querySelector(".column-title").innerText;
 
       const $column = e.target.closest("div.column");
       const columnId = $column.id.split("-")[1];
