@@ -16,6 +16,7 @@ export default function Header(props) {
   function onMenuClick(e) {
     fetchItems();
     toggleSidebar("active");
+    e.stopPropagation();
   }
 
   function onAdminLoginClick(e) {
