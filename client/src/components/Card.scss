@@ -1,0 +1,77 @@
+$BORDER_COLOR: #bebebe;
+
+@keyframes scale-display {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.card {
+  background-color: transparent;
+  margin-bottom: 10px;
+  padding: 10px 5px;
+  border-radius: 5px;
+  border: 1px solid $BORDER_COLOR;
+  display: flex;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: #de0454;
+    animation: scale-display 0.5s;
+  }
+
+  ion-icon {
+    display: flex;
+    align-items: center;
+  }
+
+  &.card-click {
+    opacity: 0.5;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+    .card-title {
+      display: flex;
+      align-items: center;
+
+      .card-category {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 8px;
+    word-break: break-all;
+    .card-author {
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+  }
+
+  .card-delete {
+    margin: 0;
+    z-index: 1;
+    align-items: flex-start;
+  }
+}
+
+.draggable {
+  cursor: move;
+}
+
+.dragging {
+  opacity: 0.5;
+}

@@ -1,0 +1,32 @@
+### GET all card api
+GET http://localhost:3000/api/card
+
+### GET get one card api
+GET http://localhost:3000/api/card/5000
+
+### GET latest card id api
+GET http://localhost:3000/api/card/latest_id
+
+### POST card api
+POST http://localhost:3000/api/card HTTP/1.1
+Content-Type: application/json
+
+{
+    "author": "Jason", 
+    "content": "로그 쌓기 연동",
+    "category": "하는 중"
+}
+
+### PUT card api
+PUT  http://localhost:3000/api/card/2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "content": "페이지네이션 UI 리서치, 다른 일 받고 추가"
+}
+
+### DELETE card api
+DELETE http://localhost:3000/api/card/39
+
+### GET all activity api
+GET http://localhost:3000/api/activity

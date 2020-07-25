@@ -13,7 +13,29 @@ module.exports = (api) => {
     ],
   ];
 
+  const plugins = [
+    ["transform-class-properties", {
+      "spec": true
+    }]
+  ];
+
+  const env = {
+    test: {
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            modules: "auto",
+          },
+          "jest",
+        ],
+      ],
+    },
+  };
+
   return {
     presets,
+    plugins,
+    env,
   };
 };

@@ -1,4 +1,5 @@
 const path = require("path");
+const DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = {
   entry: "./src/index.js",
@@ -6,17 +7,13 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
     filename: "index_bundle.js",
     publicPath: "public/",
-  },
-  devServer: {
-    contentBase: path.join(__dirname, "public"),
-    compress: true,
-    port: 9000,
+    sourceMapFilename: "index_bundle.js.map",
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -31,4 +28,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new DotenvWebpackPlugin({
+      path: './.client.env',
+    })
+  ]
 };
